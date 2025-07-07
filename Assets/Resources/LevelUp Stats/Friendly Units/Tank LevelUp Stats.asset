@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d11f2b77cd3f96c4cab988790fb08afa, type: 3}
+  m_Name: Tank LevelUp Stats
+  m_EditorClassIdentifier: 
+  _unitType: 2
+  _isFriendly: 1
+  _ageStage: 2
+  _unitPrefab: {fileID: 6578747469787437173, guid: f583d24b6b5eab94d8983cccd2940e59, type: 3}
+  _sprite: {fileID: 21300000, guid: ac8db8013e6738a448ae2cfa323a30e4, type: 3}
+  _moneyWhenKilled: 0
+  _range: 0
+  _speed: 1
+  _health: 50
+  _strength: 10
+  _initialAttackDelay: 0.2

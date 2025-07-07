@@ -9,12 +9,12 @@ public class UpgradeButtonEditor : Editor
     {
         serializedObject.Update();
 
-        var unitTypeProp = serializedObject.FindProperty("unitType");
-        var statTypeProp = serializedObject.FindProperty("statType");
-        var statBonusProp = serializedObject.FindProperty("_statBonus");
-        var statCostProp = serializedObject.FindProperty("_statCost");
-        var statCostIncProp = serializedObject.FindProperty("_statCostInc");
-        var attackDelayReductionProp = serializedObject.FindProperty("_attackDelayReductionPercent");
+        var unitTypeProp = serializedObject.FindProperty(UnitUpgradeButton.FieldNames.UnitType);
+        var statTypeProp = serializedObject.FindProperty(UnitUpgradeButton.FieldNames.StatType);
+        var statBonusProp = serializedObject.FindProperty(UnitUpgradeButton.FieldNames.StatBonus);
+        var statCostProp = serializedObject.FindProperty(UnitUpgradeButton.FieldNames.StatCost);
+        var statCostIncProp = serializedObject.FindProperty(UnitUpgradeButton.FieldNames.StatCostInc);
+        var attackDelayReductionProp = serializedObject.FindProperty(UnitUpgradeButton.FieldNames.AttackDelayReductionPercent);
 
         EditorGUILayout.PropertyField(unitTypeProp);
         EditorGUILayout.PropertyField(statTypeProp);

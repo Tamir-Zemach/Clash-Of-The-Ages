@@ -17,7 +17,7 @@ public class UnitHealthManager : MonoBehaviour, IDamageable
     {
         UnitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
         Unit = UnitBaseBehaviour.Unit;
-        _currentHealth = Unit._health;
+        _currentHealth = Unit.Health;
     }
 
     public void GetHurt(int damage)

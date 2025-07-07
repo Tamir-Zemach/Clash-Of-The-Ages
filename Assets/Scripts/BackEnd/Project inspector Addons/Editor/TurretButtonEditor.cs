@@ -9,20 +9,27 @@ public class TurretButtonEditor : Editor
     {
         serializedObject.Update();
 
+        var turretButtonTypeProp = serializedObject.FindProperty(TurretButton.FieldNames.TurretButtonType);
         var turretTypeProp = serializedObject.FindProperty(TurretButton.FieldNames.TurretType);
         var costProp = serializedObject.FindProperty(TurretButton.FieldNames.Cost);
         var refundProp = serializedObject.FindProperty(TurretButton.FieldNames.Refund);
         var spawnPointsParent = serializedObject.FindProperty(TurretButton.FieldNames.SpawnPointParent);
 
-        EditorGUILayout.PropertyField(turretTypeProp);
+        EditorGUILayout.PropertyField(turretButtonTypeProp);
+
+        if ((TurretButtonType)turretButtonTypeProp.enumValueIndex == TurretButtonType.DeployTurret)
+        {
+            EditorGUILayout.PropertyField(turretTypeProp);
+        }
+
         EditorGUILayout.PropertyField(spawnPointsParent);
 
-        if ((TurretButtonType)turretTypeProp.enumValueIndex != TurretButtonType.SellTurret)
+        if ((TurretButtonType)turretButtonTypeProp.enumValueIndex != TurretButtonType.SellTurret)
         {
             EditorGUILayout.PropertyField(costProp);
         }
 
-        if ((TurretButtonType)turretTypeProp.enumValueIndex == TurretButtonType.SellTurret)
+        if ((TurretButtonType)turretButtonTypeProp.enumValueIndex == TurretButtonType.SellTurret)
         {
             EditorGUILayout.PropertyField(refundProp);
         }

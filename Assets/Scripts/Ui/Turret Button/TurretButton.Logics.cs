@@ -108,7 +108,7 @@ namespace Assets.Scripts.Ui.TurretButton
             _turretSpawnPos = slot.transform;
             slot.HasTurret = true;
 
-            var upgradedTurretPrefab = UpgradeStateManager.Instance.GetTurretPrefab();
+            var upgradedTurretPrefab = GameStateManager.Instance.GetTurretPrefab(_turretType);
 
             GameObject turret = Instantiate(upgradedTurretPrefab, _turretSpawnPos.position, _turretSpawnPos.rotation);
 

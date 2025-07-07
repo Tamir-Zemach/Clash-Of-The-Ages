@@ -72,7 +72,7 @@ public class EnemySpawner : SceneAwareMonoBehaviour<EnemySpawner>
 
     private void SpawnRandomEnemyPrefab()
     {
-        var enemyUnits = GameDataRepository.Instance.GetAllEnemyUnits();
+        var enemyUnits = GameStateManager.Instance.GetAllEnemyUnits();
 
         if (enemyUnits == null || enemyUnits.Count == 0) return;
 

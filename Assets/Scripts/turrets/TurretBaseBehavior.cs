@@ -1,4 +1,5 @@
 using System.Collections;
+using Assets.Scripts.Enems;
 using Assets.Scripts.turrets;
 using UnityEngine;
 
@@ -8,8 +9,13 @@ public class TurretBaseBehavior : MonoBehaviour
     //"Origin point from which the BoxCast is performed
     private Transform _DetectionOrigin;
 
+    [SerializeField] private TurretType _turretType;
+
     [Tooltip("Transform from where bullets will be instantiated.")]
     [SerializeField] private Transform _bulletSpawnPos;
+
+    [Tooltip("Projectile prefab to spawn when attacking.")]
+    public GameObject _bulletPrefab;
 
     private Vector3 _origin;
     private Vector3 _direction;
@@ -18,10 +24,13 @@ public class TurretBaseBehavior : MonoBehaviour
     private Coroutine _currentCoroutine;
     private TurretData _turretData;
 
+    public TurretType Type => _turretType;
+
     public Vector3 Origin => _origin;
     public Vector3 Direction => _direction;
-
     public Quaternion Rotation => _rotation;
+
+
     private void OnValidate()
     {
         if (Application.isPlaying) return;
@@ -37,7 +46,7 @@ public class TurretBaseBehavior : MonoBehaviour
     }
     private void GetData()
     {
-        _turretData = GameDataRepository.Instance.GetFriendlyTurret();
+        _turretData = GameStateManager.Instance.GetFriendlyTurret(_turretType);
 
         GameObject baseObject = GameObject.FindGameObjectWithTag(_turretData.FriendlyBase);
         if (baseObject != null)
@@ -85,7 +94,7 @@ public class TurretBaseBehavior : MonoBehaviour
     IEnumerator AttackLoop(float insialAttackDelay)
     {
         yield return new WaitForSeconds(insialAttackDelay);
-        Instantiate(_turretData.BulletPrefab, _bulletSpawnPos.position, _bulletSpawnPos.rotation);
+        Instantiate(_bulletPrefab, _bulletSpawnPos.position, _bulletSpawnPos.rotation);
         _isAttacking = false;
     }
 

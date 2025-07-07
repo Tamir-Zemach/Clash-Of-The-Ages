@@ -12,10 +12,11 @@ public class TurretDebugger : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (_turretData == null)
-            _turretData = GameDataRepository.Instance.GetFriendlyTurret();
         if (TurretBaseBehavior == null)
             TurretBaseBehavior = gameObject.GetComponent<TurretBaseBehavior>();
+        if (_turretData == null)
+            _turretData = GameStateManager.Instance.GetFriendlyTurret(TurretBaseBehavior.Type);
+
 
         Gizmos.color = _boxColor;
 

@@ -6,7 +6,7 @@ using Assets.Scripts.Managers;
 public class PlayerUpgradeButton : MonoBehaviour
 {
     [Tooltip("Specifies the type of upgrade to apply.")]
-    [SerializeField] private UpgradeType upgradeType;
+    [SerializeField] private UpgradeType _upgradeType;
 
     [Header("Upgrade stats Settings")]
 
@@ -19,10 +19,7 @@ public class PlayerUpgradeButton : MonoBehaviour
     [Tooltip("Incremental increase in stat upgrade cost after each upgrade")]
     [SerializeField] private int _statCostInc;
 
-    private void Start()
-    {
-        _statUpgradeCost = UpgradeStateManager.Instance.GetPlayerStatCost(upgradeType, _statUpgradeCost);
-    }
+    public int Cost => _statUpgradeCost;
 
     public void UpgradeStat()
     {
@@ -32,16 +29,13 @@ public class PlayerUpgradeButton : MonoBehaviour
             PlayerCurrency.Instance.SubtractMoney(_statUpgradeCost);
             ApplyUpgrade();
             _statUpgradeCost += _statCostInc;
-            UpgradeStateManager.Instance.SetPlayerStatUpgradeCost(upgradeType, _statUpgradeCost);
+            GameStateManager.Instance.SetPlayerStatUpgradeCost(_upgradeType, _statUpgradeCost);
         }
     }
 
-
-
-
     private void ApplyUpgrade()
     {
-        switch (upgradeType)
+        switch (_upgradeType)
         {
             case UpgradeType.MaxHealthIncrease:
                 PlayerHealth.Instance.IncreaseMaxHealth(_statBonus);
@@ -55,7 +49,7 @@ public class PlayerUpgradeButton : MonoBehaviour
                 IncreaseMoneyGainToAllEnemyUnits();
                 break;
             default:
-                Debug.LogWarning("Unknown upgrade type: " + upgradeType);
+                Debug.LogWarning("Unknown upgrade type: " + _upgradeType);
                 break;
         }
     }
@@ -63,15 +57,15 @@ public class PlayerUpgradeButton : MonoBehaviour
 
     private void DecreaseCostToAllFrienlyUnits()
     {
-        foreach (UnitData unit in GameDataRepository.Instance.GetAllFriendlyUnits())
+        foreach (UnitData unit in GameStateManager.Instance.GetAllFriendlyUnits())
         {
-            unit._cost -= _statBonus;
+            unit.Cost -= _statBonus;
         }
 
     }
     private void IncreaseMoneyGainToAllEnemyUnits()
     {
-        foreach (UnitData unit in GameDataRepository.Instance.GetAllEnemyUnits())
+        foreach (UnitData unit in GameStateManager.Instance.GetAllEnemyUnits())
         {
             unit._moneyWhenKilled += _statBonus;
         }

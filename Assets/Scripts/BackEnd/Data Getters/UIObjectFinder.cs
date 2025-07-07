@@ -1,26 +1,18 @@
-using Assets.Scripts.Ui.TurretButton;
+
+using Assets.Scripts.InterFaces;
 using UnityEngine;
-using UnityEngine.UI;
 
-/// <summary>
-/// Utility class for locating UI components in the scene, such as unit deploy buttons or special attack buttons.
-/// Provides helper methods to find objects and fetch their associated Image components.
-/// </summary>
-public static class UIObjectFinder
+public static class UIObjectFinder 
 {
-
-    public static UnitDeployButton[] GetAllUnitDeployButtons()
+    public static TButton GetButton<TButton, TType>()
+        where TButton : Component, IImgeSwichable<TType>
     {
-        return Object.FindObjectsByType<UnitDeployButton>(FindObjectsSortMode.None);
+        return Object.FindFirstObjectByType<TButton>();
+    }
+    public static TButtons[] GetButtons<TButtons, TType>()
+    where TButtons : Component, IImgeSwichable<TType>
+    {
+        return Object.FindObjectsByType<TButtons>(FindObjectsSortMode.None);
     }
 
-    public static SpecialAttackButton GetSpecialAttackButton()
-    {
-        return Object.FindFirstObjectByType<SpecialAttackButton>(); 
-    }
-
-    public static TurretButton GetTurretButton()
-    {
-        return Object.FindFirstObjectByType<TurretButton>();
-    }
 }

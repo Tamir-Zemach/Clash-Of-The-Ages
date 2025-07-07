@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f50dbcd44b1267a418cd2c2abf028558, type: 3}
+  m_Name: F - FastTurret - StoneAge
+  m_EditorClassIdentifier: 
+  _turretType: 1
+  _isFriendly: 1
+  _stageType: 1
+  _unitPrefab: {fileID: 6152897977360850917, guid: 9ac2bbfb1ab831243a67e596589a75ed, type: 3}
+  OppositeUnitLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  OppositeUnitTag: Enemy Character
+  FriendlyBase: Player Base
+  Range: 10
+  BoxSize: {x: 3, y: 3, z: 1}
+  InitialAttackDelay: 1
+  BulletStrength: 10
+  BulletSpeed: 12

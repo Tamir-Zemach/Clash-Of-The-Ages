@@ -1,52 +1,76 @@
 using Assets.Scripts;
+using Assets.Scripts.Data;
 using Assets.Scripts.Enems;
+using Assets.Scripts.InterFaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpecialAttackButton : MonoBehaviour
+public class SpecialAttackButton : MonoBehaviour ,IImgeSwichable<AgeStageType>
 {
-    [SerializeField] private SpecialAttackType _specialAttackType;
-    [SerializeField] private GameObject _meteorRainPrefab;
-    [SerializeField] private Transform _meteorRainSpawnPos;
-    [SerializeField] private int _specialAttackCost;
+    [SerializeField] private AgeStageType _ageStageType;
 
-    public SpecialAttackType Type => _specialAttackType;
+    [SerializeField] private Transform _meteorRainSpawnPos;
+
+    private SpecialAttackData _specialAttack;
+
+    private Sprite _sprite;
+
+    private Image _image;
+
+    public AgeStageType Type => _ageStageType;
+    public Sprite Sprite => _sprite;
+    public Image Image => _image;
+
+    public void SetSprite(Sprite sprite)
+    {
+        _image.sprite = sprite;
+    }
 
     private void Start()
     {
-        var sprite = UpgradeStateManager.Instance.GetSpecialAttackSprite(_specialAttackType); 
-        if (sprite != null)
-            GetComponent<Image>().sprite = sprite;
+        GetData();
     }
+
+    private void GetData()
+    {
+        _specialAttack = GameStateManager.Instance.GetFriendlySpecialAttackData();
+        _sprite = GameStateManager.Instance.GetSpecialAttackSprite(_ageStageType);
+        _image = GetComponent<Image>();
+        _image.sprite = _sprite;
+    }
+
+
+
+
+
     public void PerformSpecialAttack()
     {
-        if (PlayerCurrency.Instance.HasEnoughMoney(_specialAttackCost) && !MeteorRainAlreadyExists())
+        if (PlayerCurrency.Instance.HasEnoughMoney(_specialAttack.Cost) && !MeteorRainAlreadyExists())
         {
-            PlayerCurrency.Instance.SubtractMoney(_specialAttackCost);
+            PlayerCurrency.Instance.SubtractMoney(_specialAttack.Cost);
             ApplySpecialAttack();
         }
     }
 
     private void ApplySpecialAttack()
     {
-        var currentAttack = UpgradeStateManager.Instance.CurrentSpecialAttack;
-        var currentAttackPrfab = UpgradeStateManager.Instance.GetSpecialAttackPrefab();
-        switch (currentAttack)
+        var currentAttackPrfab = GameStateManager.Instance.GetSpecialAttackPrefab();
+        switch (_ageStageType)
         {
-            case SpecialAttackType.MeteorRain:
+            case AgeStageType.StoneAge:
                 Instantiate(currentAttackPrfab, _meteorRainSpawnPos.position, _meteorRainSpawnPos.rotation);
                 break;
-            case SpecialAttackType.SpecialAttack2:
+            case AgeStageType.Military:
                 //same logic for now
                 Instantiate(currentAttackPrfab, _meteorRainSpawnPos.position, _meteorRainSpawnPos.rotation);
                 break;
-            case SpecialAttackType.SpecialAttack3:
+            case AgeStageType.Future:
                 //same logic for now
                 Instantiate(currentAttackPrfab, _meteorRainSpawnPos.position, _meteorRainSpawnPos.rotation);
                 break;
 
             default:
-                Debug.LogWarning("Unknown SpecialAttackType type: " + _specialAttackType);
+                Debug.LogWarning("Unknown AgeStageType type: " + _ageStageType);
                 break;
         }
     }

@@ -36,9 +36,9 @@ public class UnitBaseBehaviour : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _healthManager = GetComponent<UnitHealthManager>();
         _healthManager.OnDying += Dying;
-        _enemyBase = GameObject.FindGameObjectWithTag(Unit._oppositeBaseTag);
+        _enemyBase = GameObject.FindGameObjectWithTag(Unit.OppositeBaseTag);
         _agent.destination = _enemyBase.transform.position;
-        _agent.speed = Unit._speed;
+        _agent.speed = Unit.Speed;
         _col = GetComponent<Collider>();
         _animator = GetComponentInChildren<Animator>();
         OnInitialized?.Invoke();
@@ -63,12 +63,12 @@ public class UnitBaseBehaviour : MonoBehaviour
                                 transform.forward,
                                 out var hitInfo,
                                 Quaternion.identity,
-                                Unit._range,
-                                Unit._enemyCharacterMask))
+                                Unit.Range,
+                                Unit.OppositeUnitMask))
         {
             GameObject obj = hitInfo.transform.gameObject;
 
-            if (obj.CompareTag(Unit._oppositeUnitTag) || obj.CompareTag(Unit._oppositeBaseTag))
+            if (obj.CompareTag(Unit.OppositeUnitTag) || obj.CompareTag(Unit.OppositeBaseTag))
             {
                 HandleEnemyDetection(obj);
             }
@@ -92,10 +92,10 @@ public class UnitBaseBehaviour : MonoBehaviour
                             Unit.boxSize, transform.forward,
                             out var hitInfo,
                             Quaternion.identity,
-                            Unit._rayLengthForFriendlyUnit))
+                            Unit.RayLengthForFriendlyUnit))
         {
             GameObject obj = hitInfo.transform.gameObject;
-            if (obj.CompareTag(Unit._friendlyUnitTag))
+            if (obj.CompareTag(Unit.FriendlyUnitTag))
             {
                 _agent.isStopped = true;
             }
@@ -115,7 +115,7 @@ public class UnitBaseBehaviour : MonoBehaviour
     private void Attack(GameObject target)
     {
         _currentTarget = target;
-        _currentCoroutine = StartCoroutine(AttackAction(Unit._initialAttackDelay, target));
+        _currentCoroutine = StartCoroutine(AttackAction(Unit.InitialAttackDelay, target));
     }
 
     IEnumerator AttackAction(float initialAttackDelay, GameObject target)
@@ -145,7 +145,7 @@ public class UnitBaseBehaviour : MonoBehaviour
         Vector3 direction = transform.forward;
 
         // Perform the BoxCast
-        if (Physics.BoxCast(origin,Unit.boxSize , direction, out RaycastHit hitInfo, Quaternion.identity, Unit._range))
+        if (Physics.BoxCast(origin,Unit.boxSize , direction, out RaycastHit hitInfo, Quaternion.identity, Unit.Range))
         {
             // Draw the hit box
             Gizmos.DrawWireCube(hitInfo.point, Unit.boxSize);
@@ -155,7 +155,7 @@ public class UnitBaseBehaviour : MonoBehaviour
         Gizmos.DrawWireCube(origin, Unit.boxSize);
 
         // Draw the movement path
-        Gizmos.DrawLine(origin, origin + direction * Unit._range);
+        Gizmos.DrawLine(origin, origin + direction * Unit.Range);
 
     }
 

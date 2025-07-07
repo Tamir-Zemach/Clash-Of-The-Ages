@@ -1,44 +1,42 @@
-﻿
-using Assets.Scripts.Enems;
+﻿using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
 using UnityEngine;
-
-//TODO: Upgrade the code - make it like the TurretData - Same for its buttons 
 
 namespace Assets.Scripts.Data
 {
     [CreateAssetMenu(fileName = "SpecialAttackData", menuName = "SpecialAttackData", order = 4)]
-    public class SpecialAttackData : ScriptableObject ,IUpgradable<SpecialAttackType>
+    public class SpecialAttackData : ScriptableObject, IUpgradable<AgeStageType>
     {
-        [Tooltip("The Special attack Type:")]
-        [SerializeField] private SpecialAttackType specialAttackType;
+        [Header("Identification")]
+        [Tooltip("Specifies what age stage this upgrade belongs to.")]
+        [SerializeField] private AgeStageType _ageStage;
 
+        [Tooltip("Indicates if this special attack belongs to the friendly faction.")]
         [SerializeField] private bool _isFriendly;
 
-        private AgeStageType _stageType;
-        public SpecialAttackType Type => specialAttackType;
+        [Header("Deployment Settings")]
+        [Tooltip("The prefab to instantiate when deployed.")]
+        [SerializeField] private GameObject _specialAttackPrefab;
+        [Tooltip("Cost to deploy or use this special attack.")]
+        [Min(0)]
+        [SerializeField] private int cost;
 
+        // Public getters
+        public AgeStageType Type => _ageStage;
         public bool IsFriendly => _isFriendly;
+        public GameObject Prefab => _specialAttackPrefab;
+        public int AgeStage => (int)_ageStage;
+        public int Cost => cost;
 
-        [Tooltip("The prefab to instansiate when deplyed")]
-        [SerializeField] private GameObject _unitPrefab;
-        public GameObject Prefab => _unitPrefab;
-
+        // Upgradability hook
         public void SetPrefab(GameObject prefab)
         {
-            _unitPrefab = prefab;
+            _specialAttackPrefab = prefab;
         }
 
-        public int AgeStage => (int)_stageType;
-
-        public Sprite _sprite;
-
-        [Tooltip("What age this upgrade belongs to")]
-        [SerializeField] private AgeStageType ageStage;
-
-        public int _specialAttackCost;
-
-
+        public void SetType(AgeStageType type)
+        {
+            _ageStage = type;
+        }
     }
-
 }

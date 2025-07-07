@@ -1,38 +1,51 @@
 using Assets.Scripts;
+using Assets.Scripts.Backend.Data;
 using Assets.Scripts.Enems;
+using Assets.Scripts.InterFaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitDeployButton : MonoBehaviour
+public class UnitDeployButton : MonoBehaviour, IImgeSwichable<UnitType>
 {
     [SerializeField] private UnitType _unitType;
 
-    private UnitData unit;
+    private UnitData _unit;
 
-    public UnitType UnitType => _unitType;
+    private Sprite _sprite;
 
+    private Image _image;
 
+    public UnitType Type => _unitType;
+
+    public Sprite Sprite => _sprite;
+    public Image Image => _image;
+    public void SetSprite(Sprite sprite)
+    {
+       _image.sprite = sprite;
+    }
     private void Start()
     {
-        unit = GameDataRepository.Instance.GetFriendlyUnit(_unitType);
-        if (unit == null)
-        {
-            Debug.LogError($"[UnitDeployButton] No UnitData found for type {_unitType}. Cannot assign sprite.");
-            return;
-        }
-
-        Sprite finalSprite = UpgradeStateManager.Instance.GetUnitSprite(_unitType) ?? unit._spriteForUi;
-        GetComponent<Image>().sprite = finalSprite;
+        GetData();
     }
+    private void GetData()
+    {
+        _unit = GameStateManager.Instance.GetFriendlyUnit(_unitType);
+        _sprite = GameStateManager.Instance.GetUnitSprite(_unitType);
+        _image = GetComponent<Image>();
+        _image.sprite = _sprite;
+    }
+
+
+
     public void DeployUnit()
     {
-        if (PlayerCurrency.Instance.HasEnoughMoney(unit._cost))
+        if (PlayerCurrency.Instance.HasEnoughMoney(_unit.Cost))
         {
-            PlayerCurrency.Instance.SubtractMoney(unit._cost);
+            PlayerCurrency.Instance.SubtractMoney(_unit.Cost);
 
             if (GameManager.Instance != null && DeployManager.Instance != null)
             {
-                DeployManager.Instance.AddUnitToDeploymentQueue(unit);
+                DeployManager.Instance.AddUnitToDeploymentQueue(_unit);
             }
             else
             {

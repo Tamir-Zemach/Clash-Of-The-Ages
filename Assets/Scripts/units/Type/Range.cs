@@ -6,10 +6,8 @@ public class Range : MonoBehaviour
     private UnitBaseBehaviour UnitBaseBehaviour;
     private UnitData unit;
     [SerializeField] private GameObject _bulletPrefab;
-    private GameObject _bulletInctance;
     [SerializeField] private Transform _bulletSpawnPoint;
 
-    RangeBullet bulletScript;
     private void Awake()
     {
         UnitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
@@ -33,7 +31,7 @@ public class Range : MonoBehaviour
 
         if (bulletScript != null)
         {
-            bulletScript.Initialize(target.transform, unit._strength);
+            bulletScript.Initialize(target.transform, unit.Strength);
         }
 
         target = null; // clear after shot
@@ -46,7 +44,7 @@ public class Range : MonoBehaviour
 
         if (bulletScript != null)
         {
-            bulletScript.Initialize(target.transform, unit._strength);
+            bulletScript.Initialize(target.transform, unit.Strength);
         }
     }
 

@@ -1,20 +1,20 @@
-﻿using Assets.Scripts.Data;
+﻿using Assets.Scripts.Backend.Data;
+using Assets.Scripts.BackEnd.Utilities;
+using Assets.Scripts.Data;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
 using Assets.Scripts.turrets;
 using Assets.Scripts.Ui.TurretButton;
 using Assets.Scripts.units;
-using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+
 
 /// <summary>
 /// Manages the age-based progression system for both player and enemy factions,
 /// applying unit stat upgrades, prefab changes, and UI visual updates.
 /// </summary>
-public class AgeUpgrade : SceneAwareMonoBehaviour<AgeUpgrade>
+public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
 {
     #region Fields & Properties
 
@@ -23,17 +23,12 @@ public class AgeUpgrade : SceneAwareMonoBehaviour<AgeUpgrade>
 
 
     private UnitDeployButton[] _unitDeployButtons;
+    private UnitUpgradeButton[] _unitUpgradeButtons;
     private SpecialAttackButton _specialAttackButton;
-    private TurretButton _turretButton;
+    private TurretButton[] _turretButtons;
 
 
     #endregion
-
-    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
-    {
-        _specialAttackButton = UIObjectFinder.GetSpecialAttackButton();
-    }
-
 
     #region Core Upgrade Logic
 
@@ -47,7 +42,7 @@ public class AgeUpgrade : SceneAwareMonoBehaviour<AgeUpgrade>
     /// </summary>
     public void ApplyUpgradesToUnits(List<UnitData> unitDataList, List<UnitLevelUpData> unitLevelUpDataList, int currentAge, bool isFriendly)
     {
-        if (NullChecks.DataListNullCheck(unitDataList, unitLevelUpDataList)) return;
+        if (NullChecks.DataListsNullCheck(unitDataList, unitLevelUpDataList)) return;
 
         for (int i = 0; i < unitDataList.Count; i++)
         {
@@ -59,24 +54,46 @@ public class AgeUpgrade : SceneAwareMonoBehaviour<AgeUpgrade>
                     isFriendly))
                 {
                     UpgradeCoreStats(unitDataList[i], levelUpData);
-
+                    UpdateDataType<UnitData, UnitLevelUpData, UnitType>(unitDataList[i], levelUpData);
                     UpdateDataPrefab<UnitData, UnitLevelUpData, UnitType>(unitDataList[i], levelUpData);
 
-                    if (isFriendly)
-                    {
-                        UpdateUnitUISprite(unitDataList[i], levelUpData);
-                    }
-                    else
+                    if (!isFriendly)
                     {
                         UpdateUnitReward(unitDataList[i], levelUpData);
                     }
 
-                    UpgradeStateManager.Instance.SetUnitPrefab(unitDataList[i].Type, levelUpData.Prefab);
+                    GameStateManager.Instance.SetUnitPrefab(unitDataList[i].Type, unitDataList[i].Prefab);
                     break;
                 }
             }
         }
     }
+    public void ApplyUpgradeToTurrets(List<TurretData> turretDataList,
+                  List<TurretLevelUpData> turretLevelUpData,
+                  int currentAge,
+                  bool isFriendly)
+    {
+        if (NullChecks.DualDataNullCheck(turretDataList, turretLevelUpData)) return;
+
+        for (int i = 0; i < turretDataList.Count; i++)
+        {
+            foreach (TurretLevelUpData levelUpData in turretLevelUpData)
+            {
+
+                if (IsUpgradeRelevant<TurretData, TurretLevelUpData, TurretType>(turretDataList[i], levelUpData, currentAge, isFriendly))
+                {
+                    UpdateDataType<TurretData, TurretLevelUpData, TurretType>(turretDataList[i], levelUpData);
+                    UpdateDataPrefab<TurretData, TurretLevelUpData, TurretType>(turretDataList[i], levelUpData);
+                    UpgradeTurretCoreStats(turretDataList[i], levelUpData);
+
+                    GameStateManager.Instance.SetTurretPrefab(turretDataList[i].Type, turretDataList[i].Prefab);
+
+                }
+            }
+        }
+
+    }
+
 
 
     /// <summary>
@@ -88,41 +105,17 @@ public class AgeUpgrade : SceneAwareMonoBehaviour<AgeUpgrade>
                       int currentAge,
                       bool isFriendly)
     {
-        if (NullChecks.DataNullCheck(specialAttackData, specialAttackLevelUpData)) return;
+        if (NullChecks.DualDataNullCheck(specialAttackData, specialAttackLevelUpData)) return;
 
-
-        if (IsUpgradeRelevant<SpecialAttackData, SpecialAttackLevelUpData, SpecialAttackType>(specialAttackData, specialAttackLevelUpData, currentAge, isFriendly))
+        UpdateDataType<SpecialAttackData, SpecialAttackLevelUpData, AgeStageType>(specialAttackData, specialAttackLevelUpData);
+        if (IsUpgradeRelevant<SpecialAttackData, SpecialAttackLevelUpData, AgeStageType>(specialAttackData, specialAttackLevelUpData, currentAge, isFriendly))
         {
-            UpdateDataPrefab<SpecialAttackData, SpecialAttackLevelUpData, SpecialAttackType>(specialAttackData, specialAttackLevelUpData);
-
-            if (isFriendly)
-            {
-                UpdateSpecialAttackSprite(specialAttackData, specialAttackLevelUpData);
-            }
-            UpgradeStateManager.Instance.SetSpecialAttackPrefab(specialAttackData.Type, specialAttackLevelUpData.Prefab);
+            UpdateDataPrefab<SpecialAttackData, SpecialAttackLevelUpData, AgeStageType>(specialAttackData, specialAttackLevelUpData);
+            GameStateManager.Instance.SetSpecialAttackPrefab(specialAttackData.Type, specialAttackData.Prefab);
         }
     }
 
-    public void ApplyTurretUpgrade(TurretData turretData,
-                      TurretLevelUpData turretLevelUpData,
-                      int currentAge,
-                      bool isFriendly)
-    {
-        if (NullChecks.DataNullCheck(turretData, turretLevelUpData)) return;
 
-        if (IsUpgradeRelevant<TurretData, TurretLevelUpData, TurretType>(turretData, turretLevelUpData, currentAge, isFriendly))
-        {
-            UpdateDataPrefab<TurretData, TurretLevelUpData, TurretType>(turretData, turretLevelUpData);
-
-            if (isFriendly)
-            {
-                //TODO: implement the sprite update logic 
-
-            }
-            UpgradeStateManager.Instance.SetTurretPrefab(turretData.Type, turretLevelUpData.Prefab);
-
-        }
-    }
 
 
 
@@ -132,20 +125,20 @@ public class AgeUpgrade : SceneAwareMonoBehaviour<AgeUpgrade>
     /// based on matching type, faction alignment, and age stage requirements.
     /// </summary>
     /// <typeparam name="TData">The current data class (e.g. UnitData, SpecialAttackData) implementing IUpgradable&lt;TType&gt;.</typeparam>
-    /// <typeparam name="TlevelUpData">The upgrade data class (e.g. UnitLevelUpData, SpecialAttackLevelUpData) implementing ILevelUpData&lt;TType&gt;.</typeparam>
+    /// <typeparam name="TLevelUpData">The upgrade data class (e.g. UnitLevelUpData, SpecialAttackLevelUpData) implementing ILevelUpData&lt;TType&gt;.</typeparam>
     /// <typeparam name="TType">The shared type used to identify the object (e.g. UnitType, SpecialAttackType).</typeparam>
     /// <param name="data">The current data instance that may receive an upgrade.</param>
     /// <param name="levelUpData">The level-up data containing upgrade values and criteria.</param>
     /// <param name="currentAge">The age level currently reached in the game, used to determine if the upgrade is unlocked.</param>
     /// <param name="isFriendly">Indicates whether the upgrade applies to the friendly side or enemy side.</param>
     /// <returns>True if the upgrade matches the object's type, side (friendly/enemy), and current age stage; otherwise, false.</returns>
-    private bool IsUpgradeRelevant<TData, TlevelUpData, TType>(
+    private bool IsUpgradeRelevant<TData, TLevelUpData, TType>(
         TData data,
-        TlevelUpData levelUpData,
+        TLevelUpData levelUpData,
         int currentAge,
         bool isFriendly)
         where TData : IUpgradable<TType>
-        where TlevelUpData : IUpgradable<TType>
+        where TLevelUpData : IUpgradable<TType>
     {
         return data.Type.Equals(levelUpData.Type) &&
                data.IsFriendly == isFriendly &&
@@ -153,27 +146,45 @@ public class AgeUpgrade : SceneAwareMonoBehaviour<AgeUpgrade>
                levelUpData.AgeStage == currentAge;
     }
 
-    public void UpdateDataPrefab<TData, TlevelUpData, TType>(
-    TData data,
-    TlevelUpData levelUpData)
-    where TData : IUpgradable<TType>
-    where TlevelUpData : IUpgradable<TType>
+    public void UpdateDataPrefab<TData, TLevelUpData, TType>(
+                TData data,
+                TLevelUpData levelUpData)
+                where TData : IUpgradable<TType>
+                where TLevelUpData : IUpgradable<TType>
     {
         data.SetPrefab(levelUpData.Prefab);
+    }
+    public void UpdateDataType<TData, TLevelUpData, TType>(
+                TData data,
+                TLevelUpData levelUpData)
+                where TData : IUpgradable<TType>
+                where TLevelUpData : IUpgradable<TType>
+    {
+        data.SetType(levelUpData.Type);
     }
 
 
     public void UpgradeCoreStats(UnitData unit, UnitLevelUpData levelUpData)
     {
-        unit._range += levelUpData._range;
-        unit._speed += levelUpData._speed;
-        unit._health += levelUpData._health;
-        unit._strength += levelUpData._strength;
-        unit._initialAttackDelay = Mathf.Max(0.1f, unit._initialAttackDelay - levelUpData._initialAttackDelay);
+        unit.Range += levelUpData._range;
+        unit.Speed += levelUpData._speed;
+        unit.Health += levelUpData._health;
+        unit.Strength += levelUpData._strength;
 
+        // Use percent-based reduction for attack delay
+        unit.InitialAttackDelay *= 1f - (levelUpData.AttackDelayReductionPercent / 100f);
+        unit.InitialAttackDelay = Mathf.Max(0.1f, unit.InitialAttackDelay);
     }
+    public void UpgradeTurretCoreStats(TurretData turretData, TurretLevelUpData levelUpData)
+    {
+        turretData.Range += levelUpData.Range;
+        turretData.BulletSpeed += levelUpData.BulletSpeed;
+        turretData.BulletStrength += levelUpData.BulletStrength;
 
-    
+        // Use percent-based reduction for attack delay
+        turretData.InitialAttackDelay *= 1f - (levelUpData.AttackDelayReductionPercent / 100f);
+        Mathf.Max(0.1f, turretData.InitialAttackDelay);
+    }
 
 
     public void UpdateUnitReward(UnitData unit, UnitLevelUpData levelUpData)
@@ -194,66 +205,67 @@ public class AgeUpgrade : SceneAwareMonoBehaviour<AgeUpgrade>
 
     #region UI Handling
 
-    private void UpdateUnitUISprite(UnitData unitData, UnitLevelUpData levelUpData)
+    public void ApplyAllSpriteChanges(SpritesLevelUpData levelUpSprites, int currentAge)
     {
-        _unitDeployButtons = UIObjectFinder.GetAllUnitDeployButtons();
-        foreach (var button in _unitDeployButtons)
+        if (NullChecks.DataNullCheck(levelUpSprites)) return;
+        if ((int)levelUpSprites.AgeStage != currentAge) return;
+
+        _unitDeployButtons = UIObjectFinder.GetButtons<UnitDeployButton, UnitType>();
+        _unitUpgradeButtons = UIObjectFinder.GetButtons<UnitUpgradeButton, UnitType>();
+        _specialAttackButton = UIObjectFinder.GetButton<SpecialAttackButton, AgeStageType>();
+        _turretButtons = UIObjectFinder.GetButtons<TurretButton, TurretType>();
+
+        foreach (var turretButton in _turretButtons)
         {
-            if (button.UnitType == unitData.Type)
+            var key = (turretButton.Type, turretButton.ButtonType);
+            var upgradedTurretSprite = levelUpSprites.GetSpriteFromList<(TurretType, TurretButtonType), SpriteEntries.TurretSpriteEntry>(
+                key, levelUpSprites.turretSpriteMap);
+            if (upgradedTurretSprite != null)
             {
-                var image = button.GetComponent<Image>();
-                if (image != null)
-                    image.sprite = levelUpData._unitSprite;
+                turretButton.SetSprite(upgradedTurretSprite);
+                GameStateManager.Instance.SetTurretSprite(key, upgradedTurretSprite);
+            }
+        }
 
-                UpgradeStateManager.Instance.SetUnitSprite(unitData.Type, image.sprite);
 
-                break;
+        foreach (var upgradeButton in _unitUpgradeButtons)
+        {
+            var key = (upgradeButton.Type, upgradeButton.StatType);
+            var upgradedUpgradeSprite = levelUpSprites.GetSpriteFromList<(UnitType, StatType), SpriteEntries.UpgradeButtonSpriteEntry>(
+                key, levelUpSprites.unitUpgradeButtonSpriteMap);
+            if (upgradedUpgradeSprite != null)
+            {
+                upgradeButton.SetSprite(upgradedUpgradeSprite);
+                GameStateManager.Instance.SetUnitUpgradeButtonSprite(key, upgradedUpgradeSprite);
+            }
+        }
+
+
+        if (_specialAttackButton != null)
+        {
+            var specialAttackType = GameStateManager.Instance.GetFriendlySpecialAttackData().Type;
+            var upgradedSpecialAttackSprite = levelUpSprites.GetSpriteFromList<AgeStageType, SpriteEntries.SpecialAttackSpriteEntry>(
+                specialAttackType, levelUpSprites.specialAttackSpriteMap);
+            _specialAttackButton.SetSprite(upgradedSpecialAttackSprite);
+            GameStateManager.Instance.SetSpecialAttackSprite(specialAttackType, upgradedSpecialAttackSprite);
+        }
+
+
+
+        foreach (var deployButton in _unitDeployButtons)
+        {
+            var upgradedDeploySprite = levelUpSprites.GetSpriteFromList<UnitType, SpriteEntries.UnitSpriteEntry>(
+                deployButton.Type, levelUpSprites.unitSpriteMap);
+            if (upgradedDeploySprite != null)
+            {
+                deployButton.SetSprite(upgradedDeploySprite);
+                GameStateManager.Instance.SetUnitSprite(deployButton.Type, upgradedDeploySprite);
             }
         }
     }
 
-    //TODO: make the UpdateSprite generic 
-    private void UpdateSpecialAttackSprite(SpecialAttackData specialAttackData, SpecialAttackLevelUpData levelUpData)
-    {
-        _specialAttackButton = UIObjectFinder.GetSpecialAttackButton();
-
-        if (_specialAttackButton.Type == specialAttackData.Type)
-        {
-            var image = _specialAttackButton.GetComponent<Image>();
-            if (image != null)
-                image.sprite = levelUpData.SpecialAttackSprite;
-
-            UpgradeStateManager.Instance.SetSpecialAttackSprite(specialAttackData.Type, image.sprite);
-        }
-
-    }
-
-
-    //TODO: connect the correct enum to the turret button 
-
-
-
-    //private void UpdateTurretSprite(TurretData turretData, TurretLevelUpData levelUpData)
-    //{
-    //    _turretButton = UIObjectFinder.GetTurretButton();
-
-    //    if (_turretButton.Type == turretData.Type)
-    //    {
-    //        var image = _turretButton.GetComponent<Image>();
-    //        if (image != null)
-    //            image.sprite = levelUpData.TurretSprite;
-
-    //        UpgradeStateManager.Instance.SetSTurretSprite(turretData.Type, image.sprite);
-    //    }
-
-    //}
-
-
-
-
-
-    #endregion
-
-
 
 }
+
+#endregion
+

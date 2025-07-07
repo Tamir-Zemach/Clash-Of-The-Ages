@@ -1,12 +1,15 @@
 ﻿using Assets.Scripts;
+using Assets.Scripts.Backend.Data;
 using Assets.Scripts.Data;
+using Assets.Scripts.Enems;
 using Assets.Scripts.Managers;
 using Assets.Scripts.turrets;
 using Assets.Scripts.units;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : PersistentMonoBehaviour<GameManager>
+public class GameManager : SceneAwareMonoBehaviour<GameManager>
 {
     [Header("Player Starting Stats")]
     [Tooltip("Amount of money the player starts with at the beginning of the game.")]
@@ -31,21 +34,33 @@ public class GameManager : PersistentMonoBehaviour<GameManager>
     [Min(1)]
     [SerializeField] private int _level3EnemyHealth;
 
-    // Internal data used for unit upgrades per age
     private List<UnitData> _friendlyUnitData;
     private List<UnitLevelUpData> _unitLevelUpData;
 
     private SpecialAttackData _specialAttackData;
     private SpecialAttackLevelUpData _specialAttackLevelUpData;
 
-    private TurretData _turretData;
-    private TurretLevelUpData _turretLevelUpData;
+    private List<TurretData> _friendlyTurretsData;
+    private List<TurretData> _enemyTurretsData;
+
+    private List<TurretLevelUpData> _turretLevelUpData;
+
+    private SpritesLevelUpData _spriteLevelUpData;
 
     protected override void Awake()
     {
         base.Awake();
         EnemyHealth.Instance.OnEnemyDied += NextLevel;
+        GetData();
         StartGame();
+    }
+    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        if (AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
+        {
+            UpgradePlayerAge();    
+        }
+        
     }
 
     private void Update()
@@ -55,7 +70,20 @@ public class GameManager : PersistentMonoBehaviour<GameManager>
             GameOver();
         }
     }
+    private void GetData()
+    {
+        // Instantiated data
+        _friendlyUnitData = GameStateManager.Instance.GetAllFriendlyUnits();
+        _friendlyTurretsData = GameStateManager.Instance.GetAllFriendlyTurrets();
+        _specialAttackData = GameStateManager.Instance.GetFriendlySpecialAttackData();
 
+
+        //Template for LevelUpData
+        _unitLevelUpData = InitialDataLoader.Instance.GetUnitLevelUpData();
+        _specialAttackLevelUpData = InitialDataLoader.Instance.GetSpecialAttackLevelUpData();
+        _turretLevelUpData = InitialDataLoader.Instance.GetTurretLevelUpData();
+        _spriteLevelUpData = InitialDataLoader.Instance.GetSpritesLevelUpData();
+    }
     private void StartGame()
     {
         PlayerCurrency.Instance.AddMoney(_startingMoney);
@@ -94,14 +122,6 @@ public class GameManager : PersistentMonoBehaviour<GameManager>
 
     public void UpgradePlayerAge()
     {
-        _friendlyUnitData = GameDataRepository.Instance.GetAllFriendlyUnits();
-        _unitLevelUpData = GameDataRepository.Instance.GetUnitLevelUpData();
-        _specialAttackData = GameDataRepository.Instance.GetSpecialAttack();
-        _specialAttackLevelUpData = GameDataRepository.Instance.GetSpecialAttackLevelUpData();
-
-        _turretData = GameDataRepository.Instance.GetFriendlyTurret();
-        _turretLevelUpData = GameDataRepository.Instance.GetTurretLevelUpData();
-
         AgeUpgrade.Instance.AdvanceAge(isFriendly: true);
         AgeUpgrade.Instance.ApplyUpgradesToUnits(
             _friendlyUnitData,
@@ -109,8 +129,10 @@ public class GameManager : PersistentMonoBehaviour<GameManager>
             AgeUpgrade.Instance.CurrentPlayerAge,
             isFriendly: true
         );
+        
         AgeUpgrade.Instance.ApplySpecialAttackUpgrade(_specialAttackData, _specialAttackLevelUpData, AgeUpgrade.Instance.CurrentPlayerAge, isFriendly: true);
-        AgeUpgrade.Instance.ApplyTurretUpgrade(_turretData, _turretLevelUpData, AgeUpgrade.Instance.CurrentPlayerAge, isFriendly: true);
+        AgeUpgrade.Instance.ApplyUpgradeToTurrets(_friendlyTurretsData, _turretLevelUpData, AgeUpgrade.Instance.CurrentPlayerAge, isFriendly: true);
+        AgeUpgrade.Instance.ApplyAllSpriteChanges(_spriteLevelUpData, AgeUpgrade.Instance.CurrentPlayerAge);
     }
 
     private void GameOver()
@@ -118,4 +140,6 @@ public class GameManager : PersistentMonoBehaviour<GameManager>
         Debug.Log("Game Over");
         Time.timeScale = 0;
     }
+
+ 
 }

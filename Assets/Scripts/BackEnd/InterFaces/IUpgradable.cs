@@ -12,6 +12,7 @@ namespace Assets.Scripts.InterFaces
         GameObject Prefab { get; }
 
         public void SetPrefab(GameObject prefab);
+        public void SetType(TType type);
 
     }
 }

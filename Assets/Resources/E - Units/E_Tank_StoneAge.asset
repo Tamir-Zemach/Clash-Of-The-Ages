@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec32066ff55a8e84a8f8b11ff40d3feb, type: 3}
+  m_Name: E_Tank_StoneAge
+  m_EditorClassIdentifier: 
+  _unitType: 2
+  _isFriendly: 0
+  _stageType: 1
+  _unitPrefab: {fileID: 7476198131129608348, guid: 401aa4e1fa2368146b7f64d28bc29846, type: 3}
+  Cost: 0
+  DeployDelayTime: 0
+  _moneyWhenKilled: 30
+  OppositeBaseTag: Player Base
+  OppositeUnitTag: Friendly Character
+  OppositeUnitMask:
+    serializedVersion: 2
+    m_Bits: 264
+  FriendlyUnitTag: Enemy Character
+  Speed: 2
+  Health: 150
+  Strength: 8
+  InitialAttackDelay: 1.2
+  RayLengthForFriendlyUnit: 2
+  Range: 2
+  boxSize: {x: 0.5, y: 0.5, z: 0.5}
+  boxColor: {r: 0.61314964, g: 0, b: 1, a: 1}

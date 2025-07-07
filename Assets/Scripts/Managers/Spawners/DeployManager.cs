@@ -126,7 +126,7 @@ public class DeployManager : SceneAwareMonoBehaviour<DeployManager>
     private void HandleDelayedDeployment()
     {
         timer += Time.deltaTime;
-        if (timer >= nextCharacter._deployDelayTime && !SpawnArea._hasUnitInside)
+        if (timer >= nextCharacter.DeployDelayTime && !SpawnArea._hasUnitInside)
         {
             unitReference = Instantiate(nextCharacter.Prefab, _unitSpawnPoint.position, _unitSpawnPoint.rotation);
 

@@ -2,8 +2,9 @@
 {
     public enum TurretType
     {
-        StoneAgeTurret,
-        MiliteryTurret,
-        FutureTurret
+        None = 0,
+        FastTurret,
+        StrongTurret,
+        BestTurret
     }
 }

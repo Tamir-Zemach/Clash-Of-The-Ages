@@ -28,7 +28,7 @@ public class UnitQueueUiHandler : MonoBehaviour
     }
     private void Start()
     {
-        SetAssignedUnit(GameDataRepository.Instance.GetFriendlyUnit(_unitType));
+        SetAssignedUnit(GameStateManager.Instance.GetFriendlyUnit(_unitType));
     }
     private void OnDestroy()
     {

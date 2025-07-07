@@ -73,34 +73,42 @@ public class Admin : PersistentMonoBehaviour<Admin>
 
     public void DisplayFriendlyUnitParameters()
     {
-        foreach (var unit in GameDataRepository.Instance.GetAllFriendlyUnits())
+        foreach (var unit in GameStateManager.Instance.GetAllFriendlyUnits())
         {
             Debug.Log($"{unit.name} " +
-                      $"Unit Cost: {unit._cost}, " +
-                      $"Health: {unit._health}, " +
-                      $"Speed: {unit._speed}, " +
-                      $"Strength: {unit._strength}, " +
-                      $"Attack Speed (Initial Attack Delay): {unit._initialAttackDelay}, " +
-                      $"Range: {unit._range}");
+                      $"Unit Cost: {unit.Cost}, " +
+                      $"Health: {unit.Health}, " +
+                      $"Speed: {unit.Speed}, " +
+                      $"Strength: {unit.Strength}, " +
+                      $"Attack Speed (Initial Attack Delay): {unit.InitialAttackDelay}, " +
+                      $"Range: {unit.Range}");
         }
     }
     public void DisplayEnemyUnitParameters()
     {
-        foreach (var unit in GameDataRepository.Instance.GetAllEnemyUnits())
+        foreach (var unit in GameStateManager.Instance.GetAllEnemyUnits())
         {
             Debug.Log($"{unit.name} " +
                       $"Reward: {unit._moneyWhenKilled}, " +
-                      $"Health: {unit._health}, " +
-                      $"Speed: {unit._speed}, " +
-                      $"Strength: {unit._strength}, " +
-                      $"Attack Speed (Initial Attack Delay): {unit._initialAttackDelay}, " +
-                      $"Range: {unit._range}");
+                      $"Health: {unit.Health}, " +
+                      $"Speed: {unit.Speed}, " +
+                      $"Strength: {unit.Strength}, " +
+                      $"Attack Speed (Initial Attack Delay): {unit.InitialAttackDelay}, " +
+                      $"Range: {unit.Range}");
         }
     }
 
     private void Update()
     {
         AdminFunctions();
+    }
+
+    public void UpgradeAgeToLevel()
+    {
+        if (AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
+        {
+            GameManager.Instance.UpgradePlayerAge();
+        }
     }
 
 }

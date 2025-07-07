@@ -2,82 +2,99 @@ using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Unit", order = 1)]
+[CreateAssetMenu(fileName = "UnitData", menuName = "Unit", order = 1)]
 public class UnitData : ScriptableObject, IUpgradable<UnitType>
 {
-    [Tooltip("The Unit Type:")]
+    [Header("Unit Identity")]
+    [Tooltip("Specifies the type of unit.")]
     [SerializeField] private UnitType _unitType;
 
-    [Tooltip("Is The Unit Friendly or an Enemy")]
+    [Tooltip("Indicates whether this unit belongs to the friendly faction.")]
     [SerializeField] private bool _isFriendly;
 
+    [Tooltip("The age stage during which this unit becomes available.")]
+    [SerializeField] private AgeStageType _stageType;
+
+    [Header("Deployment Settings")]
+    [Tooltip("Prefab to instantiate when deploying this unit.")]
+    [SerializeField] private GameObject _unitPrefab;
+
+    [Tooltip("Cost required to deploy this unit.")]
+    [Min(0)]
+    public int Cost;
+
+    [Tooltip("Delay in seconds between button press and unit deployment.")]
+    [Min(0f)]
+    public float DeployDelayTime;
+
+    [Header("Enemy Unit Reward")]
+    [Tooltip("Amount of money rewarded when this enemy unit is destroyed.")]
+    [Min(0)]
+    public int _moneyWhenKilled;
+
+    [Header("Tag & Layer Configuration")]
+    [Tooltip("Tag of the opposing base the unit will move toward.")]
+    [SerializeField, TagSelector] public string OppositeBaseTag;
+
+    [Tooltip("Tag used to identify enemy units this unit will attack.")]
+    [SerializeField, TagSelector] public string OppositeUnitTag;
+
+    [Tooltip("Layer used to detect enemy Units & Bases during targeting.")]
+    [SerializeField] public LayerMask OppositeUnitMask;
+
+    [Tooltip("Tag used to identify friendly units (used to avoid collision or combat).")]
+    [SerializeField, TagSelector] public string FriendlyUnitTag;
 
 
-    private AgeStageType _stageType;
-    public int AgeStage => (int)_stageType;
+
+    [Header("Combat & Behavior Parameters")]
+
+    [Tooltip("Movement speed of the unit.")]
+    [Min(0f)]
+    public float Speed = 1;
+
+    [Tooltip("Maximum health of the unit.")]
+    [Min(1)]
+    public int Health = 1;
+
+    [Tooltip("Damage dealt with each attack.")]
+    [Min(0)]
+    public int Strength = 1;
+
+    [Tooltip("Time delay before the unit performs its first attack (lower is faster).")]
+    [Min(0f)]
+    public float InitialAttackDelay = 1;
+
+    [Header("Detetaction Parameters")]
+    [Tooltip("Raycast distance used to detect nearby friendly units.")]
+    [Min(0f)]
+    public float RayLengthForFriendlyUnit = 2;
+
+    [Tooltip("How far the unit can detect enemy targets.")]
+    [Min(0)]
+    public int Range;
+
+    [Header("Debug Visualization")]
+    [Tooltip("Size of the gizmo box used to visualize detection range.")]
+    public Vector3 boxSize = new Vector3(0.5f, 0.5f, 0.5f);
+
+    [Tooltip("Color of the gizmo box drawn for debugging purposes.")]
+    public Color boxColor = Color.red;
+
+
+
+    // Public properties
     public UnitType Type => _unitType;
     public bool IsFriendly => _isFriendly;
-
-    [Tooltip("The prefab to instansiate when deplyed")]
-    [SerializeField] private GameObject _unitPrefab;
+    public int AgeStage => (int)_stageType;
     public GameObject Prefab => _unitPrefab;
 
     public void SetPrefab(GameObject prefab)
     {
         _unitPrefab = prefab;
     }
-
-
-    public Sprite _spriteForUi;
-
-    [Tooltip("How much money needed to deploy the Unit")]
-    public int _cost;
-    [Tooltip("How much time passed between the moment the button is pressed and the character is deployed")]
-    public float _deployDelayTime;
-
-    [Header("Enemy Unit Properties")]
-    [Tooltip("How much money the player gains when this Unit is Destroyed")]
-    public int _moneyWhenKilled;
-
-
-    [Header("Tags")]
-    [Tooltip("The unit will walk toward the GameObject with this tag:")]
-    [SerializeField, TagSelector] public string _oppositeBaseTag;
-
-    [Tooltip("The Unit will stop  when it sees the GameObject with this tag: ")]
-    [SerializeField, TagSelector] public string _friendlyUnitTag;
-
-    [Tooltip("The Unit will stop and attack when it encounters the GameObject with this tag:")]
-    [SerializeField, TagSelector] public string _oppositeUnitTag;
-
-    [Tooltip("The Unit will stop and attack when it encounters the GameObject with this Layer:")]
-    [SerializeField, TagSelector] public LayerMask _enemyCharacterMask;
-
-
-
-    [Header("Unit Parameters")]
-    [Tooltip("How far the unit detects opposite unit")]
-    public int _range;
-    [Tooltip("The speed Of the Unit")]
-    public float _speed = 1;
-    [Tooltip("The Health Of the Unit")]
-    public int _health = 1;
-    [Tooltip("How much every Hit will give damage")]
-    public int _strength = 1;
-    [Tooltip("The amount of time before a Unit Attacks (when lower its faster)")]
-    public float _initialAttackDelay = 1;
-
-
-
-
-    [Header("Debug Properties")]
-    [Tooltip("The size of the box the Unit casts")]
-    public Vector3 boxSize = new Vector3(0.5f, 0.5f, 0.5f);
-
-    [Tooltip("The color of the box the Unit casts")]
-    public Color boxColor = Color.red;
-
-    [Tooltip("How far the Unit detects other Friendly Units")]
-    public float _rayLengthForFriendlyUnit = 2;
-
+    public void SetType(UnitType unitType)
+    {
+        _unitType = unitType;
+    }
 }

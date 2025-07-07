@@ -73,7 +73,7 @@ public class UnitAnimationController : MonoBehaviour
 
         // Use the custom attack clip length to calculate animation speed
         float attackDuration = customAttackClip.length;
-        float desiredDuration = UnitBaseBehaviour.Unit._initialAttackDelay;
+        float desiredDuration = UnitBaseBehaviour.Unit.InitialAttackDelay;
 
         // Speed = how many times the animation needs to play per second to match desired timing
         float speedMultiplier = attackDuration > 0 ? attackDuration / desiredDuration : 1f;

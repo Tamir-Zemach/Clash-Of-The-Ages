@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: unitType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3884640521835901371, guid: daf92b608b2819b4f8ba352cde2926de, type: 3}
+      propertyPath: _unitType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4047701483313763825, guid: daf92b608b2819b4f8ba352cde2926de, type: 3}
       propertyPath: unitType
       value: 2

@@ -31,8 +31,10 @@ namespace Assets.Scripts.units
         {
             _unitPrefab = prefab;
         }
-
-        public Sprite _unitSprite;
+        public void SetType(UnitType unitType)
+        {
+            _unitType = unitType;
+        }
 
 
         [Header("Enemy Unit Properties")]
@@ -48,8 +50,9 @@ namespace Assets.Scripts.units
         public int _health = 1;
         [Tooltip("How much every Hit will give damage")]
         public int _strength = 1;
-        [Tooltip("The amount of time before a Unit Attacks (when lower its faster)")]
-        public float _initialAttackDelay = 1;
+        [Tooltip("Percentage reduction applied to initial attack delay after upgrade.\n" +
+                 "For example, a value of 20 reduces the delay by 20%.")]
+        public float AttackDelayReductionPercent = 1;
 
     }
 }

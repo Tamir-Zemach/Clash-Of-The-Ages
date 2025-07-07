@@ -1,14 +1,17 @@
-using Assets.Scripts.Enems;
 using Assets.Scripts;
+using Assets.Scripts.Enems;
+using Assets.Scripts.InterFaces;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UnitUpgradeButton : MonoBehaviour
+
+public class UnitUpgradeButton : MonoBehaviour, IImgeSwichable<UnitType>
 {
     [Tooltip("Which unit should be upgraded")]
-    [SerializeField] private UnitType unitType;
+    [SerializeField] private UnitType _unitType;
 
     [Tooltip("What Stat to Upgrade")]
-    [SerializeField] private StatType statType;
+    [SerializeField] private StatType _statType;
 
     [Header("Upgrade stats Settings")]
     [Tooltip("stat bonus added per upgrade")]
@@ -26,47 +29,79 @@ public class UnitUpgradeButton : MonoBehaviour
     [Tooltip("Incremental increase in stat upgrade cost after each upgrade")]
     [SerializeField] private int _statCostInc;
 
+    private Sprite _sprite;
+    private Image _image;
+   
 
+    public UnitType Type => _unitType;
+    public StatType StatType => _statType;
+    public Sprite Sprite => _sprite;
+    public Image Image => _image;
+    public int Cost => _statCost;
+
+    public void SetSprite(Sprite sprite)
+    {
+        _image.sprite = sprite;
+    }
     private void Start()
     {
-        _statCost = UpgradeStateManager.Instance.GetStatUpgradeCost(unitType, statType, _statCost);
+        GetData();
+    }
+
+    private void GetData()
+    {
+        _sprite = GameStateManager.Instance.GetUnitUpgradebuttonSpritesSprite((_unitType, _statType));
+        _image = GetComponent<Image>();
+        _image.sprite = _sprite;
     }
 
     public void UpgradeStat()
     {
-        var unit = GameDataRepository.Instance.GetFriendlyUnit(unitType);
+        var unit = GameStateManager.Instance.GetFriendlyUnit(_unitType);
 
         if (PlayerCurrency.Instance.HasEnoughMoney(_statCost))
         {
             PlayerCurrency.Instance.SubtractMoney(_statCost);
             ApplyUpgrade(unit);
             _statCost += _statCostInc;
-            UpgradeStateManager.Instance.SetStatUpgradeCost(unitType, statType, _statCost);
+            GameStateManager.Instance.SetStatUpgradeCost(_unitType, _statType, _statCost);
         }
     }
 
     private void ApplyUpgrade(UnitData unit)
     {
-        switch (statType)
+        switch (_statType)
         {
             case StatType.Strength:
-                unit._strength += _statBonus;
+                unit.Strength += _statBonus;
                 break;
 
             case StatType.Health:
-                unit._health += _statBonus;
+                unit.Health += _statBonus;
                 break;
 
             case StatType.Range:
-                unit._range += _statBonus;
+                unit.Range += _statBonus;
                 break;
             case StatType.AttackSpeed:
-                unit._initialAttackDelay *= 1f - (_attackDelayReductionPercent / 100f);
+                unit.InitialAttackDelay *= 1f - (_attackDelayReductionPercent / 100f);
                 break;
             default:
-                Debug.LogWarning("Unknown stat type: " + statType);
+                Debug.LogWarning("Unknown stat type: " + _statType);
                 break;
         }
     }
 
+#if UNITY_EDITOR
+    public static class FieldNames
+    {
+        public const string UnitType = nameof(_unitType);
+        public const string StatType = nameof(_statType);
+        public const string StatBonus = nameof(_statBonus);
+        public const string AttackDelayReductionPercent = nameof(_attackDelayReductionPercent);
+        public const string StatCost = nameof(_statCost);
+        public const string StatCostInc = nameof(_statCostInc);
+    }
+#endif
 }
+

@@ -1,64 +1,71 @@
-﻿
-using Assets.Scripts.Enems;
+﻿using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
 using UnityEngine;
 
 namespace Assets.Scripts.turrets
 {
-    [CreateAssetMenu(fileName = "Data", menuName = "TurretData", order = 2)]
+    [CreateAssetMenu(fileName = "TurretData", menuName = "TurretData", order = 2)]
     public class TurretData : ScriptableObject, IUpgradable<TurretType>
     {
-        [Tooltip("The Turret Type:")]
+        [Header("Turret Identity")]
+        [Tooltip("Type of turret represented by this configuration.")]
         [SerializeField] private TurretType _turretType;
 
+        [Tooltip("Indicates whether this turret is controlled by the friendly faction.")]
         [SerializeField] private bool _isFriendly;
 
+        [Tooltip("The age stage during which this turret becomes available.")]
+        [SerializeField] private AgeStageType _stageType;
 
-        private AgeStageType _stageType;
-        public int AgeStage => (int)_stageType;
-
-        public TurretType Type => _turretType;
-
-        public bool IsFriendly => _isFriendly;
-
-        [Tooltip("Turret prefab")]
+        [Header("Prefab Settings")]
+        [Tooltip("Prefab to instantiate when this turret is deployed.")]
         [SerializeField] private GameObject _unitPrefab;
+
+        [Header("Detection Settings")]
+        [Tooltip("Layer that contains enemy units to detect.")]
+        public LayerMask OppositeUnitLayer;
+
+        [Tooltip("Tag assigned to enemy units.")]
+        [TagSelector] public string OppositeUnitTag;
+
+        [Tooltip("Tag assigned to the friendly base.")]
+        [TagSelector] public string FriendlyBase;
+
+        [Tooltip("Maximum detection range of the turret.")]
+        [Min(0f)]
+        public float Range;
+
+        [Tooltip("Size of the BoxCast used for target detection.")]
+        public Vector3 BoxSize = Vector3.one;
+
+        [Header("Attack Settings")]
+
+        [Min(0f)]
+        [Tooltip("The amount of time before a Unit Attacks (when lower its faster)")]
+        public float InitialAttackDelay;
+
+        [Tooltip("Base damage each bullet inflicts.")]
+        [Min(0)]
+        public int BulletStrength;
+
+        [Tooltip("Speed applied to bullets when fired.")]
+        [Min(0)]
+        public int BulletSpeed;
+
+        // Public properties
+        public TurretType Type => _turretType;
+        public bool IsFriendly => _isFriendly;
+        public int AgeStage => (int)_stageType;
         public GameObject Prefab => _unitPrefab;
 
+        // Setter to support upgrade replacement
         public void SetPrefab(GameObject prefab)
         {
             _unitPrefab = prefab;
         }
-
-
-        [Header("Detection Settings")]
-        [Tooltip("Layer that contains opposite units.")]
-        public LayerMask OppositeUnitLayer;
-
-        [Tooltip("Tag assigned to the opposite Unit")]
-        [TagSelector] public string OppositeUnitTag;
-
-        [Tooltip("Tag assigned to the friendly base GameObject.")]
-        [TagSelector] public string FriendlyBase;
-
-        [Tooltip("How far the turret detects opposite Unit")]
-        public float Range;
-
-        [Tooltip("Size of the BoxCast.")]
-        public Vector3 BoxSize = Vector3.one;
-
-        [Header("Attack Settings")]
-        [Tooltip("Projectile prefab to spawn when attacking.")]
-        public GameObject BulletPrefab;
-
-        [Tooltip("Delay before the turret fires its first shot after spotting an enemy.")]
-        public float InitialAttackDelay;
-
-        [Tooltip("How much damage each bullet inflicts.")]
-        public int BulletStrength;
-
-        [Tooltip("How much force will be added to the bullet at the start.")]
-        public int BulletSpeed;
-
+        public void SetType(TurretType turretType)
+        {
+            _turretType = turretType;
+        }
     }
 }

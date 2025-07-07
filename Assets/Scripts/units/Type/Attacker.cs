@@ -42,7 +42,7 @@ namespace Assets.Scripts
         {
             (target.GetComponent<UnitHealthManager>() as IDamageable
              ?? target.GetComponent<BaseHealth>() as IDamageable)
-            ?.GetHurt(unit._strength);
+            ?.GetHurt(unit.Strength);
         }
 
     }

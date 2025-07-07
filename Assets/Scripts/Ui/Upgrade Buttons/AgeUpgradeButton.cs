@@ -1,12 +1,5 @@
 ﻿using Assets.Scripts;
-using Assets.Scripts.Data;
-using Assets.Scripts.Enems;
-using Assets.Scripts.turrets;
-using Assets.Scripts.units;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AgeUpgradeButton : MonoBehaviour
 {
@@ -21,8 +14,5 @@ public class AgeUpgradeButton : MonoBehaviour
 
         }
     }
-
-
-
-
+    
 }

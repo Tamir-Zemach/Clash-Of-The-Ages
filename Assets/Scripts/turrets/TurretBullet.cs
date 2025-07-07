@@ -1,3 +1,4 @@
+using Assets.Scripts.Enems;
 using Assets.Scripts.turrets;
 using UnityEngine;
 
@@ -10,14 +11,14 @@ public class TurretBullet : MonoBehaviour
 
     [SerializeField, TagSelector] private string _groundTag;
     [SerializeField] private float _destroyTime;
+    [SerializeField] TurretType _turretType;
     private bool _hasHit;
     private float _timer;
     private TurretData _turretData;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _turretData = GameDataRepository.Instance.GetFriendlyTurret();
-
+        _turretData = GameStateManager.Instance.GetFriendlyTurret(_turretType);
     }
     private void Start()
     {
