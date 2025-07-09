@@ -65,6 +65,9 @@ crashlytics-build.properties
 UserSettings/Layouts/*.dwlt
 
 
-UserSettings/
 
+# GitHub Copilot instructions
+.github/copilot-instructions.md
+
+UserSettings/
 .github/
