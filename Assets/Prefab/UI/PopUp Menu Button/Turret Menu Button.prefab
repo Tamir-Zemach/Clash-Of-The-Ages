@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c4cb8c38d490894c8fa87c79f9134a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _turretButtonType: 0
+  _turretButtonType: 1
   _turretType: 0
   _cost: 100
   _moneyToGiveBack: 0
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c4cb8c38d490894c8fa87c79f9134a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _turretButtonType: 0
+  _turretButtonType: 2
   _turretType: 0
   _cost: 0
   _moneyToGiveBack: 80
@@ -660,7 +660,7 @@ GameObject:
   - component: {fileID: 2941204999821701146}
   - component: {fileID: 1859118529981374135}
   m_Layer: 5
-  m_Name: Upgrade Unit Menu
+  m_Name: Turret Buttons Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -695,7 +695,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7499574971441255459}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -945,7 +945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turretButtonType: 0
-  _turretType: 0
+  _turretType: 1
   _cost: 100
   _moneyToGiveBack: 0
   _turretSpawnPointsParent: {fileID: 0}

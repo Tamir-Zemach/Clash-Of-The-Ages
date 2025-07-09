@@ -15,7 +15,7 @@ MonoBehaviour:
   _unitType: 2
   _isFriendly: 0
   _stageType: 1
-  _unitPrefab: {fileID: 7476198131129608348, guid: 401aa4e1fa2368146b7f64d28bc29846, type: 3}
+  _unitPrefab: {fileID: 7476198131129608348, guid: 99516be2335f6b1478910acda10230c8, type: 3}
   Cost: 0
   DeployDelayTime: 0
   _moneyWhenKilled: 30

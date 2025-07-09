@@ -68,6 +68,8 @@ UserSettings/Layouts/*.dwlt
 
 # GitHub Copilot instructions
 .github/copilot-instructions.md
-
-UserSettings/
 .github/
+
+# Ignore Unity Editor personal settings
+UserSettings/
+

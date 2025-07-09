@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turretButtonType: 0
-  _turretType: 1
+  _turretType: 2
   _cost: 100
   _moneyToGiveBack: 0
   _turretSpawnPointsParent: {fileID: 0}
