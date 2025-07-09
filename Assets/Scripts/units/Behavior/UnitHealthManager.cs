@@ -13,6 +13,9 @@ public class UnitHealthManager : MonoBehaviour, IDamageable
     private int _currentHealth;
     private Animator _animator;
     private bool isDying;
+
+    public int currentHealth => _currentHealth;
+
     private void Start()
     {
         UnitBaseBehaviour = GetComponent<UnitBaseBehaviour>();

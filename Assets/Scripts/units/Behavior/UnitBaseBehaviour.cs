@@ -74,7 +74,7 @@ public class UnitBaseBehaviour : MonoBehaviour
             }
         }
 
-        ResetAttackStateIfNeeded();
+            ResetAttackStateIfNeeded();
     }
     private void HandleEnemyDetection(GameObject target)
     {

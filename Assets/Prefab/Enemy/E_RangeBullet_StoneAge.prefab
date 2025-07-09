@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3252812258085967106}
   - component: {fileID: 7239519685767849629}
   m_Layer: 7
-  m_Name: Enemy Range Bullet
+  m_Name: E_RangeBullet_StoneAge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
