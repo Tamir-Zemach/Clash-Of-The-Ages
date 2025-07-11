@@ -2,6 +2,7 @@
 
 using Assets.Scripts.Managers;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,10 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
 {
     [SerializeField]
     private List<SceneReference> scenes = new();
+
+    [SerializeField]
+    private SceneReference uiScene;
+    private bool isUILoaded = false;
 
     private int _currentLevelIndex = 0;
     public int LevelIndex => _currentLevelIndex;
@@ -24,15 +29,31 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
             return;
         }
 
-        int buildIndex = scenes[_currentLevelIndex].GetBuildIndex();
-
-        if (buildIndex < 0)
+        // Load UI scene if not already loaded
+        if (!isUILoaded)
         {
-            Debug.LogWarning("Scene not in Build Settings: " +
-                scenes[_currentLevelIndex].sceneAsset?.name);
-            return;
+            int uiBuildIndex = uiScene.GetBuildIndex();
+            if (uiBuildIndex >= 0)
+            {
+                SceneManager.LoadScene(uiBuildIndex, LoadSceneMode.Additive);
+                isUILoaded = true;
+            }
+            else
+            {
+                Debug.LogWarning("UI Scene not in Build Settings.");
+            }
         }
-        SceneManager.LoadScene(buildIndex);
+
+        // Load the gameplay level
+        int buildIndex = scenes[_currentLevelIndex].GetBuildIndex();
+        if (buildIndex >= 0)
+        {
+            SceneManager.LoadScene(buildIndex);
+        }
+        else
+        {
+            Debug.LogWarning("Gameplay scene not in Build Settings.");
+        }
     }
 
     public void ReloadCurrentLevel()
@@ -48,63 +69,6 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
 
 
 
-
-
-
-
-/*
-using Assets.Scripts.Enems;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
-{
-    private int _currentLevelIndex = 0;
-    public int LevelIndex => _currentLevelIndex;
-
-    [Tooltip("Scene build index must match this enum value. " +
-        "Ensure scenes are added to Build Settings.")]
-    [SerializeField] private LevelType[] _levels;
-
-    private Dictionary<LevelType, int> _levelSceneIndexMap = new Dictionary<LevelType, int>();
-
-    private void Start()
-    {
-        InitializeLevelSceneMap();
-    }
-
-    private void InitializeLevelSceneMap()
-    {
-        foreach (LevelType level in _levels)
-        {
-            _levelSceneIndexMap[level] = (int)level; // cast enum to int assuming it matches build index
-        }
-    }
-
-    public void LoadNextLevel()
-    {
-        if (_currentLevelIndex + 1 >= _levels.Length)
-        {
-            Debug.Log("No more levels to load.");
-            return;
-        }
-
-        _currentLevelIndex++;
-        LevelType nextLevel = _levels[_currentLevelIndex];
-
-        if (_levelSceneIndexMap.TryGetValue(nextLevel, out int sceneIndex))
-        {
-            SceneManager.LoadScene(sceneIndex);
-        }
-        else
-        {
-            Debug.LogWarning("Scene index for the next level not found.");
-        }
-    }
-    public LevelType[] GetLevels() => _levels;
-}
-*/
 
 
 

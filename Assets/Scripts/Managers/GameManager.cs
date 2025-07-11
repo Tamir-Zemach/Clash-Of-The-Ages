@@ -1,16 +1,19 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Backend.Data;
 using Assets.Scripts.Data;
-using Assets.Scripts.Enems;
+using Assets.Scripts.InterFaces;
 using Assets.Scripts.Managers;
 using Assets.Scripts.turrets;
 using Assets.Scripts.units;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class GameManager : SceneAwareMonoBehaviour<GameManager>
 {
+    public delegate void AgeUpgradeDelegate(ILevelUpData data);
+    public event AgeUpgradeDelegate OnAgeUpgrade;
+
     [Header("Player Starting Stats")]
     [Tooltip("Amount of money the player starts with at the beginning of the game.")]
     [Min(0)]
@@ -35,17 +38,14 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     [SerializeField] private int _level3EnemyHealth;
 
     private List<UnitData> _friendlyUnitData;
-    private List<UnitLevelUpData> _unitLevelUpData;
-
     private SpecialAttackData _specialAttackData;
-    private SpecialAttackLevelUpData _specialAttackLevelUpData;
-
     private List<TurretData> _friendlyTurretsData;
     private List<TurretData> _enemyTurretsData;
 
+    private List<UnitLevelUpData> _unitLevelUpData;
+    private List<SpecialAttackLevelUpData> _specialAttackLevelUpData;
     private List<TurretLevelUpData> _turretLevelUpData;
-
-    private SpritesLevelUpData _spriteLevelUpData;
+    private List<SpritesLevelUpData> _spriteLevelUpData;
 
     protected override void Awake()
     {
@@ -73,16 +73,16 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     private void GetData()
     {
         // Instantiated data
-        _friendlyUnitData = GameStateManager.Instance.GetAllFriendlyUnits();
-        _friendlyTurretsData = GameStateManager.Instance.GetAllFriendlyTurrets();
-        _specialAttackData = GameStateManager.Instance.GetFriendlySpecialAttackData();
+        _friendlyUnitData = GameDataRepository.Instance.FriendlyUnits;
+        _friendlyTurretsData = GameDataRepository.Instance.FriendlyTurrets;
+        _specialAttackData = GameDataRepository.Instance.FriendlySpecialAttack;
 
 
         //Template for LevelUpData
-        _unitLevelUpData = InitialDataLoader.Instance.GetUnitLevelUpData();
-        _specialAttackLevelUpData = InitialDataLoader.Instance.GetSpecialAttackLevelUpData();
-        _turretLevelUpData = InitialDataLoader.Instance.GetTurretLevelUpData();
-        _spriteLevelUpData = InitialDataLoader.Instance.GetSpritesLevelUpData();
+        _unitLevelUpData = GameDataRepository.Instance.UnitLevelUpData;
+        _specialAttackLevelUpData = GameDataRepository.Instance.SpecialAttackLevelUpData;
+        _turretLevelUpData = GameDataRepository.Instance.TurretLevelUpData;
+        _spriteLevelUpData = GameDataRepository.Instance.SpritesLevelUpData;
     }
     private void StartGame()
     {
@@ -129,10 +129,11 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
             AgeUpgrade.Instance.CurrentPlayerAge,
             isFriendly: true
         );
-        
-        AgeUpgrade.Instance.ApplySpecialAttackUpgrade(_specialAttackData, _specialAttackLevelUpData, AgeUpgrade.Instance.CurrentPlayerAge, isFriendly: true);
+
+        //TODO: change 1 index to working logic
+        AgeUpgrade.Instance.ApplySpecialAttackUpgrade(_specialAttackData, _specialAttackLevelUpData[0], AgeUpgrade.Instance.CurrentPlayerAge, isFriendly: true);
         AgeUpgrade.Instance.ApplyUpgradeToTurrets(_friendlyTurretsData, _turretLevelUpData, AgeUpgrade.Instance.CurrentPlayerAge, isFriendly: true);
-        AgeUpgrade.Instance.ApplyAllSpriteChanges(_spriteLevelUpData, AgeUpgrade.Instance.CurrentPlayerAge);
+        OnAgeUpgrade?.Invoke(_spriteLevelUpData[0]);
     }
 
     private void GameOver()

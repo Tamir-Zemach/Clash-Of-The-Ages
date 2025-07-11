@@ -13,7 +13,6 @@ public class TurretButtonEditor : Editor
         var turretTypeProp = serializedObject.FindProperty(TurretButton.FieldNames.TurretType);
         var costProp = serializedObject.FindProperty(TurretButton.FieldNames.Cost);
         var refundProp = serializedObject.FindProperty(TurretButton.FieldNames.Refund);
-        var spawnPointsParent = serializedObject.FindProperty(TurretButton.FieldNames.SpawnPointParent);
 
         EditorGUILayout.PropertyField(turretButtonTypeProp);
 
@@ -22,7 +21,6 @@ public class TurretButtonEditor : Editor
             EditorGUILayout.PropertyField(turretTypeProp);
         }
 
-        EditorGUILayout.PropertyField(spawnPointsParent);
 
         if ((TurretButtonType)turretButtonTypeProp.enumValueIndex != TurretButtonType.SellTurret)
         {

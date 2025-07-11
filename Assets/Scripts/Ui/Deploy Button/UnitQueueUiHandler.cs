@@ -1,9 +1,9 @@
 
 using Assets.Scripts.Enems;
+using System.Data;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class UnitQueueUiHandler : MonoBehaviour
 {
@@ -28,7 +28,7 @@ public class UnitQueueUiHandler : MonoBehaviour
     }
     private void Start()
     {
-        SetAssignedUnit(GameStateManager.Instance.GetFriendlyUnit(_unitType));
+        SetAssignedUnit(GameDataRepository.Instance.FriendlyUnits.GetData(_unitType));
     }
     private void OnDestroy()
     {

@@ -11,6 +11,7 @@ TagManager:
   - Ground
   - Player Spawn Area
   - Enemy Spawn Area
+  - SpecialAttackSpawnPos
   layers:
   - Default
   - TransparentFX

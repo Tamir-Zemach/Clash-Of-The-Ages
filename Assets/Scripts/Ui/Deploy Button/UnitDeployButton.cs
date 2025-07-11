@@ -1,5 +1,4 @@
 using Assets.Scripts;
-using Assets.Scripts.Backend.Data;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
 using UnityEngine;
@@ -11,34 +10,29 @@ public class UnitDeployButton : MonoBehaviour, IImgeSwichable<UnitType>
 
     private UnitData _unit;
 
-    private Sprite _sprite;
-
     private Image _image;
 
-    public UnitType Type => _unitType;
 
-    public Sprite Sprite => _sprite;
-    public Image Image => _image;
+    public UnitType Type => _unitType;
     public void SetSprite(Sprite sprite)
     {
        _image.sprite = sprite;
     }
-    private void Start()
+    private void Awake()
     {
-        GetData();
-    }
-    private void GetData()
-    {
-        _unit = GameStateManager.Instance.GetFriendlyUnit(_unitType);
-        _sprite = GameStateManager.Instance.GetUnitSprite(_unitType);
+        _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
         _image = GetComponent<Image>();
-        _image.sprite = _sprite;
     }
-
 
 
     public void DeployUnit()
     {
+        if (_unit == null)
+        {
+            Debug.LogWarning($"[UnitDeployButton] Unit data not initialized for {_unitType}");
+            return;
+        }
+
         if (PlayerCurrency.Instance.HasEnoughMoney(_unit.Cost))
         {
             PlayerCurrency.Instance.SubtractMoney(_unit.Cost);
@@ -47,12 +41,6 @@ public class UnitDeployButton : MonoBehaviour, IImgeSwichable<UnitType>
             {
                 DeployManager.Instance.AddUnitToDeploymentQueue(_unit);
             }
-            else
-            {
-                Debug.LogWarning("DeployUnit called before GameManager or DeployManager were initialized.");
-            }
         }
-
-
     }
 }

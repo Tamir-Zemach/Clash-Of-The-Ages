@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using Assets.Scripts.Enems;
 using Assets.Scripts.Managers;
 using UnityEngine;
 
@@ -73,7 +74,7 @@ public class Admin : PersistentMonoBehaviour<Admin>
 
     public void DisplayFriendlyUnitParameters()
     {
-        foreach (var unit in GameStateManager.Instance.GetAllFriendlyUnits())
+        foreach (var unit in GameDataRepository.Instance.FriendlyUnits)
         {
             Debug.Log($"{unit.name} " +
                       $"Unit Cost: {unit.Cost}, " +
@@ -86,7 +87,7 @@ public class Admin : PersistentMonoBehaviour<Admin>
     }
     public void DisplayEnemyUnitParameters()
     {
-        foreach (var unit in GameStateManager.Instance.GetAllEnemyUnits())
+        foreach (var unit in GameDataRepository.Instance.EnemyUnits)
         {
             Debug.Log($"{unit.name} " +
                       $"Reward: {unit._moneyWhenKilled}, " +

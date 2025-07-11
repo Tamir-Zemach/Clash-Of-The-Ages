@@ -31,22 +31,13 @@ public class TurretBaseBehavior : MonoBehaviour
     public Quaternion Rotation => _rotation;
 
 
-    private void OnValidate()
-    {
-        if (Application.isPlaying) return;
-        if (GameManager.Instance != null)
-        {
-            GetData();
-        }
-    }
-
     private void Awake()
     {
         GetData();
     }
     private void GetData()
     {
-        _turretData = GameStateManager.Instance.GetFriendlyTurret(_turretType);
+        _turretData = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
 
         GameObject baseObject = GameObject.FindGameObjectWithTag(_turretData.FriendlyBase);
         if (baseObject != null)

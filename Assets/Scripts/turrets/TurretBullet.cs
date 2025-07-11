@@ -12,14 +12,31 @@ public class TurretBullet : MonoBehaviour
     [SerializeField, TagSelector] private string _groundTag;
     [SerializeField] private float _destroyTime;
     [SerializeField] TurretType _turretType;
+    [SerializeField] bool isFriendly;
     private bool _hasHit;
     private float _timer;
     private TurretData _turretData;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _turretData = GameStateManager.Instance.GetFriendlyTurret(_turretType);
+        GetData();
+
     }
+      
+
+    private void GetData()
+    {
+        if (isFriendly)
+        {
+            _turretData = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
+        }
+        else
+        {
+            _turretData = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
+        }
+    }  
+    
+
     private void Start()
     {
         ApplyForceAtStart();

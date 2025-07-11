@@ -105,12 +105,9 @@ namespace Assets.Scripts.Ui.TurretButton
         {
 
             PlayerCurrency.Instance.SubtractMoney(_cost);
-            _turretSpawnPos = slot.transform;
             slot.HasTurret = true;
 
-            var upgradedTurretPrefab = GameStateManager.Instance.GetTurretPrefab(_turretType);
-
-            GameObject turret = Instantiate(upgradedTurretPrefab, _turretSpawnPos.position, _turretSpawnPos.rotation);
+            GameObject turret = Instantiate(_turret.Prefab, slot.transform.position, slot.transform.rotation);
 
             turret.transform.parent = slot.transform;
 

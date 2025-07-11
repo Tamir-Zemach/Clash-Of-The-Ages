@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Backend.Data;
-using Assets.Scripts.BackEnd.Utilities;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
@@ -61,8 +60,6 @@ public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
                     {
                         UpdateUnitReward(unitDataList[i], levelUpData);
                     }
-
-                    GameStateManager.Instance.SetUnitPrefab(unitDataList[i].Type, unitDataList[i].Prefab);
                     break;
                 }
             }
@@ -85,9 +82,6 @@ public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
                     UpdateDataType<TurretData, TurretLevelUpData, TurretType>(turretDataList[i], levelUpData);
                     UpdateDataPrefab<TurretData, TurretLevelUpData, TurretType>(turretDataList[i], levelUpData);
                     UpgradeTurretCoreStats(turretDataList[i], levelUpData);
-
-                    GameStateManager.Instance.SetTurretPrefab(turretDataList[i].Type, turretDataList[i].Prefab);
-
                 }
             }
         }
@@ -111,7 +105,6 @@ public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
         if (IsUpgradeRelevant<SpecialAttackData, SpecialAttackLevelUpData, AgeStageType>(specialAttackData, specialAttackLevelUpData, currentAge, isFriendly))
         {
             UpdateDataPrefab<SpecialAttackData, SpecialAttackLevelUpData, AgeStageType>(specialAttackData, specialAttackLevelUpData);
-            GameStateManager.Instance.SetSpecialAttackPrefab(specialAttackData.Type, specialAttackData.Prefab);
         }
     }
 
@@ -203,69 +196,6 @@ public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
 
     #endregion
 
-    #region UI Handling
-
-    public void ApplyAllSpriteChanges(SpritesLevelUpData levelUpSprites, int currentAge)
-    {
-        if (NullChecks.DataNullCheck(levelUpSprites)) return;
-        if ((int)levelUpSprites.AgeStage != currentAge) return;
-
-        _unitDeployButtons = UIObjectFinder.GetButtons<UnitDeployButton, UnitType>();
-        _unitUpgradeButtons = UIObjectFinder.GetButtons<UnitUpgradeButton, UnitType>();
-        _specialAttackButton = UIObjectFinder.GetButton<SpecialAttackButton, AgeStageType>();
-        _turretButtons = UIObjectFinder.GetButtons<TurretButton, TurretType>();
-
-        foreach (var turretButton in _turretButtons)
-        {
-            var key = (turretButton.Type, turretButton.ButtonType);
-            var upgradedTurretSprite = levelUpSprites.GetSpriteFromList<(TurretType, TurretButtonType), SpriteEntries.TurretSpriteEntry>(
-                key, levelUpSprites.turretSpriteMap);
-            if (upgradedTurretSprite != null)
-            {
-                turretButton.SetSprite(upgradedTurretSprite);
-                GameStateManager.Instance.SetTurretSprite(key, upgradedTurretSprite);
-            }
-        }
-
-
-        foreach (var upgradeButton in _unitUpgradeButtons)
-        {
-            var key = (upgradeButton.Type, upgradeButton.StatType);
-            var upgradedUpgradeSprite = levelUpSprites.GetSpriteFromList<(UnitType, StatType), SpriteEntries.UpgradeButtonSpriteEntry>(
-                key, levelUpSprites.unitUpgradeButtonSpriteMap);
-            if (upgradedUpgradeSprite != null)
-            {
-                upgradeButton.SetSprite(upgradedUpgradeSprite);
-                GameStateManager.Instance.SetUnitUpgradeButtonSprite(key, upgradedUpgradeSprite);
-            }
-        }
-
-
-        if (_specialAttackButton != null)
-        {
-            var specialAttackType = GameStateManager.Instance.GetFriendlySpecialAttackData().Type;
-            var upgradedSpecialAttackSprite = levelUpSprites.GetSpriteFromList<AgeStageType, SpriteEntries.SpecialAttackSpriteEntry>(
-                specialAttackType, levelUpSprites.specialAttackSpriteMap);
-            _specialAttackButton.SetSprite(upgradedSpecialAttackSprite);
-            GameStateManager.Instance.SetSpecialAttackSprite(specialAttackType, upgradedSpecialAttackSprite);
-        }
-
-
-
-        foreach (var deployButton in _unitDeployButtons)
-        {
-            var upgradedDeploySprite = levelUpSprites.GetSpriteFromList<UnitType, SpriteEntries.UnitSpriteEntry>(
-                deployButton.Type, levelUpSprites.unitSpriteMap);
-            if (upgradedDeploySprite != null)
-            {
-                deployButton.SetSprite(upgradedDeploySprite);
-                GameStateManager.Instance.SetUnitSprite(deployButton.Type, upgradedDeploySprite);
-            }
-        }
-    }
-
 
 }
-
-#endregion
 

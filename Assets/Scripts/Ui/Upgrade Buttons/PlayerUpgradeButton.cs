@@ -29,7 +29,6 @@ public class PlayerUpgradeButton : MonoBehaviour
             PlayerCurrency.Instance.SubtractMoney(_statUpgradeCost);
             ApplyUpgrade();
             _statUpgradeCost += _statCostInc;
-            GameStateManager.Instance.SetPlayerStatUpgradeCost(_upgradeType, _statUpgradeCost);
         }
     }
 
@@ -42,7 +41,7 @@ public class PlayerUpgradeButton : MonoBehaviour
                 break;
 
             case UpgradeType.UnitsCosts:
-                DecreaseCostToAllFrienlyUnits();
+                DecreaseCostToAllFriendlyUnits();
                 break;
 
             case UpgradeType.EnemyMoneyIncrease:
@@ -55,9 +54,9 @@ public class PlayerUpgradeButton : MonoBehaviour
     }
 
 
-    private void DecreaseCostToAllFrienlyUnits()
+    private void DecreaseCostToAllFriendlyUnits()
     {
-        foreach (UnitData unit in GameStateManager.Instance.GetAllFriendlyUnits())
+        foreach (var unit in GameDataRepository.Instance.FriendlyUnits)
         {
             unit.Cost -= _statBonus;
         }
@@ -65,7 +64,7 @@ public class PlayerUpgradeButton : MonoBehaviour
     }
     private void IncreaseMoneyGainToAllEnemyUnits()
     {
-        foreach (UnitData unit in GameStateManager.Instance.GetAllEnemyUnits())
+        foreach (var unit in GameDataRepository.Instance.EnemyUnits)
         {
             unit._moneyWhenKilled += _statBonus;
         }

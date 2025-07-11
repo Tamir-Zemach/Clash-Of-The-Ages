@@ -7,8 +7,6 @@ public class TextUiDisplay : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _moneyText;
     [SerializeField] private TextMeshProUGUI _healthText;
-
-    [SerializeField] private GameObject _currentEnemyBase;
     [SerializeField] private TextMeshProUGUI _enemyhealthText;
 
     private void Awake()

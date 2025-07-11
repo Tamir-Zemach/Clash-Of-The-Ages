@@ -1,6 +1,8 @@
 using Assets.Scripts;
+using Assets.Scripts.Backend.Data;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
+using Assets.Scripts.turrets;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,14 +31,12 @@ public class UnitUpgradeButton : MonoBehaviour, IImgeSwichable<UnitType>
     [Tooltip("Incremental increase in stat upgrade cost after each upgrade")]
     [SerializeField] private int _statCostInc;
 
-    private Sprite _sprite;
-    private Image _image;
-   
+    private UnitData _unit;
 
+    private Image _image;
     public UnitType Type => _unitType;
     public StatType StatType => _statType;
-    public Sprite Sprite => _sprite;
-    public Image Image => _image;
+
     public int Cost => _statCost;
 
     public void SetSprite(Sprite sprite)
@@ -50,21 +50,18 @@ public class UnitUpgradeButton : MonoBehaviour, IImgeSwichable<UnitType>
 
     private void GetData()
     {
-        _sprite = GameStateManager.Instance.GetUnitUpgradebuttonSpritesSprite((_unitType, _statType));
+        _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
         _image = GetComponent<Image>();
-        _image.sprite = _sprite;
     }
 
     public void UpgradeStat()
     {
-        var unit = GameStateManager.Instance.GetFriendlyUnit(_unitType);
 
         if (PlayerCurrency.Instance.HasEnoughMoney(_statCost))
         {
             PlayerCurrency.Instance.SubtractMoney(_statCost);
-            ApplyUpgrade(unit);
+            ApplyUpgrade(_unit);
             _statCost += _statCostInc;
-            GameStateManager.Instance.SetStatUpgradeCost(_unitType, _statType, _statCost);
         }
     }
 

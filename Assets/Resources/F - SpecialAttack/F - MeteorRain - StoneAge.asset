@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ageStage: 1
   _isFriendly: 1
-  _unitPrefab: {fileID: 577148494940015122, guid: 8bcca81be742a404287d0eea17d172f8, type: 3}
+  _spawnPosTag: SpecialAttackSpawnPos
+  _specialAttackPrefab: {fileID: 577148494940015122, guid: 8bcca81be742a404287d0eea17d172f8, type: 3}
   cost: 80

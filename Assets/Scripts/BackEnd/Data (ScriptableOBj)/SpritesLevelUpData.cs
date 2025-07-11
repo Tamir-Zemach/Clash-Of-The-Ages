@@ -9,12 +9,17 @@ using UnityEngine;
 namespace Assets.Scripts.Backend.Data
 {
     [CreateAssetMenu(fileName = "SpritesLevelUpData", menuName = "SpritesLevelUpData", order = 8)]
-    public class SpritesLevelUpData : ScriptableObject
+    public class SpritesLevelUpData : ScriptableObject , ILevelUpData
     {
 
         [SerializeField] private AgeStageType _currentAgeStage;
 
-        public AgeStageType AgeStage => _currentAgeStage;
+        public AgeStageType Type => _currentAgeStage;
+
+        public bool IsFriendly => true;
+
+        public int AgeStage => (int)_currentAgeStage;
+
 
         public List<SpriteEntries.UpgradeButtonSpriteEntry> unitUpgradeButtonSpriteMap;
 
@@ -59,7 +64,6 @@ namespace Assets.Scripts.Backend.Data
             }
             return dict;
         }
-
 
     }
 

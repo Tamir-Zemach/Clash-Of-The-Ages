@@ -1,3 +1,4 @@
+using Assets.Scripts.Enems;
 using Assets.Scripts.turrets;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class TurretDebugger : MonoBehaviour
         if (TurretBaseBehavior == null)
             TurretBaseBehavior = gameObject.GetComponent<TurretBaseBehavior>();
         if (_turretData == null)
-            _turretData = GameStateManager.Instance.GetFriendlyTurret(TurretBaseBehavior.Type);
+            _turretData = GameDataRepository.Instance.FriendlyTurrets.GetData(TurretBaseBehavior.Type);
 
 
         Gizmos.color = _boxColor;

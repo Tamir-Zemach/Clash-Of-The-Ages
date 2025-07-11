@@ -1,11 +1,13 @@
-﻿using Assets.Scripts.Enems;
-using System.Collections.Generic;
-using System;
-using UnityEngine;
+﻿using Assets.Scripts.Backend.Data;
+using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
-using UnityEngine.UI;
 using Assets.Scripts.turrets;
-using Assets.Scripts.Backend.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+using static UnityEditor.U2D.ScriptablePacker;
 
 namespace Assets.Scripts.Ui.TurretButton
 {
@@ -23,27 +25,20 @@ namespace Assets.Scripts.Ui.TurretButton
         [Tooltip("Refund granted when selling a turret.")]
         [SerializeField] private int _moneyToGiveBack;
 
-        [Tooltip("Parent GameObject that contains all TurretSpawnPoint children.")]
-        [SerializeField] private GameObject _turretSpawnPointsParent;
-
         [HideInInspector] private List<TurretSpawnPoint> _turretSpawnPoints = new();
 
-        private Transform _turretSpawnPos;
-        private bool _isWaitingForClick;
-        private Sprite _sprite;
-        private Image _image;
         private TurretData _turret;
+        private Image _image;
+        private bool _isWaitingForClick;
 
         private Dictionary<TurretButtonType, Func<TurretSpawnPoint, bool>> _conditions;
 
         public TurretType Type => _turretType;
         public TurretButtonType ButtonType => _turretButtonType;
 
-        public Sprite Sprite => _sprite;
+        public int Cost => _cost;
 
         public Image Image => _image;
-
-        public int Cost => _cost;
 
         public void SetSprite(Sprite sprite)
         {
@@ -59,7 +54,7 @@ namespace Assets.Scripts.Ui.TurretButton
                { TurretButtonType.AddSlot, spawnPoint => !spawnPoint.IsUnlocked },
                { TurretButtonType.SellTurret, spawnPoint => spawnPoint.HasTurret }
             };
-            GetAllFriendlyTurretSpawnPoints();
+
         }
 
         private void Start()
@@ -68,24 +63,16 @@ namespace Assets.Scripts.Ui.TurretButton
         }
         private void GetData()
         {
-            _turret = GameStateManager.Instance.GetFriendlyTurret(_turretType);
-            _sprite = GameStateManager.Instance.GetTurretSprite((_turretType, _turretButtonType));
+            _turret = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
             _image = GetComponent<Image>();
-            _image.sprite = _sprite;
+            UIRootManager.Instance.OnSceneChanged += GetAllSpawnPoints;
+            GetAllSpawnPoints();
         }
 
 
-        private void GetAllFriendlyTurretSpawnPoints()
+        private void GetAllSpawnPoints()
         {
-            _turretSpawnPoints.Clear();
-
-            if (_turretSpawnPointsParent == null)
-            {
-                Debug.LogWarning($"{nameof(TurretButton)}: Turret spawn points parent is not assigned.");
-                return;
-            }
-
-            _turretSpawnPoints.AddRange(_turretSpawnPointsParent.GetComponentsInChildren<TurretSpawnPoint>());
+            _turretSpawnPoints = FindObjectsByType<TurretSpawnPoint>(FindObjectsSortMode.None).ToList();
         }
 
 
@@ -96,7 +83,6 @@ namespace Assets.Scripts.Ui.TurretButton
             public const string TurretType = nameof(_turretType);
             public const string Cost = nameof(_cost);
             public const string Refund = nameof(_moneyToGiveBack);
-            public const string SpawnPointParent = nameof(_turretSpawnPointsParent);
         }
 #endif
     }

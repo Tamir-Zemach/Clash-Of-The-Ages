@@ -8,14 +8,14 @@ namespace Assets.Scripts.turrets
     public class TurretData : ScriptableObject, IUpgradable<TurretType>
     {
         [Header("Turret Identity")]
+        [Tooltip("The age stage during which this turret becomes available.")]
+        [SerializeField] private AgeStageType _stageType;
+
         [Tooltip("Type of turret represented by this configuration.")]
         [SerializeField] private TurretType _turretType;
 
         [Tooltip("Indicates whether this turret is controlled by the friendly faction.")]
         [SerializeField] private bool _isFriendly;
-
-        [Tooltip("The age stage during which this turret becomes available.")]
-        [SerializeField] private AgeStageType _stageType;
 
         [Header("Prefab Settings")]
         [Tooltip("Prefab to instantiate when this turret is deployed.")]

@@ -1,5 +1,4 @@
 using Assets.Scripts.Enems;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -72,7 +71,7 @@ public class EnemySpawner : SceneAwareMonoBehaviour<EnemySpawner>
 
     private void SpawnRandomEnemyPrefab()
     {
-        var enemyUnits = GameStateManager.Instance.GetAllEnemyUnits();
+        var enemyUnits = GameDataRepository.Instance.EnemyUnits;
 
         if (enemyUnits == null || enemyUnits.Count == 0) return;
 

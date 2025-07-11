@@ -14,9 +14,12 @@ namespace Assets.Scripts.Data
         [Tooltip("Indicates if this special attack belongs to the friendly faction.")]
         [SerializeField] private bool _isFriendly;
 
+        [SerializeField, TagSelector] private string _spawnPosTag;
+
         [Header("Deployment Settings")]
         [Tooltip("The prefab to instantiate when deployed.")]
         [SerializeField] private GameObject _specialAttackPrefab;
+
         [Tooltip("Cost to deploy or use this special attack.")]
         [Min(0)]
         [SerializeField] private int cost;
@@ -28,7 +31,8 @@ namespace Assets.Scripts.Data
         public int AgeStage => (int)_ageStage;
         public int Cost => cost;
 
-        // Upgradability hook
+        public string SpawnPosTag => _spawnPosTag;
+
         public void SetPrefab(GameObject prefab)
         {
             _specialAttackPrefab = prefab;

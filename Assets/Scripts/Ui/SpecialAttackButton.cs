@@ -5,20 +5,18 @@ using Assets.Scripts.InterFaces;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpecialAttackButton : MonoBehaviour ,IImgeSwichable<AgeStageType>
+public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<AgeStageType>
 {
     [SerializeField] private AgeStageType _ageStageType;
 
-    [SerializeField] private Transform _meteorRainSpawnPos;
+    private Transform _specialAttackSpawnPos;
 
     private SpecialAttackData _specialAttack;
-
-    private Sprite _sprite;
 
     private Image _image;
 
     public AgeStageType Type => _ageStageType;
-    public Sprite Sprite => _sprite;
+
     public Image Image => _image;
 
     public void SetSprite(Sprite sprite)
@@ -33,13 +31,16 @@ public class SpecialAttackButton : MonoBehaviour ,IImgeSwichable<AgeStageType>
 
     private void GetData()
     {
-        _specialAttack = GameStateManager.Instance.GetFriendlySpecialAttackData();
-        _sprite = GameStateManager.Instance.GetSpecialAttackSprite(_ageStageType);
+        _specialAttack = GameDataRepository.Instance.FriendlySpecialAttack;
         _image = GetComponent<Image>();
-        _image.sprite = _sprite;
+        UIRootManager.Instance.OnSceneChanged += GetSpawnPos;
+        GetSpawnPos(); 
     }
 
-
+    private void GetSpawnPos()
+    { 
+        _specialAttackSpawnPos = GameObject.FindGameObjectWithTag(_specialAttack.SpawnPosTag).transform;
+    }
 
 
 
@@ -54,19 +55,18 @@ public class SpecialAttackButton : MonoBehaviour ,IImgeSwichable<AgeStageType>
 
     private void ApplySpecialAttack()
     {
-        var currentAttackPrfab = GameStateManager.Instance.GetSpecialAttackPrefab();
         switch (_ageStageType)
         {
             case AgeStageType.StoneAge:
-                Instantiate(currentAttackPrfab, _meteorRainSpawnPos.position, _meteorRainSpawnPos.rotation);
+                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.position, _specialAttackSpawnPos.rotation);
                 break;
             case AgeStageType.Military:
                 //same logic for now
-                Instantiate(currentAttackPrfab, _meteorRainSpawnPos.position, _meteorRainSpawnPos.rotation);
+                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.position, _specialAttackSpawnPos.rotation);
                 break;
             case AgeStageType.Future:
                 //same logic for now
-                Instantiate(currentAttackPrfab, _meteorRainSpawnPos.position, _meteorRainSpawnPos.rotation);
+                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.position, _specialAttackSpawnPos.rotation);
                 break;
 
             default:
