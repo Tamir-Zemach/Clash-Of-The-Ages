@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec32066ff55a8e84a8f8b11ff40d3feb, type: 3}
   m_Name: Tank Friendly
   m_EditorClassIdentifier: 
-  _unitType: 2
-  _isFriendly: 1
-  _stageType: 1
-  _unitPrefab: {fileID: 6578747469787437173, guid: 807f2b6c2ed9f8146be47706d839b5e1, type: 3}
+  <AgeStage>k__BackingField: 1
+  <Type>k__BackingField: 2
+  <IsFriendly>k__BackingField: 1
+  <Prefab>k__BackingField: {fileID: 6578747469787437173, guid: 807f2b6c2ed9f8146be47706d839b5e1, type: 3}
   Cost: 30
   DeployDelayTime: 2
   _moneyWhenKilled: 0

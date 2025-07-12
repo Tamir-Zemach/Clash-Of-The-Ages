@@ -17,6 +17,7 @@ public class Admin : PersistentMonoBehaviour<Admin>
     public bool _displayFrienlyUnitParametersInConsole;
     public bool _displayEnemyUnitParametersInConsole;
     public bool _displayHealthInConsole;
+    public bool _displayUnitCounterInConsole;
 
     //[SerializeField] GameManager gameManager;
     //public bool _easyMode;
@@ -55,6 +56,10 @@ public class Admin : PersistentMonoBehaviour<Admin>
         if (_displayEnemyUnitParametersInConsole)
         {
             DisplayEnemyUnitParameters();
+        }
+        if (_displayUnitCounterInConsole)
+        {
+            DisplayUnitCounterInConsole();
         }
         if (_displayHealthInConsole)
         {
@@ -99,6 +104,13 @@ public class Admin : PersistentMonoBehaviour<Admin>
         }
     }
 
+    public void DisplayUnitCounterInConsole()
+    {
+        print($"Friendly Units: {UnitCounter.FriendlyCount}," +
+              $"Enemy Units: {UnitCounter.EnemyCount}");
+    }
+
+
     private void Update()
     {
         AdminFunctions();
@@ -106,7 +118,7 @@ public class Admin : PersistentMonoBehaviour<Admin>
 
     public void UpgradeAgeToLevel()
     {
-        if (AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
+        if ((int)AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
         {
             GameManager.Instance.UpgradePlayerAge();
         }

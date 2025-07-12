@@ -1,23 +1,29 @@
+using Assets.Scripts.Data;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
+using Assets.Scripts.units;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "UnitData", menuName = "Unit", order = 1)]
 public class UnitData : ScriptableObject, IUpgradable<UnitType>
 {
+    [Tooltip("The age stage during which this unit becomes available.")]
+    [field: SerializeField] public AgeStageType AgeStage { get; private set; }
+
+
     [Header("Unit Identity")]
     [Tooltip("Specifies the type of unit.")]
-    [SerializeField] private UnitType _unitType;
+    [field: SerializeField] public UnitType Type { get; private set; }
 
     [Tooltip("Indicates whether this unit belongs to the friendly faction.")]
-    [SerializeField] private bool _isFriendly;
+    [field: SerializeField] public bool IsFriendly { get; private set; }
 
-    [Tooltip("The age stage during which this unit becomes available.")]
-    [SerializeField] private AgeStageType _stageType;
+
 
     [Header("Deployment Settings")]
     [Tooltip("Prefab to instantiate when deploying this unit.")]
-    [SerializeField] private GameObject _unitPrefab;
+    [field: SerializeField] public GameObject Prefab { get; private set; }
 
     [Tooltip("Cost required to deploy this unit.")]
     [Min(0)]
@@ -83,18 +89,40 @@ public class UnitData : ScriptableObject, IUpgradable<UnitType>
 
 
 
-    // Public properties
-    public UnitType Type => _unitType;
-    public bool IsFriendly => _isFriendly;
-    public int AgeStage => (int)_stageType;
-    public GameObject Prefab => _unitPrefab;
-
-    public void SetPrefab(GameObject prefab)
+    private void Awake()
     {
-        _unitPrefab = prefab;
+        GameDataRepository.Instance.OnInitialized += Inisilize;
     }
-    public void SetType(UnitType unitType)
+    private void Inisilize()
     {
-        _unitType = unitType;
+        if (IsFriendly)
+        {
+            GameManager.Instance.OnAgeUpgrade += UpgradeAge;
+        }
+    }
+
+    public void UpgradeAge(List<LevelUpDataBase> upgradeDataList)
+    {
+        for (int i = 0; i < upgradeDataList.Count; i++)
+        {
+            if (upgradeDataList[i] is UnitLevelUpData levelUpData && Type == levelUpData.Type)
+            {
+                //---Core Stat---
+                Range += levelUpData._range;
+                Speed += levelUpData._speed;
+                Health += levelUpData._health;
+                Strength += levelUpData._strength;
+                InitialAttackDelay *= 1f - (levelUpData.AttackDelayReductionPercent / 100f);
+                InitialAttackDelay = Mathf.Max(0.1f, InitialAttackDelay);
+
+                //---Prefab---
+                Prefab = levelUpData.Prefab;
+
+                //---AgeStage---
+                AgeStage = levelUpData.AgeStage;
+                break;
+            }
+        } 
+
     }
 }

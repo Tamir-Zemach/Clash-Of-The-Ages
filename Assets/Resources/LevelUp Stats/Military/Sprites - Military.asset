@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9e6300fb0aa68d4eb33fcd67242f3ed, type: 3}
+  m_Name: Sprites - Military
+  m_EditorClassIdentifier: 
+  <AgeStage>k__BackingField: 2
+  UnitSpriteMap:
+  - _key: 0
+    _sprite: {fileID: 21300000, guid: dd18df472ac3b28488f7d9c4b008e27f, type: 3}
+  - _key: 1
+    _sprite: {fileID: 21300000, guid: 49dd3b0443fa35142b454aceacb5ba3a, type: 3}
+  - _key: 2
+    _sprite: {fileID: 21300000, guid: ac8db8013e6738a448ae2cfa323a30e4, type: 3}
+  SpecialAttackSpriteMap:
+  - _key: 0
+    _sprite: {fileID: -7954900579209456137, guid: 97894ee56a6c2194baadf894b4627705, type: 3}
+  turretSpriteMap:
+  - _key:
+      ButtonType: 0
+      TurretType: 1
+    _sprite: {fileID: 21300000, guid: de49f8785686d2348b52c05ed293b342, type: 3}
+  - _key:
+      ButtonType: 0
+      TurretType: 2
+    _sprite: {fileID: 21300000, guid: de49f8785686d2348b52c05ed293b342, type: 3}
+  - _key:
+      ButtonType: 1
+      TurretType: 2
+    _sprite: {fileID: 5449302267633326388, guid: ff727ef133050384997422ff6c073c74, type: 3}
+  - _key:
+      ButtonType: 2
+      TurretType: 2
+    _sprite: {fileID: 5449302267633326388, guid: ff727ef133050384997422ff6c073c74, type: 3}
+  UnitUpgradeButtonSpriteMap:
+  - _key:
+      UnitType: 0
+      StatType: 0
+    _sprite: {fileID: -5225041001462938346, guid: a8267aefe1887e44785623614baf16ef, type: 3}
+  - _key:
+      UnitType: 1
+      StatType: 0
+    _sprite: {fileID: 21300000, guid: 6e96cb3725666814eb16febaf0e2781c, type: 3}
+  - _key:
+      UnitType: 2
+      StatType: 0
+    _sprite: {fileID: 21300000, guid: 8b8386b9a0ca7e64895eee9cb14f4f52, type: 3}

@@ -1,13 +1,25 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class CameraMovement : MonoBehaviour
+public class CameraMovement : SceneAwareMonoBehaviour<CameraMovement>
 {
-    [SerializeField] private CinemachineSplineDolly dollyCart;
+    private CinemachineSplineDolly _dollyCart;
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float edgeThreshold = 50f;
     [SerializeField] private float pathLength = 1f; // Set to 1 for normalized mode; adjust if using distance-based position
-    
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        _dollyCart = GameObject.FindFirstObjectByType<CinemachineSplineDolly>();
+    }
+
+
     private void Update()
     {
         EdgeScrollWithMouse();
@@ -18,7 +30,7 @@ public class CameraMovement : MonoBehaviour
     private void EdgeScrollWithMouse()
     {
         float mouseX = Input.mousePosition.x;
-        float newPosition = dollyCart.CameraPosition;
+        float newPosition = _dollyCart.CameraPosition;
 
         if (mouseX < edgeThreshold)
         {
@@ -29,7 +41,7 @@ public class CameraMovement : MonoBehaviour
             newPosition += moveSpeed * Time.deltaTime;
         }
 
-        dollyCart.CameraPosition = Mathf.Clamp(newPosition, 0f, pathLength);
+        _dollyCart.CameraPosition = Mathf.Clamp(newPosition, 0f, pathLength);
     }
 
     private void EdgeScrollWithKeyboard()
@@ -38,8 +50,8 @@ public class CameraMovement : MonoBehaviour
 
         if (Mathf.Abs(horizontalInput) > 0.01f)
         {
-            float newPosition = dollyCart.CameraPosition + horizontalInput * moveSpeed * Time.deltaTime;
-            dollyCart.CameraPosition = Mathf.Clamp(newPosition, 0f, pathLength);
+            float newPosition = _dollyCart.CameraPosition + horizontalInput * moveSpeed * Time.deltaTime;
+            _dollyCart.CameraPosition = Mathf.Clamp(newPosition, 0f, pathLength);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Backend.Data;
+﻿
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
 using Assets.Scripts.turrets;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static SpritesLevelUpData;
 using static UnityEditor.U2D.ScriptablePacker;
 
 namespace Assets.Scripts.Ui.TurretButton
@@ -66,7 +67,25 @@ namespace Assets.Scripts.Ui.TurretButton
             _turret = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
             _image = GetComponent<Image>();
             UIRootManager.Instance.OnSceneChanged += GetAllSpawnPoints;
+            GameManager.Instance.OnAgeUpgrade += UpdateSprite;
             GetAllSpawnPoints();
+        }
+
+
+
+        public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
+        {
+            foreach (var data in upgradeDataList)
+            {
+                if (data is SpritesLevelUpData levelUpData)
+                {
+                    _image.sprite = levelUpData.GetSpriteFromList(new TurretKey 
+                    { 
+                         ButtonType = _turretButtonType , TurretType = _turretType
+                    }, 
+                    levelUpData.turretSpriteMap);
+                }
+            }
         }
 
 

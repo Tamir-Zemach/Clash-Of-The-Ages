@@ -1,5 +1,7 @@
-﻿using Assets.Scripts.Enems;
+﻿using Assets.Scripts.Data;
+using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.turrets
@@ -7,65 +9,83 @@ namespace Assets.Scripts.turrets
     [CreateAssetMenu(fileName = "TurretData", menuName = "TurretData", order = 2)]
     public class TurretData : ScriptableObject, IUpgradable<TurretType>
     {
+        private void Awake()
+        {
+            GameDataRepository.Instance.OnInitialized += Inisilize;
+        }
+        private void Inisilize()
+        {
+            if (IsFriendly)
+            {
+                GameManager.Instance.OnAgeUpgrade += UpgradeAge;
+            }
+        }
+        public void UpgradeAge(List<LevelUpDataBase> upgradeDataList)
+        {
+            for (int i = 0; i < upgradeDataList.Count; i++)
+            {
+                if (upgradeDataList[i] is TurretLevelUpData levelUpData && Type == levelUpData.Type)
+                {
+                    //---Core Stat---
+                    Range += levelUpData.Range;
+                    BulletSpeed += levelUpData.BulletSpeed;
+                    BulletStrength += levelUpData.BulletStrength;
+                    InitialAttackDelay *= 1f - (levelUpData.AttackDelayReductionPercent / 100f);
+                    InitialAttackDelay = Mathf.Max(0.1f, InitialAttackDelay);
+
+                    //---Prefab---
+                    Prefab = levelUpData.Prefab;
+
+                    //---AgeStage---
+                    AgeStage = levelUpData.AgeStage;
+                }
+            }
+        }
+
         [Header("Turret Identity")]
         [Tooltip("The age stage during which this turret becomes available.")]
-        [SerializeField] private AgeStageType _stageType;
+        [field: SerializeField] public AgeStageType AgeStage { get; private set; }
 
         [Tooltip("Type of turret represented by this configuration.")]
-        [SerializeField] private TurretType _turretType;
+        [field: SerializeField] public TurretType Type { get; private set; }
 
         [Tooltip("Indicates whether this turret is controlled by the friendly faction.")]
-        [SerializeField] private bool _isFriendly;
+        [field: SerializeField] public bool IsFriendly { get; private set; }
 
         [Header("Prefab Settings")]
         [Tooltip("Prefab to instantiate when this turret is deployed.")]
-        [SerializeField] private GameObject _unitPrefab;
+        [field: SerializeField] public GameObject Prefab { get; private set; }
 
         [Header("Detection Settings")]
         [Tooltip("Layer that contains enemy units to detect.")]
-        public LayerMask OppositeUnitLayer;
+        [field: SerializeField] public LayerMask OppositeUnitLayer { get; private set; }
 
         [Tooltip("Tag assigned to enemy units.")]
-        [TagSelector] public string OppositeUnitTag;
+        [field: SerializeField, TagSelector] public string OppositeUnitTag { get; private set; }
 
         [Tooltip("Tag assigned to the friendly base.")]
-        [TagSelector] public string FriendlyBase;
+        [field: SerializeField, TagSelector] public string FriendlyBase { get; private set; }
 
         [Tooltip("Maximum detection range of the turret.")]
         [Min(0f)]
-        public float Range;
+        [field: SerializeField] public float Range { get; private set; }
 
         [Tooltip("Size of the BoxCast used for target detection.")]
-        public Vector3 BoxSize = Vector3.one;
+        [field: SerializeField] public Vector3 BoxSize = Vector3.one;
 
         [Header("Attack Settings")]
 
         [Min(0f)]
         [Tooltip("The amount of time before a Unit Attacks (when lower its faster)")]
-        public float InitialAttackDelay;
+        [field: SerializeField] public float InitialAttackDelay { get; private set; }
 
         [Tooltip("Base damage each bullet inflicts.")]
         [Min(0)]
-        public int BulletStrength;
+        [field: SerializeField] public int BulletStrength { get; private set; }
 
         [Tooltip("Speed applied to bullets when fired.")]
         [Min(0)]
-        public int BulletSpeed;
+        [field: SerializeField] public int BulletSpeed { get; private set; }
 
-        // Public properties
-        public TurretType Type => _turretType;
-        public bool IsFriendly => _isFriendly;
-        public int AgeStage => (int)_stageType;
-        public GameObject Prefab => _unitPrefab;
-
-        // Setter to support upgrade replacement
-        public void SetPrefab(GameObject prefab)
-        {
-            _unitPrefab = prefab;
-        }
-        public void SetType(TurretType turretType)
-        {
-            _turretType = turretType;
-        }
     }
 }

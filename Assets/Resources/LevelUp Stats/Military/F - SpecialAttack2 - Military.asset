@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a2a412e1a41c144904f9888634c036, type: 3}
   m_Name: F - SpecialAttack2 - Military
   m_EditorClassIdentifier: 
-  _isFriendly: 1
-  _ageStage: 2
-  _specialPrefab: {fileID: 577148494940015122, guid: df1a3220a309a3644a545e9fc7d1d992, type: 3}
+  <AgeStage>k__BackingField: 2
+  <Type>k__BackingField: 0
+  <IsFriendly>k__BackingField: 1
+  <Prefab>k__BackingField: {fileID: 577148494940015122, guid: df1a3220a309a3644a545e9fc7d1d992, type: 3}

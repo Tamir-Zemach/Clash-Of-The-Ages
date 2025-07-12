@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d11f2b77cd3f96c4cab988790fb08afa, type: 3}
-  m_Name: Ranger LevelUp Stats
+  m_Name: Tank LevelUp Stats
   m_EditorClassIdentifier: 
-  _unitType: 1
-  _isFriendly: 1
-  _ageStage: 2
-  _unitPrefab: {fileID: 2906663908437237772, guid: 69a44062b324edf46a14c689cef9fa42, type: 3}
-  _sprite: {fileID: 21300000, guid: 49dd3b0443fa35142b454aceacb5ba3a, type: 3}
+  <AgeStage>k__BackingField: 2
+  <Type>k__BackingField: 2
+  <IsFriendly>k__BackingField: 1
+  <Prefab>k__BackingField: {fileID: 6578747469787437173, guid: f583d24b6b5eab94d8983cccd2940e59, type: 3}
   _moneyWhenKilled: 0
   _range: 0
   _speed: 1
   _health: 50
   _strength: 10
-  _initialAttackDelay: 0.2
+  AttackDelayReductionPercent: 1

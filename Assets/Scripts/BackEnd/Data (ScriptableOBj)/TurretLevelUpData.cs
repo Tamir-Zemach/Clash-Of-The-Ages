@@ -5,22 +5,18 @@ using UnityEngine;
 namespace Assets.Scripts.Data
 {
     [CreateAssetMenu(fileName = "TurretLevelUpData", menuName = "TurretLevelUpData", order = 6)]
-    public class TurretLevelUpData : ScriptableObject, IUpgradable<TurretType>
+    public class TurretLevelUpData : LevelUpDataBase
     {
         [Header("Turret Identity")]
         [Tooltip("Defines the turret type for this level-up configuration.")]
-        [SerializeField] private TurretType _turretType;
+        [field: SerializeField] public TurretType Type { get; private set; }
 
-        [Tooltip("Determines if this turret belongs to the friendly faction.")]
-        [SerializeField] private bool _isFriendly;
+        [Tooltip("Indicates whether this unit belongs to the friendly faction.")]
+        [field: SerializeField] public bool IsFriendly { get; private set; }
 
-        [Tooltip("Specifies the age stage this upgrade is applied in.")]
-        [SerializeField] private AgeStageType _ageStage;
-
-        [Header("Prefab Reference")]
-        [Tooltip("Prefab to instantiate after the turret is upgraded.")]
-        [SerializeField] private GameObject _turretPrefab;
-
+        [Header("Deployment Settings")]
+        [Tooltip("Prefab to instantiate when deploying this unit.")]
+        [field: SerializeField] public GameObject Prefab { get; private set; }
         [Header("Detection Settings")]
         [Tooltip("Additional detection range to apply on top of the turret's base range.")]
         [Min(0f)]
@@ -40,19 +36,8 @@ namespace Assets.Scripts.Data
         [Min(0)]
         public int BulletSpeed;
 
-        // Public accessors
-        public TurretType Type => _turretType;
-        public bool IsFriendly => _isFriendly;
-        public int AgeStage => (int)_ageStage;
-        public GameObject Prefab => _turretPrefab;
 
-        public void SetPrefab(GameObject prefab)
-        {
-            _turretPrefab = prefab;
-        }
-        public void SetType(TurretType turretType)
-        {
-            _turretType = turretType;
-        }
+
+ 
     }
 }

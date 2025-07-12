@@ -2,12 +2,15 @@ using Assets.Scripts;
 using Assets.Scripts.Data;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<AgeStageType>
+public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<SpecialAttackType>
 {
-    [SerializeField] private AgeStageType _ageStageType;
+    [field: SerializeField] public SpecialAttackType Type {  get; private set; }
+
+    [SerializeField] private int _cost;
 
     private Transform _specialAttackSpawnPos;
 
@@ -15,14 +18,6 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<AgeStageType>
 
     private Image _image;
 
-    public AgeStageType Type => _ageStageType;
-
-    public Image Image => _image;
-
-    public void SetSprite(Sprite sprite)
-    {
-        _image.sprite = sprite;
-    }
 
     private void Start()
     {
@@ -31,9 +26,10 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<AgeStageType>
 
     private void GetData()
     {
-        _specialAttack = GameDataRepository.Instance.FriendlySpecialAttack;
+        _specialAttack = GameDataRepository.Instance.FriendlySpecialAttacks.GetData(Type);
         _image = GetComponent<Image>();
         UIRootManager.Instance.OnSceneChanged += GetSpawnPos;
+        GameManager.Instance.OnAgeUpgrade += UpdateSprite;
         GetSpawnPos(); 
     }
 
@@ -42,20 +38,30 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<AgeStageType>
         _specialAttackSpawnPos = GameObject.FindGameObjectWithTag(_specialAttack.SpawnPosTag).transform;
     }
 
-
+    public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
+    {
+        foreach (var data in upgradeDataList)
+        {
+            if (data is SpritesLevelUpData levelUpData)
+            {
+                _image.sprite = levelUpData.GetSpriteFromList(Type, levelUpData.SpecialAttackSpriteMap);
+            }
+        }
+    }
 
     public void PerformSpecialAttack()
     {
-        if (PlayerCurrency.Instance.HasEnoughMoney(_specialAttack.Cost) && !MeteorRainAlreadyExists())
+        if (PlayerCurrency.Instance.HasEnoughMoney(_cost) && !MeteorRainAlreadyExists())
         {
-            PlayerCurrency.Instance.SubtractMoney(_specialAttack.Cost);
+            PlayerCurrency.Instance.SubtractMoney(_cost);
             ApplySpecialAttack();
         }
     }
 
     private void ApplySpecialAttack()
     {
-        switch (_ageStageType)
+
+        switch (_specialAttack.AgeStage)
         {
             case AgeStageType.StoneAge:
                 Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.position, _specialAttackSpawnPos.rotation);
@@ -70,7 +76,7 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<AgeStageType>
                 break;
 
             default:
-                Debug.LogWarning("Unknown AgeStageType type: " + _ageStageType);
+                Debug.LogWarning("Unknown AgeStageType type: " + _specialAttack.AgeStage);
                 break;
         }
     }

@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d11f2b77cd3f96c4cab988790fb08afa, type: 3}
   m_Name: Attacker LevelUp Stats
   m_EditorClassIdentifier: 
-  _unitType: 0
-  _isFriendly: 1
-  _ageStage: 2
-  _unitPrefab: {fileID: 6578747469787437173, guid: 6f963e5c457471b4987c1be18080fe8e, type: 3}
-  _sprite: {fileID: 21300000, guid: dd18df472ac3b28488f7d9c4b008e27f, type: 3}
+  <AgeStage>k__BackingField: 2
+  <Type>k__BackingField: 0
+  <IsFriendly>k__BackingField: 1
+  <Prefab>k__BackingField: {fileID: 6578747469787437173, guid: 6f963e5c457471b4987c1be18080fe8e, type: 3}
   _moneyWhenKilled: 0
   _range: 0
   _speed: 1
   _health: 100
   _strength: 10
-  _initialAttackDelay: 0.2
+  AttackDelayReductionPercent: 1

@@ -1,6 +1,7 @@
 using Assets.Scripts;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,8 +23,18 @@ public class UnitDeployButton : MonoBehaviour, IImgeSwichable<UnitType>
     {
         _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
         _image = GetComponent<Image>();
+        GameManager.Instance.OnAgeUpgrade += UpdateSprite;
     }
-
+    public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
+    {
+        foreach (var data in upgradeDataList)
+        {
+            if (data is SpritesLevelUpData levelUpData)
+            {
+                _image.sprite = levelUpData.GetSpriteFromList(_unitType, levelUpData.UnitSpriteMap);
+            }
+        }
+    }
 
     public void DeployUnit()
     {

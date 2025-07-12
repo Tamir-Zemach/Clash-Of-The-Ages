@@ -1,9 +1,8 @@
-﻿using Assets.Scripts.Backend.Data;
+﻿
 using Assets.Scripts.Data;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
 using Assets.Scripts.turrets;
-using Assets.Scripts.units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,46 +22,36 @@ public class GameDataRepository : PersistentMonoBehaviour<GameDataRepository>
     [field: SerializeField] public List<TurretData> FriendlyTurrets { get; private set; }
     [field: SerializeField] public List<TurretData> EnemyTurrets { get; private set; }
 
-    [Header("Singleton Data")]
-    [field: SerializeField] public SpecialAttackData FriendlySpecialAttack { get; private set; }
-    [field: SerializeField] public SpecialAttackData EnemySpecialAttack { get; private set; }
+    [Header("Special Attacks")]
+    [field: SerializeField] public List<SpecialAttackData> FriendlySpecialAttacks { get; private set; }
+    [field: SerializeField] public List<SpecialAttackData> EnemySpecialAttacks { get; private set; }
 
     [Header("Level Up Data")]
-    [field: SerializeField] public List<UnitLevelUpData> UnitLevelUpData { get; private set; }
-    [field: SerializeField] public List<TurretLevelUpData> TurretLevelUpData { get; private set; }
-    [field: SerializeField] public List<SpecialAttackLevelUpData> SpecialAttackLevelUpData { get; private set; }
-    [field: SerializeField] public List<SpritesLevelUpData> SpritesLevelUpData { get; private set; }
-    #endregion
-
-    #region Unity Lifecycle
-
-    protected override void Awake()
-    {
-        base.Awake();
-        InstantiateAllData();
-        OnInitialized?.Invoke();
-    }
+    [field: SerializeField] public List<LevelUpDataGroup> GroupedLevelUpData { get; private set; }
 
     #endregion
 
     #region Initialization
-
+    protected override void Awake()
+    {
+        base.Awake();
+        InstantiateAllData();
+    }
+    private void Start()
+    {
+        OnInitialized?.Invoke();
+    }
     private void InstantiateAllData()
     {
         InstantiateList(FriendlyUnits);
-        InstantiateList(EnemyUnits);
         InstantiateList(FriendlyTurrets);
-        InstantiateList(EnemyTurrets);
-        InstantiateList(UnitLevelUpData);
-        InstantiateList(TurretLevelUpData);
-        InstantiateList(SpecialAttackLevelUpData);
-        InstantiateList(SpritesLevelUpData);
+        InstantiateList(FriendlySpecialAttacks);
 
-        FriendlySpecialAttack = Instantiate(FriendlySpecialAttack);
-        if (EnemySpecialAttack != null)
-        {
-            EnemySpecialAttack = Instantiate(EnemySpecialAttack);
-        }
+
+        InstantiateList(EnemyUnits);
+        InstantiateList(EnemyTurrets);
+        InstantiateList(EnemySpecialAttacks);
+
     }
 
     private void InstantiateList<T>(List<T> list) where T : UnityEngine.Object
@@ -70,14 +59,17 @@ public class GameDataRepository : PersistentMonoBehaviour<GameDataRepository>
         for (int i = 0; i < list.Count; i++)
         {
             if (list[i] != null)
+            {
                 list[i] = Instantiate(list[i]);
+            }
+
         }
     }
 
     #endregion
 
 }
-
+#region Extensions
 
 public static class DataExtensions
 {
@@ -86,4 +78,23 @@ public static class DataExtensions
     {
         return list.FirstOrDefault(d => EqualityComparer<TType>.Default.Equals(d.Type, type));
     }
+    public static TData GetLevelUpData<TType, TData>(
+    this List<LevelUpDataGroup> groups,
+    AgeStageType ageStage,
+    TType type
+)
+    where TData : class, IUpgradable<TType>
+    {
+        var group = groups.FirstOrDefault(g => g.AgeStage == ageStage);
+        return group?.LevelUpEntries.OfType<TData>().ToList().GetData(type);
+    }
 }
+
+[System.Serializable]
+public class LevelUpDataGroup
+{
+    public AgeStageType AgeStage;
+    public List<LevelUpDataBase> LevelUpEntries;
+}
+
+#endregion

@@ -97,7 +97,7 @@ public class EnemySpawner : SceneAwareMonoBehaviour<EnemySpawner>
 
     private bool CanDeploy()
     {
-        return _timer >= _randomSpawnTimer && _enemySpawnArea != null && !_enemySpawnArea._hasUnitInside && EnemyCounter.EnemyCount < _maxEnemies;
+        return _timer >= _randomSpawnTimer && _enemySpawnArea != null && !_enemySpawnArea._hasUnitInside && UnitCounter.EnemyCount < _maxEnemies;
     }
 
     public void EasyMode(float minSpawnTime, float maxSpawnTime)

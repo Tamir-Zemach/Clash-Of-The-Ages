@@ -184,3 +184,4 @@ MonoBehaviour:
   _groundTag: Ground
   _destroyTime: 3
   _turretType: 2
+  isFriendly: 1

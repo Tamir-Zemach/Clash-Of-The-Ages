@@ -1,6 +1,11 @@
 ﻿
 
+using Assets.Scripts.Enems;
+
 namespace Assets.Scripts.InterFaces
 {
-    public interface ILevelUpData { }
+    public interface ILevelUpData
+    {
+        public AgeStageType AgeStage { get; }
+    }
 }

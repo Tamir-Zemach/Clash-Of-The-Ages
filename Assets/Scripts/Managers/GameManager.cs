@@ -1,18 +1,18 @@
 ﻿using Assets.Scripts;
-using Assets.Scripts.Backend.Data;
 using Assets.Scripts.Data;
-using Assets.Scripts.InterFaces;
 using Assets.Scripts.Managers;
 using Assets.Scripts.turrets;
 using Assets.Scripts.units;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameManager : SceneAwareMonoBehaviour<GameManager>
 {
-    public delegate void AgeUpgradeDelegate(ILevelUpData data);
+    public delegate void AgeUpgradeDelegate(List<LevelUpDataBase> data);
     public event AgeUpgradeDelegate OnAgeUpgrade;
+
+    public bool IsInitialized { get; private set; }
 
     [Header("Player Starting Stats")]
     [Tooltip("Amount of money the player starts with at the beginning of the game.")]
@@ -28,7 +28,7 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     [Min(1)]
     [SerializeField] private int _level1EnemyHealth;
 
-    
+
     [Tooltip("Enemy base health for Level 2.")]
     [Min(1)]
     [SerializeField] private int _level2EnemyHealth;
@@ -37,15 +37,8 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     [Min(1)]
     [SerializeField] private int _level3EnemyHealth;
 
-    private List<UnitData> _friendlyUnitData;
-    private SpecialAttackData _specialAttackData;
-    private List<TurretData> _friendlyTurretsData;
-    private List<TurretData> _enemyTurretsData;
 
-    private List<UnitLevelUpData> _unitLevelUpData;
-    private List<SpecialAttackLevelUpData> _specialAttackLevelUpData;
-    private List<TurretLevelUpData> _turretLevelUpData;
-    private List<SpritesLevelUpData> _spriteLevelUpData;
+    private List<LevelUpDataGroup> _levelUpData;
 
     protected override void Awake()
     {
@@ -56,12 +49,13 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     }
     protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
     {
-        if (AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
+        if ((int)AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
         {
-            UpgradePlayerAge();    
+            UpgradePlayerAge();
         }
-        
     }
+
+
 
     private void Update()
     {
@@ -72,17 +66,8 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     }
     private void GetData()
     {
-        // Instantiated data
-        _friendlyUnitData = GameDataRepository.Instance.FriendlyUnits;
-        _friendlyTurretsData = GameDataRepository.Instance.FriendlyTurrets;
-        _specialAttackData = GameDataRepository.Instance.FriendlySpecialAttack;
 
-
-        //Template for LevelUpData
-        _unitLevelUpData = GameDataRepository.Instance.UnitLevelUpData;
-        _specialAttackLevelUpData = GameDataRepository.Instance.SpecialAttackLevelUpData;
-        _turretLevelUpData = GameDataRepository.Instance.TurretLevelUpData;
-        _spriteLevelUpData = GameDataRepository.Instance.SpritesLevelUpData;
+        _levelUpData = GameDataRepository.Instance.GroupedLevelUpData;
     }
     private void StartGame()
     {
@@ -123,17 +108,16 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     public void UpgradePlayerAge()
     {
         AgeUpgrade.Instance.AdvanceAge(isFriendly: true);
-        AgeUpgrade.Instance.ApplyUpgradesToUnits(
-            _friendlyUnitData,
-            _unitLevelUpData,
-            AgeUpgrade.Instance.CurrentPlayerAge,
-            isFriendly: true
-        );
 
-        //TODO: change 1 index to working logic
-        AgeUpgrade.Instance.ApplySpecialAttackUpgrade(_specialAttackData, _specialAttackLevelUpData[0], AgeUpgrade.Instance.CurrentPlayerAge, isFriendly: true);
-        AgeUpgrade.Instance.ApplyUpgradeToTurrets(_friendlyTurretsData, _turretLevelUpData, AgeUpgrade.Instance.CurrentPlayerAge, isFriendly: true);
-        OnAgeUpgrade?.Invoke(_spriteLevelUpData[0]);
+        var dataGroup = _levelUpData.FirstOrDefault(g => g.AgeStage == AgeUpgrade.Instance.CurrentPlayerAge);
+        if (dataGroup != null)
+        {
+            OnAgeUpgrade?.Invoke(dataGroup.LevelUpEntries);
+        }
+        else
+        {
+            Debug.LogWarning($"No LevelUpDataGroup found for AgeStage: {AgeUpgrade.Instance.CurrentPlayerAge}");
+        }
     }
 
     private void GameOver()
@@ -142,5 +126,5 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
         Time.timeScale = 0;
     }
 
- 
+
 }

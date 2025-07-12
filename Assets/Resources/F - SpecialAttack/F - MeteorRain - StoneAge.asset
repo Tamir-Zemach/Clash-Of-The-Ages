@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27d495e122915854c9510f98507cf36f, type: 3}
   m_Name: F - MeteorRain - StoneAge
   m_EditorClassIdentifier: 
-  _ageStage: 1
-  _isFriendly: 1
-  _spawnPosTag: SpecialAttackSpawnPos
-  _specialAttackPrefab: {fileID: 577148494940015122, guid: 8bcca81be742a404287d0eea17d172f8, type: 3}
-  cost: 80
+  <AgeStage>k__BackingField: 1
+  <Type>k__BackingField: 0
+  <IsFriendly>k__BackingField: 1
+  <Prefab>k__BackingField: {fileID: 577148494940015122, guid: 8bcca81be742a404287d0eea17d172f8, type: 3}
+  <SpawnPosTag>k__BackingField: SpecialAttackSpawnPos

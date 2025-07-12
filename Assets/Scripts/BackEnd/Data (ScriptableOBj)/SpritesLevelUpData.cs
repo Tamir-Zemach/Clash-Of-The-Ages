@@ -1,70 +1,55 @@
-﻿
-using Assets.Scripts.BackEnd.Utilities;
-using Assets.Scripts.Enems;
-using Assets.Scripts.InterFaces;
+﻿using Assets.Scripts.Enems;
 using System.Collections.Generic;
 using UnityEngine;
+using static Assets.Scripts.BackEnd.Utilities.SpriteEntries;
 
-
-namespace Assets.Scripts.Backend.Data
+public class SpritesLevelUpData : LevelUpDataBase
 {
-    [CreateAssetMenu(fileName = "SpritesLevelUpData", menuName = "SpritesLevelUpData", order = 8)]
-    public class SpritesLevelUpData : ScriptableObject , ILevelUpData
+    #region GeneralSprites
+    public List<SpriteEntry<UnitType>> UnitSpriteMap;
+    public List<SpriteEntry<SpecialAttackType>> SpecialAttackSpriteMap;
+    [System.Serializable]
+    public struct TurretKey { public TurretButtonType ButtonType; public TurretType TurretType;  }
+    public List<SpriteEntry<TurretKey>> turretSpriteMap;
+
+    [System.Serializable]
+    public struct UnitUpgradeButtonKey { public UnitType UnitType; public StatType StatType; }
+    public List<SpriteEntry<UnitUpgradeButtonKey>> UnitUpgradeButtonSpriteMap;
+
+    public Sprite GetSpriteFromList<TType>(TType type, List<SpriteEntry<TType>> spriteEntries)
     {
-
-        [SerializeField] private AgeStageType _currentAgeStage;
-
-        public AgeStageType Type => _currentAgeStage;
-
-        public bool IsFriendly => true;
-
-        public int AgeStage => (int)_currentAgeStage;
-
-
-        public List<SpriteEntries.UpgradeButtonSpriteEntry> unitUpgradeButtonSpriteMap;
-
-        public List<SpriteEntries.UnitSpriteEntry> unitSpriteMap;
-
-        public List<SpriteEntries.SpecialAttackSpriteEntry> specialAttackSpriteMap;
-
-        public List<SpriteEntries.TurretSpriteEntry> turretSpriteMap;
-
-
-        public Sprite GetSpriteFromList<TType, TEntry>(TType type, List<TEntry> spriteEntries) where TEntry : ISpriteEntry<TType>
+        foreach (var entry in spriteEntries)
         {
-            foreach (var entry in spriteEntries)
-            {
-                if (EqualityComparer<TType>.Default.Equals(entry.GetKey(), type))
-                    return entry.GetSprite();
-            }
-            return null;
+            if (EqualityComparer<TType>.Default.Equals(entry.GetKey(), type))
+                return entry.GetSprite();
         }
-
-        public List<Sprite> GetAllSpritesFromMap<TEntry, TType>(List<TEntry> spriteEntries) where TEntry : ISpriteEntry<TType>
-        {
-            var sprites = new List<Sprite>();
-            foreach (var entry in spriteEntries)
-            {
-                var sprite = entry.GetSprite();
-                if (sprite != null)
-                    sprites.Add(sprite);
-            }
-            return sprites;
-        }
-
-
-        public static Dictionary<TType, Sprite> BuildDictionary<TType, TEntry>(List<TEntry> spriteEntries) where TEntry : ISpriteEntry<TType>
-        {
-            Dictionary<TType, Sprite> dict = new();
-            foreach (var entry in spriteEntries)
-            {
-                var key = entry.GetKey();
-                if (!dict.ContainsKey(key))
-                    dict[key] = entry.GetSprite();
-            }
-            return dict;
-        }
-
+        return null;
     }
 
+    public List<Sprite> GetAllSpritesFromMap<TType>(List<SpriteEntry<TType>> spriteEntries)
+    {
+        var sprites = new List<Sprite>();
+        foreach (var entry in spriteEntries)
+        {
+            var sprite = entry.GetSprite();
+            if (sprite != null)
+                sprites.Add(sprite);
+        }
+        return sprites;
+    }
+    #endregion
+
+
 }
+
+
+
+#if UNITY_EDITOR
+public static class FieldNames
+{
+    public const string UnitSpriteMap = nameof(UnitSpriteMap);
+    public const string UnitUpgradeButtonSpriteMap = nameof(UnitUpgradeButtonSpriteMap);
+    public const string SpecialAttackSpriteMap = nameof(SpecialAttackSpriteMap);
+    public const string TurretSpriteMap = nameof(TurretSpriteMap);
+}
+#endif

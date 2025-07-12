@@ -1,46 +1,54 @@
 ﻿using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
+using Assets.Scripts.units;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Data
 {
     [CreateAssetMenu(fileName = "SpecialAttackData", menuName = "SpecialAttackData", order = 4)]
-    public class SpecialAttackData : ScriptableObject, IUpgradable<AgeStageType>
+    public class SpecialAttackData : ScriptableObject, IUpgradable<SpecialAttackType>
     {
-        [Header("Identification")]
-        [Tooltip("Specifies what age stage this upgrade belongs to.")]
-        [SerializeField] private AgeStageType _ageStage;
+        [Tooltip("The age stage during which this unit becomes available.")]
+        [field: SerializeField] public AgeStageType AgeStage { get; private set; }
 
-        [Tooltip("Indicates if this special attack belongs to the friendly faction.")]
-        [SerializeField] private bool _isFriendly;
+        [Header("Unit Identity")]
+        [Tooltip("Specifies the type of unit.")]
+        [field: SerializeField] public SpecialAttackType Type { get; private set; }
 
-        [SerializeField, TagSelector] private string _spawnPosTag;
+        [Tooltip("Indicates whether this unit belongs to the friendly faction.")]
+        [field: SerializeField] public bool IsFriendly { get; private set; }
+
 
         [Header("Deployment Settings")]
-        [Tooltip("The prefab to instantiate when deployed.")]
-        [SerializeField] private GameObject _specialAttackPrefab;
+        [Tooltip("Prefab to instantiate when deploying this unit.")]
+        [field: SerializeField] public GameObject Prefab { get; private set; }
 
         [Tooltip("Cost to deploy or use this special attack.")]
         [Min(0)]
-        [SerializeField] private int cost;
+        [field: SerializeField, TagSelector] public string SpawnPosTag { get; private set; }
 
-        // Public getters
-        public AgeStageType Type => _ageStage;
-        public bool IsFriendly => _isFriendly;
-        public GameObject Prefab => _specialAttackPrefab;
-        public int AgeStage => (int)_ageStage;
-        public int Cost => cost;
-
-        public string SpawnPosTag => _spawnPosTag;
-
-        public void SetPrefab(GameObject prefab)
+        private void Awake()
         {
-            _specialAttackPrefab = prefab;
+            GameDataRepository.Instance.OnInitialized += Inisilize;
         }
-
-        public void SetType(AgeStageType type)
+        private void Inisilize()
         {
-            _ageStage = type;
+            if (IsFriendly)
+            {
+                GameManager.Instance.OnAgeUpgrade += UpgradeAge;
+            }
+        }
+        public void UpgradeAge(List<LevelUpDataBase> upgradeDataList)
+        {
+            for (int i = 0; i < upgradeDataList.Count; i++)
+            {
+                if (upgradeDataList[i] is SpecialAttackLevelUpData levelUpData && Type == levelUpData.Type)
+                {
+                    AgeStage = levelUpData.AgeStage;
+                    Prefab = levelUpData.Prefab;
+                }
+            }
         }
     }
 }

@@ -1,10 +1,11 @@
 using Assets.Scripts;
-using Assets.Scripts.Backend.Data;
 using Assets.Scripts.Enems;
 using Assets.Scripts.InterFaces;
 using Assets.Scripts.turrets;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static SpritesLevelUpData;
 
 
 public class UnitUpgradeButton : MonoBehaviour, IImgeSwichable<UnitType>
@@ -52,7 +53,25 @@ public class UnitUpgradeButton : MonoBehaviour, IImgeSwichable<UnitType>
     {
         _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
         _image = GetComponent<Image>();
+        GameManager.Instance.OnAgeUpgrade += UpdateSprite;
     }
+
+
+    public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
+    {
+        foreach (var data in upgradeDataList)
+        {
+            if (data is SpritesLevelUpData levelUpData)
+            {
+                _image.sprite = levelUpData.GetSpriteFromList(new UnitUpgradeButtonKey
+                {
+                    UnitType = _unitType, StatType = _statType
+                },
+                levelUpData.UnitUpgradeButtonSpriteMap);
+            }
+        }
+    }
+
 
     public void UpgradeStat()
     {
