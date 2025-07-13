@@ -108,6 +108,7 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     public void UpgradePlayerAge()
     {
         AgeUpgrade.Instance.AdvanceAge(isFriendly: true);
+        PlayerHealth.Instance.FullHealth();
 
         var dataGroup = _levelUpData.FirstOrDefault(g => g.AgeStage == AgeUpgrade.Instance.CurrentPlayerAge);
         if (dataGroup != null)

@@ -91,7 +91,10 @@ public class UnitData : ScriptableObject, IUpgradable<UnitType>
 
     private void Awake()
     {
-        GameDataRepository.Instance.OnInitialized += Inisilize;
+        if (GameDataRepository.Instance != null)
+        {
+            GameDataRepository.Instance.OnInitialized += Inisilize;
+        }
     }
     private void Inisilize()
     {

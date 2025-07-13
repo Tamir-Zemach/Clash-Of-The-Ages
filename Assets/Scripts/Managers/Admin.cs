@@ -6,8 +6,6 @@ using UnityEngine;
 public class Admin : PersistentMonoBehaviour<Admin>
 {
 
-    EnemySpawner EnemySpawner;
-
     public int _moneyToAdd;
     public int _moneyToSubstract;
     public int _healthToAdd;
@@ -18,9 +16,7 @@ public class Admin : PersistentMonoBehaviour<Admin>
     public bool _displayEnemyUnitParametersInConsole;
     public bool _displayHealthInConsole;
     public bool _displayUnitCounterInConsole;
-
-    //[SerializeField] GameManager gameManager;
-    //public bool _easyMode;
+    public bool _easyMode;
 
     [SerializeField] private float _easyModeMinSpawnTime;
     [SerializeField] private float _easyModeMaxSpawnTime;
@@ -45,10 +41,10 @@ public class Admin : PersistentMonoBehaviour<Admin>
         {
             GameSpeedControl();
         }
-        //if (_easyMode)
-        //{
-        //    EasyMode();
-        //}
+        if (_easyMode)
+        {
+            EasyMode();
+        }
         if (_displayFrienlyUnitParametersInConsole)
         {
             DisplayFriendlyUnitParameters();
@@ -71,11 +67,14 @@ public class Admin : PersistentMonoBehaviour<Admin>
     {
         Time.timeScale = _gameSpeed;
     }
-    //private void EasyMode()
-    //{
-    //    EnemySpawner = gameManager.GetComponent<EnemySpawner>();
-    //    EnemySpawner.EasyMode(_easyModeMinSpawnTime, _easyModeMaxSpawnTime);
-    //}
+    private void EasyMode()
+    {
+        if (EnemySpawner.Instance != null) 
+        {
+            EnemySpawner.Instance.EasyMode(_easyModeMinSpawnTime, _easyModeMaxSpawnTime);
+        }
+
+    }
 
     public void DisplayFriendlyUnitParameters()
     {

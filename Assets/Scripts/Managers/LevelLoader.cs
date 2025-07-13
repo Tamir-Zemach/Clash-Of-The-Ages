@@ -1,20 +1,27 @@
 
 
-using Assets.Scripts.Managers;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
 {
+    public Toggle AdminUi;
+
     [SerializeField]
     private List<SceneReference> scenes = new();
 
     [SerializeField]
-    private SceneReference uiScene;
-    private bool isUILoaded = false;
+    private SceneReference _inGameUiScene;
+
+    [SerializeField]
+    private SceneReference _adminUiScene;
+
+    private bool _isUiLoaded = false;
+    private bool _isAdminUiLoaded = false;
+    private bool _adminUi;
 
     private int _currentLevelIndex = 0;
     public int LevelIndex => _currentLevelIndex;
@@ -29,21 +36,20 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
             return;
         }
 
-        // Load UI scene if not already loaded
-        if (!isUILoaded)
+
+
+        LoadAdditiveScene(_inGameUiScene, _isUiLoaded);
+
+        if (_adminUi) 
         {
-            int uiBuildIndex = uiScene.GetBuildIndex();
-            if (uiBuildIndex >= 0)
-            {
-                SceneManager.LoadScene(uiBuildIndex, LoadSceneMode.Additive);
-                isUILoaded = true;
-            }
-            else
-            {
-                Debug.LogWarning("UI Scene not in Build Settings.");
-            }
+            LoadAdditiveScene(_adminUiScene, _isAdminUiLoaded);
         }
 
+        LoadLevelScene();
+
+    }
+    private void LoadLevelScene()
+    {
         // Load the gameplay level
         int buildIndex = scenes[_currentLevelIndex].GetBuildIndex();
         if (buildIndex >= 0)
@@ -54,6 +60,27 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
         {
             Debug.LogWarning("Gameplay scene not in Build Settings.");
         }
+    }
+    private void LoadAdditiveScene(SceneReference scene, bool isLoaded)
+    {
+        // Load scene if not already loaded
+        if (!isLoaded)
+        {
+            int uiBuildIndex = scene.GetBuildIndex();
+            if (uiBuildIndex >= 0)
+            {
+                SceneManager.LoadScene(uiBuildIndex, LoadSceneMode.Additive);
+                isLoaded = true;
+            }
+            else
+            {
+                Debug.LogWarning($"{scene} not in Build Settings.");
+            }
+        }
+    }
+    public void AdminUiToggle()
+    {
+        _adminUi = AdminUi.isOn;
     }
 
     public void ReloadCurrentLevel()

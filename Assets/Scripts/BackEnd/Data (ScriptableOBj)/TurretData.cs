@@ -11,7 +11,10 @@ namespace Assets.Scripts.turrets
     {
         private void Awake()
         {
-            GameDataRepository.Instance.OnInitialized += Inisilize;
+            if (GameDataRepository.Instance != null)
+            {
+                GameDataRepository.Instance.OnInitialized += Inisilize;
+            }
         }
         private void Inisilize()
         {
