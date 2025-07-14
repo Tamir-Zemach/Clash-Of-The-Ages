@@ -49,20 +49,38 @@ public class AdminUI : PersistentMonoBehaviour<AdminUI>
 
     public void AddMoney()
     {
-        int amount = int.Parse(moneyToAddField.text);
-        PlayerCurrency.Instance.AddMoney(amount);
+        if (int.TryParse(moneyToAddField.text, out int amount))
+        {
+            PlayerCurrency.Instance.AddMoney(amount);
+        }
+        else
+        {
+            moneyToAddField.text = "0";
+        }
     }
 
     public void SubtractMoney()
     {
-        int amount = int.Parse(moneyToSubtractField.text);
-        PlayerCurrency.Instance.SubtractMoney(amount);
+        if (int.TryParse(moneyToSubtractField.text, out int amount))
+        {
+            PlayerCurrency.Instance.SubtractMoney(amount);
+        }
+        else
+        {
+            moneyToSubtractField.text = "0";
+        }
     }
 
     public void AddHealth()
     {
-        int amount = int.Parse(healthToAddField.text);
-        PlayerHealth.Instance.AddHealth(amount);
+        if (int.TryParse(healthToAddField.text, out int amount))
+        {
+            PlayerHealth.Instance.AddHealth(amount);
+        }
+        else
+        {
+            healthToAddField.text = "0";
+        }
     }
 
     public void ApplyGameSpeed()

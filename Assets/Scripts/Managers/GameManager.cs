@@ -12,8 +12,6 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     public delegate void AgeUpgradeDelegate(List<LevelUpDataBase> data);
     public event AgeUpgradeDelegate OnAgeUpgrade;
 
-    public bool IsInitialized { get; private set; }
-
     [Header("Player Starting Stats")]
     [Tooltip("Amount of money the player starts with at the beginning of the game.")]
     [Min(0)]
@@ -47,7 +45,7 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
         GetData();
         StartGame();
     }
-    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
+    protected override void InitializeOnSceneLoad()
     {
         if ((int)AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
         {

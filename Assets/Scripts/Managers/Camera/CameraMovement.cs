@@ -14,14 +14,15 @@ public class CameraMovement : SceneAwareMonoBehaviour<CameraMovement>
         base.Awake();
     }
 
-    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
+    protected override void InitializeOnSceneLoad()
     {
+        if (LevelLoader.Instance.InStartMenu()) return;
         _dollyCart = GameObject.FindFirstObjectByType<CinemachineSplineDolly>();
     }
 
-
     private void Update()
     {
+        if (LevelLoader.Instance.InStartMenu()) return;
         EdgeScrollWithMouse();
         EdgeScrollWithKeyboard();
     }
@@ -29,6 +30,7 @@ public class CameraMovement : SceneAwareMonoBehaviour<CameraMovement>
 
     private void EdgeScrollWithMouse()
     {
+        if (_dollyCart == null) return;
         float mouseX = Input.mousePosition.x;
         float newPosition = _dollyCart.CameraPosition;
 

@@ -39,8 +39,9 @@ public class DeployManager : SceneAwareMonoBehaviour<DeployManager>
         timer = 0;
         _unitQueue.Clear();
     }
-    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
+    protected override void InitializeOnSceneLoad()
     {
+        if (LevelLoader.Instance.InStartMenu()) return;
         ResetQueueState();
         GameObject areaGO = GameObject.FindGameObjectWithTag(_spawnArea);
         if (areaGO == null)

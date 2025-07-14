@@ -15,7 +15,7 @@ public class UIRootManager : SceneAwareMonoBehaviour<UIRootManager>
     }
 
 
-    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
+    protected override void InitializeOnSceneLoad()
     {
         ResetaAlphaInAllCanvasGroups();
         OnSceneChanged?.Invoke();
@@ -30,6 +30,8 @@ public class UIRootManager : SceneAwareMonoBehaviour<UIRootManager>
         {
             if (group != null)
                 group.alpha = 0;
+                group.interactable = false;
+                group.blocksRaycasts = false;
         }
     }
 

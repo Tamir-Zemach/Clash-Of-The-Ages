@@ -1,5 +1,6 @@
 
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,16 +9,18 @@ using UnityEngine.UI;
 
 public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
 {
+
     public Toggle AdminUi;
 
     [SerializeField]
-    private List<SceneReference> scenes = new();
+    private List<SceneReference> _scenes = new();
 
     [SerializeField]
     private SceneReference _inGameUiScene;
 
     [SerializeField]
     private SceneReference _adminUiScene;
+
 
     private bool _isUiLoaded = false;
     private bool _isAdminUiLoaded = false;
@@ -29,8 +32,7 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
     public void LoadNextLevel()
     {
         _currentLevelIndex++;
-
-        if (_currentLevelIndex >= scenes.Count)
+        if (_currentLevelIndex >= _scenes.Count)
         {
             Debug.Log("No more levels to load.");
             return;
@@ -45,21 +47,7 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
             LoadAdditiveScene(_adminUiScene, _isAdminUiLoaded);
         }
 
-        LoadLevelScene();
-
-    }
-    private void LoadLevelScene()
-    {
-        // Load the gameplay level
-        int buildIndex = scenes[_currentLevelIndex].GetBuildIndex();
-        if (buildIndex >= 0)
-        {
-            SceneManager.LoadScene(buildIndex);
-        }
-        else
-        {
-            Debug.LogWarning("Gameplay scene not in Build Settings.");
-        }
+        SceneManager.LoadScene(_currentLevelIndex);
     }
     private void LoadAdditiveScene(SceneReference scene, bool isLoaded)
     {
@@ -85,12 +73,17 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
 
     public void ReloadCurrentLevel()
     {
-        int buildIndex = scenes[_currentLevelIndex].GetBuildIndex();
+        int buildIndex = _scenes[_currentLevelIndex].GetBuildIndex();
         if (buildIndex >= 0)
             SceneManager.LoadScene(buildIndex);
     }
 
-    public SceneReference GetCurrentSceneReference() => scenes[_currentLevelIndex];
+    public SceneReference GetCurrentSceneReference() => _scenes[_currentLevelIndex];
+    public bool InStartMenu()
+    {
+        return _currentLevelIndex == 0;
+    }
+
 }
 
 

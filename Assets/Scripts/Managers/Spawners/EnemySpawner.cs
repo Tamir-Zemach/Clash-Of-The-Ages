@@ -30,8 +30,10 @@ public class EnemySpawner : SceneAwareMonoBehaviour<EnemySpawner>
         base.Awake();
         _randomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
     }
-    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
+    protected override void InitializeOnSceneLoad()
     {
+        if (LevelLoader.Instance.InStartMenu()) return;
+
         GameObject areaGO = GameObject.FindGameObjectWithTag(_spawnAreaTag);
         if (areaGO == null)
         {
@@ -55,7 +57,9 @@ public class EnemySpawner : SceneAwareMonoBehaviour<EnemySpawner>
 
     private void Update()
     {
+        if (LevelLoader.Instance.InStartMenu()) return;
         SpawnPrefabsWithRandomTime();
+
     }
 
     private void SpawnPrefabsWithRandomTime()

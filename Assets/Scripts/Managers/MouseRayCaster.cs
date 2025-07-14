@@ -14,13 +14,15 @@ public class MouseRayCaster : SceneAwareMonoBehaviour<MouseRayCaster>
         base.Awake();
     }
 
-    protected override void InitializeOnSceneLoad(Scene scene, LoadSceneMode mode)
+    protected override void InitializeOnSceneLoad()
     {
+        if (LevelLoader.Instance.InStartMenu()) return;
         rayCamera = rayCamera != null ? rayCamera : Camera.main;
     }
 
     private void Update()
     {
+        if (LevelLoader.Instance.InStartMenu()) return;
         HandleHover();
     }
 
@@ -37,6 +39,7 @@ public class MouseRayCaster : SceneAwareMonoBehaviour<MouseRayCaster>
 
     public RaycastHit? GetHit()
     {
+        if (rayCamera == null) return null;
         Ray ray = rayCamera.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
 
