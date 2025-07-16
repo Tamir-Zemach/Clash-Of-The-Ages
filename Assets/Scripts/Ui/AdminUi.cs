@@ -1,5 +1,8 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Managers;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,11 +30,35 @@ public class AdminUI : PersistentMonoBehaviour<AdminUI>
     public TMP_Text enemyUnitText;
     public TMP_Text unitCounterText;
 
+    [Header("Level Loader")]
+    public TMP_Dropdown levelDropdown;
+
+    [field: SerializeField, TagSelector] public string EnemyUnitTag;
     protected override void Awake()
     {
         base.Awake();
         AdminPanel.SetActive(false);
+        PopulateLevelDropdown();
     }
+
+    private void PopulateLevelDropdown()
+    {
+        List<string> options = new();
+
+        foreach (var scene in LevelLoader.Instance.SceneList)
+        {
+            options.Add(scene.GetSceneName()); 
+        }
+
+        levelDropdown.ClearOptions();
+        levelDropdown.AddOptions(options);
+    }
+
+    public void LoadLevelFromDropdown()
+{
+    int selectedIndex = levelDropdown.value;
+    LevelLoader.Instance.LoadSpecificLevel(selectedIndex);
+}
 
 
     private void Update()
@@ -82,6 +109,10 @@ public class AdminUI : PersistentMonoBehaviour<AdminUI>
             healthToAddField.text = "0";
         }
     }
+    public void FullHealth()
+    {
+        PlayerHealth.Instance.FullHealth();
+    }
 
     public void ApplyGameSpeed()
     {
@@ -96,7 +127,17 @@ public class AdminUI : PersistentMonoBehaviour<AdminUI>
 
     public void UpgradeAge()
     {
-        Admin.Instance.UpgradeAgeToLevel();
+        GameManager.Instance.UpgradePlayerAge();
+    }
+
+    public void WipeOutAllEnemies()
+    {
+        List<GameObject> enemies = GameObject.FindGameObjectsWithTag(EnemyUnitTag).ToList();
+        foreach (GameObject enemy in enemies)
+        {
+            Destroy(enemy);
+        }
+
     }
 
     private void DisplayParams()

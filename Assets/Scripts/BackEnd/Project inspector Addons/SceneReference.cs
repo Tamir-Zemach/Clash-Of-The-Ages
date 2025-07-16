@@ -21,4 +21,23 @@ public class SceneReference
         string path = GetScenePath();
         return SceneUtility.GetBuildIndexByScenePath(path);
     }
+
+    public string GetSceneName()
+    {
+#if UNITY_EDITOR
+        string path = GetScenePath();
+        if (string.IsNullOrEmpty(path))
+            return string.Empty;
+
+        string fileName = System.IO.Path.GetFileNameWithoutExtension(path);
+        return fileName;
+#else
+    return string.Empty;
+#endif
+    }
+    public override string ToString()
+    {
+        return GetSceneName();
+    }
+
 }

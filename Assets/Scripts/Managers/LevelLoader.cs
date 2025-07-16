@@ -29,6 +29,8 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
     private int _currentLevelIndex = 0;
     public int LevelIndex => _currentLevelIndex;
 
+    public List<SceneReference> SceneList => _scenes;
+
     public void LoadNextLevel()
     {
         _currentLevelIndex++;
@@ -76,6 +78,21 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
         int buildIndex = _scenes[_currentLevelIndex].GetBuildIndex();
         if (buildIndex >= 0)
             SceneManager.LoadScene(buildIndex);
+    }
+
+    public void LoadSpecificLevel(int sceneIndex)
+    {
+        if (sceneIndex < 0 || sceneIndex >= _scenes.Count)
+        {
+            Debug.LogWarning($"Scene index {sceneIndex} is out of bounds.");
+            return;
+        }
+
+        int buildIndex = _scenes[sceneIndex].GetBuildIndex();
+        if (buildIndex >= 0)
+            SceneManager.LoadScene(buildIndex);
+        else
+            Debug.LogWarning($"Scene {sceneIndex} not found in Build Settings.");
     }
 
     public SceneReference GetCurrentSceneReference() => _scenes[_currentLevelIndex];

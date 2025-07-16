@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts;
-using Assets.Scripts.Enems;
 using Assets.Scripts.Managers;
 using UnityEngine;
 
@@ -113,14 +112,6 @@ public class Admin : PersistentMonoBehaviour<Admin>
     private void Update()
     {
         AdminFunctions();
-    }
-
-    public void UpgradeAgeToLevel()
-    {
-        if ((int)AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
-        {
-            GameManager.Instance.UpgradePlayerAge();
-        }
     }
 
 }
