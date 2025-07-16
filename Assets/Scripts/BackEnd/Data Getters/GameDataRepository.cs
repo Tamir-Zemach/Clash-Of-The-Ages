@@ -27,7 +27,8 @@ public class GameDataRepository : PersistentMonoBehaviour<GameDataRepository>
     [field: SerializeField] public List<SpecialAttackData> EnemySpecialAttacks { get; private set; }
 
     [Header("Level Up Data")]
-    [field: SerializeField] public List<LevelUpDataGroup> GroupedLevelUpData { get; private set; }
+    [field: SerializeField] public List<LevelUpDataGroup> PlayerLevelUpData { get; private set; }
+    [field: SerializeField] public List<LevelUpDataGroup> EnemyLevelUpData { get; private set; }
 
     #endregion
 

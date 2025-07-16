@@ -64,8 +64,7 @@ public class GameManager : SceneAwareMonoBehaviour<GameManager>
     }
     private void GetData()
     {
-
-        _levelUpData = GameDataRepository.Instance.GroupedLevelUpData;
+        _levelUpData = GameDataRepository.Instance.PlayerLevelUpData;
     }
     private void StartGame()
     {

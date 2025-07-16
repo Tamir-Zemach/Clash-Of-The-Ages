@@ -23,8 +23,11 @@ public class MeteorRain : MonoBehaviour
 
     private float _timer;
 
+    private SpecialAttackSpawnPos _specialAttackSpawnPos;
+
     private void Awake()
     {
+        _specialAttackSpawnPos = FindAnyObjectByType<SpecialAttackSpawnPos>();
          StartCoroutine(SpawnCycle());
     }
 
@@ -77,6 +80,7 @@ public class MeteorRain : MonoBehaviour
         if (_timer >= _timeOfTheSpecialAttack )
         {
             StopAllCoroutines();
+            _specialAttackSpawnPos.IsSpecialAttackAccruing = false;
             Destroy(gameObject);
         }
     }
@@ -84,6 +88,3 @@ public class MeteorRain : MonoBehaviour
 }
 
 
-
-//Quaternion downward = Quaternion.LookRotation(Vector3.down);
-//Instantiate(_meteorPrefab, RandomSpawnPoint(), downward);

@@ -12,7 +12,7 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<SpecialAttackTy
 
     [SerializeField] private int _cost;
 
-    private Transform _specialAttackSpawnPos;
+    private SpecialAttackSpawnPos _specialAttackSpawnPos;
 
     private SpecialAttackData _specialAttack;
 
@@ -34,8 +34,8 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<SpecialAttackTy
     }
 
     private void GetSpawnPos()
-    { 
-        _specialAttackSpawnPos = GameObject.FindGameObjectWithTag(_specialAttack.SpawnPosTag).transform;
+    {
+        _specialAttackSpawnPos = FindAnyObjectByType<SpecialAttackSpawnPos>(); 
     }
 
     public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
@@ -51,9 +51,10 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<SpecialAttackTy
 
     public void PerformSpecialAttack()
     {
-        if (PlayerCurrency.Instance.HasEnoughMoney(_cost) && !MeteorRainAlreadyExists())
+        if (PlayerCurrency.Instance.HasEnoughMoney(_cost) && !_specialAttackSpawnPos.IsSpecialAttackAccruing)
         {
             PlayerCurrency.Instance.SubtractMoney(_cost);
+            _specialAttackSpawnPos.IsSpecialAttackAccruing = true;
             ApplySpecialAttack();
         }
     }
@@ -64,15 +65,15 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<SpecialAttackTy
         switch (_specialAttack.AgeStage)
         {
             case AgeStageType.StoneAge:
-                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.position, _specialAttackSpawnPos.rotation);
+                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.transform.position, _specialAttackSpawnPos.transform.rotation);
                 break;
             case AgeStageType.Military:
                 //same logic for now
-                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.position, _specialAttackSpawnPos.rotation);
+                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.transform.position, _specialAttackSpawnPos.transform.rotation);
                 break;
             case AgeStageType.Future:
                 //same logic for now
-                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.position, _specialAttackSpawnPos.rotation);
+                Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.transform.position, _specialAttackSpawnPos.transform.rotation);
                 break;
 
             default:
@@ -81,9 +82,5 @@ public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<SpecialAttackTy
         }
     }
 
-    private bool MeteorRainAlreadyExists()
-    {
-        return FindAnyObjectByType<MeteorRain>() != null;
-    }
 
 }

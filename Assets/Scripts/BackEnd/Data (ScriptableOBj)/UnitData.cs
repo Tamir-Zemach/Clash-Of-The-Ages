@@ -102,6 +102,10 @@ public class UnitData : ScriptableObject, IUpgradable<UnitType>
         {
             GameManager.Instance.OnAgeUpgrade += UpgradeAge;
         }
+        else
+        {
+            EnemyAgeManager.Instance.OnAgeUpgrade += UpgradeAge;
+        }
     }
 
     public void UpgradeAge(List<LevelUpDataBase> upgradeDataList)
