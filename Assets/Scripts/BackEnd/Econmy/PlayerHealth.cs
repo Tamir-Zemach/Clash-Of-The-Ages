@@ -7,6 +7,10 @@ namespace Assets.Scripts.Managers
     internal class PlayerHealth
     {
         public static event Action OnHealthChanged;
+        public static event Action OnDroppedBelowHalfHealth;
+        public static event Action OnHealedAboveHalfHealth;
+
+        private bool _hasDroppedBelowHalfHealth = false;
 
         private static PlayerHealth instance;
 
@@ -27,9 +31,12 @@ namespace Assets.Scripts.Managers
             if (_currentHealth > _maxHealth)
             {
                 _currentHealth = _maxHealth;
+                OnHealthChanged?.Invoke();
+                EvaluateHealthThresholds();
                 return _currentHealth;
             }
             OnHealthChanged?.Invoke();
+            EvaluateHealthThresholds();
             return _currentHealth;
         }
 
@@ -37,6 +44,7 @@ namespace Assets.Scripts.Managers
         {
             _currentHealth -= ValidateAmount(Math.Max(0, amount), "subtracting");
             OnHealthChanged?.Invoke();
+            EvaluateHealthThresholds();
             return _currentHealth;
         }
         public int IncreaseMaxHealth(int amount)
@@ -57,6 +65,7 @@ namespace Assets.Scripts.Managers
         {
             _currentHealth = _maxHealth;
             OnHealthChanged?.Invoke();
+            EvaluateHealthThresholds();
         }
 
         private int ValidateAmount(int amount, string operation)
@@ -69,6 +78,21 @@ namespace Assets.Scripts.Managers
             return amount;
         }
 
+        private void EvaluateHealthThresholds()
+        {
+            if (!_hasDroppedBelowHalfHealth && (float)_currentHealth / _maxHealth < 0.5f)
+            {
+                _hasDroppedBelowHalfHealth = true;
+                OnDroppedBelowHalfHealth?.Invoke();
+            }
+            if (_hasDroppedBelowHalfHealth && (float)_currentHealth / _maxHealth > 0.5f)
+            {
+                _hasDroppedBelowHalfHealth = false;
+                OnHealedAboveHalfHealth?.Invoke();
+            }
+        }
+
+
         public bool PlayerDied()
         {
             return _currentHealth <= 0; 
@@ -76,6 +100,10 @@ namespace Assets.Scripts.Managers
         public void DisplyHealthInConsole()
         {
             Debug.Log($"Current health amount = {_currentHealth}, Max health amount = {_maxHealth}");
+        }
+        public void ResetHealthFlags()
+        {
+            _hasDroppedBelowHalfHealth = false;
         }
 
     }

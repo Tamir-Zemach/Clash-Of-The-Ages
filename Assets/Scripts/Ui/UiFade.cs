@@ -1,13 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using Assets.Scripts.BackEnd.Utilities;
 
 public class UiFade : MonoBehaviour
 {
     private CanvasGroup canvasGroup;
     private Coroutine currentFade;
-    private bool _isWaitingForClick;
-    private bool shouldShow;
+    private bool _shouldShow;
 
     public float fadeDuration = 0.3f;
 
@@ -18,56 +18,28 @@ public class UiFade : MonoBehaviour
 
     public void ToggleFade()
     {
-        shouldShow = canvasGroup.alpha <= 0f;
+        _shouldShow = canvasGroup.alpha <= 0f;
         if (currentFade != null)
+        {
             StopCoroutine(currentFade);
-        if (shouldShow)
-            StartCoroutine(WaitForSlotClick());
-
-        currentFade = StartCoroutine(FadeTo(shouldShow ? 1f : 0f));
-        canvasGroup.interactable = shouldShow;
-        canvasGroup.blocksRaycasts = shouldShow;
-    }
-
-    private IEnumerator WaitForSlotClick()
-    {
-        _isWaitingForClick = true;
-        yield return new WaitForSeconds(0.1f);
-        while (_isWaitingForClick)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                var hit = MouseRayCaster.Instance.GetHit();
-
-
-                if (!hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    StartCoroutine(FadeTo(0f));
-                    canvasGroup.interactable = false;
-                    canvasGroup.blocksRaycasts = false;
-                    _isWaitingForClick = false;
-                    yield break;
-                }
-            }
-
-            yield return null;
         }
-    }
-
-    private IEnumerator FadeTo(float targetAlpha)
-    {
-        float startAlpha = canvasGroup.alpha;
-        float timer = 0f;
-
-        while (timer < fadeDuration)
+        if (_shouldShow)
         {
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timer / fadeDuration);
-            timer += Time.deltaTime;
-            yield return null;
+            StartCoroutine(MouseRayCaster.Instance.WaitForMouseClick(
+                onValidHit: null, onMissedClick: HandleClickFadeOut));
         }
-
-        canvasGroup.alpha = targetAlpha;
+        currentFade = StartCoroutine(UIEffects.FadeTo(_shouldShow ? 1f : 0f, canvasGroup, fadeDuration));
+        canvasGroup.interactable = _shouldShow;
+        canvasGroup.blocksRaycasts = _shouldShow;
     }
+
+    private void HandleClickFadeOut()
+    {
+        StartCoroutine(UIEffects.FadeTo(0f, canvasGroup, fadeDuration));
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
+    }
+
 
 
 

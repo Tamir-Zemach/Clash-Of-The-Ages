@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Assets.Scripts.BackEnd.Utilities;
 using Assets.Scripts.Enems;
+using System;
+using Unity.VisualScripting;
+using UnityEngine;
 namespace Assets.Scripts.Ui.TurretButton
 {
     public partial class TurretButton
@@ -35,11 +38,7 @@ namespace Assets.Scripts.Ui.TurretButton
         private bool CanAddSlot() => _turretSpawnPoints.Exists(p => !p.IsUnlocked);
         private bool HaveAnyTurrets() => _turretSpawnPoints.Exists(p => p.HasTurret);
 
-        
 
-
-        /// Executes a turret action by verifying currency,
-        /// applying visual feedback, and waiting for a valid spawn point click.
         private void ExecuteTurretButtonAction(
             TurretButtonType type,
             VisualFeedbackType feedback,
@@ -50,8 +49,23 @@ namespace Assets.Scripts.Ui.TurretButton
 
             var condition = _conditions[type];
             SetVisualFeedback(condition, feedback);
-            StartCoroutine(WaitForSlotClick(condition, logic));
+
+            CleanupOverlay();
+
+            StartCoroutine(MouseRayCaster.Instance.WaitForMouseClick(
+                onValidHit: hit =>
+                {
+                    if (hit.collider.TryGetComponent<TurretSpawnPoint>(out var slot) && condition(slot))
+                    {
+                        ConfirmSlotAndInvoke(slot, logic);
+                    }
+
+                    ResetVisualFeedBack();
+                },
+                onMissedClick: ResetVisualFeedBack)
+                );
         }
+
 
     }
 }

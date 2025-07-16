@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Enems;
+﻿using Assets.Scripts.BackEnd.Utilities;
+using Assets.Scripts.Enems;
 using System;
 
 //TODO: implement the UpgradeStateManager logics
@@ -43,6 +44,29 @@ namespace Assets.Scripts.Ui.TurretButton
                 }
             }
         }
+
+
+        //private void Overlay()
+        //{
+        //    StartCoroutine(UiFunctions.FadeTo(1f, _overLay, 0.3f));
+        //    _overLay.blocksRaycasts = false;
+        //    _overLay.interactable = false;
+        //}
+
+        private void ShowCanvas()
+        {
+            StartCoroutine(UIEffects.FadeTo(1f, _overLay, 0.3f));
+            _overLay.blocksRaycasts = true;
+            _overLay.interactable = true;
+        }
+
+        private void CleanupOverlay()
+        {
+            StartCoroutine(UIEffects.FadeTo(0f, _overLay, 0.3f));
+            _overLay.blocksRaycasts = false;
+            _overLay.interactable = false;
+        }
+
 
     }
 }

@@ -26,26 +26,17 @@ namespace Assets.Scripts.Ui.TurretButton
         [Tooltip("Refund granted when selling a turret.")]
         [SerializeField] private int _moneyToGiveBack;
 
+
+        [SerializeField] private CanvasGroup _overLay;
+
         [HideInInspector] private List<TurretSpawnPoint> _turretSpawnPoints = new();
 
         private TurretData _turret;
         private Image _image;
-        private bool _isWaitingForClick;
 
         private Dictionary<TurretButtonType, Func<TurretSpawnPoint, bool>> _conditions;
 
         public TurretType Type => _turretType;
-        public TurretButtonType ButtonType => _turretButtonType;
-
-        public int Cost => _cost;
-
-        public Image Image => _image;
-
-        public void SetSprite(Sprite sprite)
-        {
-            _image.sprite = sprite;
-        }
-
 
         private void Awake()
         {
@@ -102,6 +93,7 @@ namespace Assets.Scripts.Ui.TurretButton
             public const string TurretType = nameof(_turretType);
             public const string Cost = nameof(_cost);
             public const string Refund = nameof(_moneyToGiveBack);
+            public const string OverLay = nameof(_overLay);
         }
 #endif
     }

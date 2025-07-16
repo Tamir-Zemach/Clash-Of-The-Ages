@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class MouseRayCaster : SceneAwareMonoBehaviour<MouseRayCaster>
@@ -44,5 +47,34 @@ public class MouseRayCaster : SceneAwareMonoBehaviour<MouseRayCaster>
         Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
 
         return Physics.Raycast(ray, out RaycastHit hit, raycastDistance, raycastLayers) ? hit : null;
+    }
+
+    public IEnumerator WaitForMouseClick(Action<RaycastHit> onValidHit = null, Action onMissedClick = null)
+    {
+        yield return new WaitForSeconds(0.1f); // buffer before click
+
+        bool waitingForClick = true;
+
+        while (waitingForClick)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                var hit = GetHit();
+
+                if (hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    onValidHit?.Invoke(hit.Value);
+                    yield break;
+                }
+
+                if (!hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    onMissedClick?.Invoke();
+                    yield break;
+                }
+            }
+
+            yield return null;
+        }
     }
 }

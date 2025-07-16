@@ -13,6 +13,7 @@ public class TurretButtonEditor : Editor
         var turretTypeProp = serializedObject.FindProperty(TurretButton.FieldNames.TurretType);
         var costProp = serializedObject.FindProperty(TurretButton.FieldNames.Cost);
         var refundProp = serializedObject.FindProperty(TurretButton.FieldNames.Refund);
+        var overLay = serializedObject.FindProperty(TurretButton.FieldNames.OverLay);
 
         EditorGUILayout.PropertyField(turretButtonTypeProp);
 
@@ -20,7 +21,6 @@ public class TurretButtonEditor : Editor
         {
             EditorGUILayout.PropertyField(turretTypeProp);
         }
-
 
         if ((TurretButtonType)turretButtonTypeProp.enumValueIndex != TurretButtonType.SellTurret)
         {
@@ -31,6 +31,8 @@ public class TurretButtonEditor : Editor
         {
             EditorGUILayout.PropertyField(refundProp);
         }
+
+        EditorGUILayout.PropertyField(overLay);
 
         serializedObject.ApplyModifiedProperties();
     }

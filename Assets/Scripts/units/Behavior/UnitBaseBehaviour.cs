@@ -10,7 +10,11 @@ public class UnitBaseBehaviour : MonoBehaviour
 {
     public delegate void AttackDelegate(GameObject target);
     public event AttackDelegate OnAttack;
+
     public event Action OnInitialized;
+
+    public delegate void Spawned(Renderer renderer);
+    public static event Spawned OnSpawned;
 
     private NavMeshAgent _agent;
     private UnitHealthManager _healthManager;
@@ -19,6 +23,7 @@ public class UnitBaseBehaviour : MonoBehaviour
     private Animator _animator;
     private Coroutine _currentCoroutine;
     private Collider _col;
+    private Renderer _renderer;
 
     private bool _isAttacking = false;
     private bool _isDying;
@@ -41,7 +46,13 @@ public class UnitBaseBehaviour : MonoBehaviour
         _agent.speed = Unit.Speed;
         _col = GetComponent<Collider>();
         _animator = GetComponentInChildren<Animator>();
+        _renderer = GetComponentInChildren<Renderer>();
         OnInitialized?.Invoke();
+        if (!Unit.IsFriendly)
+        {
+            OnSpawned?.Invoke(_renderer);
+        }
+
     }
 
     private void Update()
