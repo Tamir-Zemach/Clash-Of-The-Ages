@@ -15,10 +15,6 @@ public class Admin : PersistentMonoBehaviour<Admin>
     public bool _displayEnemyUnitParametersInConsole;
     public bool _displayHealthInConsole;
     public bool _displayUnitCounterInConsole;
-    public bool _easyMode;
-
-    [SerializeField] private float _easyModeMinSpawnTime;
-    [SerializeField] private float _easyModeMaxSpawnTime;
 
 
     private void AdminFunctions()
@@ -39,10 +35,6 @@ public class Admin : PersistentMonoBehaviour<Admin>
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             GameSpeedControl();
-        }
-        if (_easyMode)
-        {
-            EasyMode();
         }
         if (_displayFrienlyUnitParametersInConsole)
         {
@@ -65,14 +57,6 @@ public class Admin : PersistentMonoBehaviour<Admin>
     private void GameSpeedControl() 
     {
         Time.timeScale = _gameSpeed;
-    }
-    private void EasyMode()
-    {
-        if (EnemySpawner.Instance != null) 
-        {
-            EnemySpawner.Instance.EasyMode(_easyModeMinSpawnTime, _easyModeMaxSpawnTime);
-        }
-
     }
 
     public void DisplayFriendlyUnitParameters()

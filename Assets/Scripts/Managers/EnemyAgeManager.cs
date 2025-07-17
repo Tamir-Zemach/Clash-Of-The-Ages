@@ -18,6 +18,7 @@ public class EnemyAgeManager : SceneAwareMonoBehaviour<EnemyAgeManager>
 
     protected override void InitializeOnSceneLoad()
     {
+        if (LevelLoader.Instance.InStartMenu()) return;
         if (GameDataRepository.Instance.EnemyLevelUpData != null)
         {
             _levelUpData = GameDataRepository.Instance.EnemyLevelUpData;

@@ -30,21 +30,17 @@ public class TurretBaseBehavior : MonoBehaviour
     public Vector3 Direction => _direction;
     public Quaternion Rotation => _rotation;
 
-
-    private void Awake()
+    public void Initialize(TurretData turretData)
     {
-        GetData();
-    }
-    private void GetData()
-    {
-        _turretData = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
+        _turretData = turretData;
 
         GameObject baseObject = GameObject.FindGameObjectWithTag(_turretData.FriendlyBase);
+        GameObject enemyBaseObject = GameObject.FindGameObjectWithTag(_turretData.OppositeBase);
         if (baseObject != null)
         {
             _DetectionOrigin = baseObject.transform;
             _origin = _DetectionOrigin.position;
-            _direction = _DetectionOrigin.forward;
+            _direction = (enemyBaseObject.transform.position - transform.position).normalized;
             _rotation = _DetectionOrigin.rotation;
         }
         else

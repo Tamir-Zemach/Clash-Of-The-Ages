@@ -29,7 +29,7 @@ namespace Assets.Scripts.Ui.TurretButton
 
         [SerializeField] private CanvasGroup _overLay;
 
-        [HideInInspector] private List<TurretSpawnPoint> _turretSpawnPoints = new();
+        private List<TurretSpawnPoint> _turretSpawnPoints = new();
 
         private TurretData _turret;
         private Image _image;
@@ -42,9 +42,9 @@ namespace Assets.Scripts.Ui.TurretButton
         {
             _conditions = new Dictionary<TurretButtonType, Func<TurretSpawnPoint, bool>>
             {
-               { TurretButtonType.DeployTurret, spawnPoint => !spawnPoint.HasTurret && spawnPoint.IsUnlocked },
+               { TurretButtonType.DeployTurret, spawnPoint => ! spawnPoint.HasTurret && spawnPoint.IsUnlocked },
                { TurretButtonType.AddSlot, spawnPoint => !spawnPoint.IsUnlocked },
-               { TurretButtonType.SellTurret, spawnPoint => spawnPoint.HasTurret }
+               { TurretButtonType.SellTurret, spawnPoint => spawnPoint.HasTurret}
             };
 
         }
@@ -57,9 +57,9 @@ namespace Assets.Scripts.Ui.TurretButton
         {
             _turret = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
             _image = GetComponent<Image>();
-            UIRootManager.Instance.OnSceneChanged += GetAllSpawnPoints;
+            UIRootManager.Instance.OnSceneChanged += GetAllFriendlyTurretSpawnPoints;
             GameManager.Instance.OnAgeUpgrade += UpdateSprite;
-            GetAllSpawnPoints();
+            GetAllFriendlyTurretSpawnPoints();
         }
 
 
@@ -80,9 +80,11 @@ namespace Assets.Scripts.Ui.TurretButton
         }
 
 
-        private void GetAllSpawnPoints()
+        private void GetAllFriendlyTurretSpawnPoints()
         {
-            _turretSpawnPoints = FindObjectsByType<TurretSpawnPoint>(FindObjectsSortMode.None).ToList();
+            _turretSpawnPoints = FindObjectsByType<TurretSpawnPoint>(FindObjectsSortMode.None)
+                                    .Where(spawnPoint => spawnPoint.IsFriendly)
+                                    .ToList();
         }
 
 

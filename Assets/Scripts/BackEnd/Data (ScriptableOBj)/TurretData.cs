@@ -69,9 +69,13 @@ namespace Assets.Scripts.turrets
 
         [Tooltip("Tag assigned to enemy units.")]
         [field: SerializeField, TagSelector] public string OppositeUnitTag { get; private set; }
+        [Tooltip("Tag assigned to the opposite base.")]
+
+        [field: SerializeField, TagSelector] public string OppositeBase { get; private set; }
 
         [Tooltip("Tag assigned to the friendly base.")]
         [field: SerializeField, TagSelector] public string FriendlyBase { get; private set; }
+
 
         [Tooltip("Maximum detection range of the turret.")]
         [Min(0f)]

@@ -45,14 +45,6 @@ namespace Assets.Scripts.Ui.TurretButton
             }
         }
 
-
-        //private void Overlay()
-        //{
-        //    StartCoroutine(UiFunctions.FadeTo(1f, _overLay, 0.3f));
-        //    _overLay.blocksRaycasts = false;
-        //    _overLay.interactable = false;
-        //}
-
         private void ShowCanvas()
         {
             StartCoroutine(UIEffects.FadeTo(1f, _overLay, 0.3f));

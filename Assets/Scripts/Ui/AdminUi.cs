@@ -22,9 +22,6 @@ public class AdminUI : PersistentMonoBehaviour<AdminUI>
     [Header("Game Speed")]
     public Slider gameSpeedSlider;
 
-    [Header("Toggles")]
-    public Toggle easyModeToggle;
-
     [Header("Unit Info Displays")]
     public TMP_Text friendlyUnitText;
     public TMP_Text enemyUnitText;
@@ -109,6 +106,12 @@ public class AdminUI : PersistentMonoBehaviour<AdminUI>
             healthToAddField.text = "0";
         }
     }
+
+    public void InfiniteHealth()
+    {
+        PlayerHealth.Instance.SetMaxHealth(999999999);
+        PlayerHealth.Instance.FullHealth();
+    }
     public void FullHealth()
     {
         PlayerHealth.Instance.FullHealth();
@@ -118,11 +121,6 @@ public class AdminUI : PersistentMonoBehaviour<AdminUI>
     {
         float speed = gameSpeedSlider.value;
         Time.timeScale = speed;
-    }
-
-    public void EasyMode()
-    {
-        Admin.Instance._easyMode = easyModeToggle.isOn;
     }
 
     public void UpgradeAge()

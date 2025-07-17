@@ -32,7 +32,7 @@ public class TurretBullet : MonoBehaviour
         }
         else
         {
-            _turretData = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
+            _turretData = GameDataRepository.Instance.EnemyTurrets.GetData(_turretType);
         }
     }  
     

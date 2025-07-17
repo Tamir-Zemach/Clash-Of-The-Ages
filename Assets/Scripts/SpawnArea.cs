@@ -11,7 +11,6 @@ public class SpawnArea : MonoBehaviour
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider>();
-       
     }
 
     private void Update()

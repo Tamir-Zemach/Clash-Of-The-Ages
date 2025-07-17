@@ -5,8 +5,12 @@ public class TurretSpawnPoint : MonoBehaviour
 {
     [SerializeField] private GameObject highlightGfx;
 
-    public bool HasTurret;
-    public bool IsUnlocked { get; set; }
+    [field: SerializeField] public bool IsFriendly { get; private set; }
+
+    public bool IsUnlocked {  get; set; }
+
+    public bool HasTurret { get; set; }
+
 
     private Coroutine _flashRoutine;
     public void ShowHighlight(bool show)

@@ -20,6 +20,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 576
   <OppositeUnitTag>k__BackingField: Enemy Character
+  <OppositeBase>k__BackingField: Enemy Base
   <FriendlyBase>k__BackingField: Player Base
   <Range>k__BackingField: 7
   BoxSize: {x: 3, y: 3, z: 1}
