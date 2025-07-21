@@ -1,4 +1,5 @@
 using System.Collections;
+using units.Behavior;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +22,7 @@ public class UnitHealthBar : MonoBehaviour
 
     private void Start()
     {
-        SetMaxHealth(healthManager.currentHealth);
+        SetMaxHealth(healthManager.CurrentHealth);
         healthManager.OnHealthChanged += SetHealth;
     }
     void LateUpdate()
@@ -38,7 +39,7 @@ public class UnitHealthBar : MonoBehaviour
 
     private void SetHealth()
     {
-        slider.value = healthManager.currentHealth;
+        slider.value = healthManager.CurrentHealth;
         DisplayHealthBar();
         FadeOutHealthBar();
     }

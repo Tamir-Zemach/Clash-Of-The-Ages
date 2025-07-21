@@ -1,10 +1,10 @@
 ﻿
-using Assets.Scripts.Enems;
+using Assets.Scripts.BackEnd.Enems;
 using Assets.Scripts.InterFaces;
-using Assets.Scripts.turrets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BackEnd.Data__ScriptableOBj_;
 using UnityEngine;
 using UnityEngine.UI;
 using static SpritesLevelUpData;
@@ -57,7 +57,7 @@ namespace Assets.Scripts.Ui.TurretButton
         {
             _turret = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
             _image = GetComponent<Image>();
-            UIRootManager.Instance.OnSceneChanged += GetAllFriendlyTurretSpawnPoints;
+            LevelLoader.Instance.OnSceneChanged += GetAllFriendlyTurretSpawnPoints;
             GameManager.Instance.OnAgeUpgrade += UpdateSprite;
             GetAllFriendlyTurretSpawnPoints();
         }

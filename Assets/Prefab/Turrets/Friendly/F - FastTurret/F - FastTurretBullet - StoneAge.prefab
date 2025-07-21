@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5fdc988e224552348acab2652a385992, type: 2}
+  - {fileID: 2100000, guid: c9af1f655eab8cb4c8d856f6270ad78c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 5712924530689159362}
   - component: {fileID: 8729875507215561141}
   m_Layer: 0
-  m_Name: FastTurretBullet -  Militery
+  m_Name: F - FastTurretBullet - StoneAge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

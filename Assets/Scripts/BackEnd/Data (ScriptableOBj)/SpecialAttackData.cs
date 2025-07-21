@@ -1,60 +1,22 @@
-﻿using Assets.Scripts.Enems;
-using Assets.Scripts.InterFaces;
-using Assets.Scripts.units;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Assets.Scripts.BackEnd.Enems;
+using Assets.Scripts.Data;
+using BackEnd.Base_Classes;
 using UnityEngine;
 
-namespace Assets.Scripts.Data
+namespace BackEnd.Data__ScriptableOBj_
 {
     [CreateAssetMenu(fileName = "SpecialAttackData", menuName = "SpecialAttackData", order = 4)]
-    public class SpecialAttackData : ScriptableObject, IUpgradable<SpecialAttackType>
+    public class SpecialAttackData : DataObject<SpecialAttackType>
     {
-        [Tooltip("The age stage during which this unit becomes available.")]
-        [field: SerializeField] public AgeStageType AgeStage { get; private set; }
 
-        [Header("Unit Identity")]
-        [Tooltip("Specifies the type of unit.")]
-        [field: SerializeField] public SpecialAttackType Type { get; private set; }
-
-        [Tooltip("Indicates whether this unit belongs to the friendly faction.")]
-        [field: SerializeField] public bool IsFriendly { get; private set; }
-
-
-        [Header("Deployment Settings")]
-        [Tooltip("Prefab to instantiate when deploying this unit.")]
-        [field: SerializeField] public GameObject Prefab { get; private set; }
-
-        [Tooltip("Cost to deploy or use this special attack.")]
-        [Min(0)]
-        [field: SerializeField, TagSelector] public string SpawnPosTag { get; private set; }
-
-        private void Awake()
+        public override void UpgradeAge(List<LevelUpDataBase> upgradeDataList)
         {
-            if (GameDataRepository.Instance != null)
+            foreach (var levelUpDataBase in upgradeDataList)
             {
-                GameDataRepository.Instance.OnInitialized += Inisilize;
-            }
-        }
-        private void Inisilize()
-        {
-            if (IsFriendly)
-            {
-                GameManager.Instance.OnAgeUpgrade += UpgradeAge;
-            }
-            else
-            {
-                EnemyAgeManager.Instance.OnAgeUpgrade += UpgradeAge;
-            }
-        }
-        public void UpgradeAge(List<LevelUpDataBase> upgradeDataList)
-        {
-            for (int i = 0; i < upgradeDataList.Count; i++)
-            {
-                if (upgradeDataList[i] is SpecialAttackLevelUpData levelUpData && Type == levelUpData.Type)
-                {
-                    AgeStage = levelUpData.AgeStage;
-                    Prefab = levelUpData.Prefab;
-                }
+                if (levelUpDataBase is not SpecialAttackLevelUpData levelUpData || Type != levelUpData.Type) continue;
+                AgeStage = levelUpData.AgeStage;
+                Prefab = levelUpData.Prefab;
             }
         }
     }

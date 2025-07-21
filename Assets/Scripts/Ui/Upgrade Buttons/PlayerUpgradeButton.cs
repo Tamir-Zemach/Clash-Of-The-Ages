@@ -1,4 +1,4 @@
-using Assets.Scripts.Enems;
+using Assets.Scripts.BackEnd.Enems;
 using Assets.Scripts;
 using UnityEngine;
 using Assets.Scripts.Managers;
@@ -66,7 +66,7 @@ public class PlayerUpgradeButton : MonoBehaviour
     {
         foreach (var unit in GameDataRepository.Instance.EnemyUnits)
         {
-            unit._moneyWhenKilled += _statBonus;
+            unit.MoneyWhenKilled += _statBonus;
         }
     }
 

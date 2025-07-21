@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.BackEnd.Base_Classes
+namespace Assets.Scripts.BackEnd.BaseClasses
 {
     public abstract class EnemySpawner<T> : SceneAwareMonoBehaviour<T> where T : MonoBehaviour
     {

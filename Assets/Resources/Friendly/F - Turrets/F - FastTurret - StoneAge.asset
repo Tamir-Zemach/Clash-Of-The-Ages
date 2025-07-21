@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f50dbcd44b1267a418cd2c2abf028558, type: 3}
-  m_Name: F - StrongTurret - StoneAge
+  m_Name: F - FastTurret - StoneAge
   m_EditorClassIdentifier: 
-  <AgeStage>k__BackingField: 1
-  <Type>k__BackingField: 2
-  <IsFriendly>k__BackingField: 1
-  <Prefab>k__BackingField: {fileID: 6152897977360850917, guid: cabd307721dbbcb49a894e339474def8, type: 3}
+  _ageStage: 1
+  _type: 1
+  _isFriendly: 1
+  _gameObject: {fileID: 0}
+  _sfx: []
+  _prefab: {fileID: 6152897977360850917, guid: 9ac2bbfb1ab831243a67e596589a75ed, type: 3}
   <OppositeUnitLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 576
   <OppositeUnitTag>k__BackingField: Enemy Character
   <OppositeBase>k__BackingField: Enemy Base
   <FriendlyBase>k__BackingField: Player Base
-  <Range>k__BackingField: 7
+  <Range>k__BackingField: 11
   BoxSize: {x: 3, y: 3, z: 1}
-  <InitialAttackDelay>k__BackingField: 2
-  <BulletStrength>k__BackingField: 30
+  <InitialAttackDelay>k__BackingField: 1
+  <BulletStrength>k__BackingField: 10
   <BulletSpeed>k__BackingField: 10

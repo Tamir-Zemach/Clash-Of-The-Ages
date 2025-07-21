@@ -12,13 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec32066ff55a8e84a8f8b11ff40d3feb, type: 3}
   m_Name: Attacker Friendly
   m_EditorClassIdentifier: 
-  <AgeStage>k__BackingField: 1
-  <Type>k__BackingField: 0
-  <IsFriendly>k__BackingField: 1
-  <Prefab>k__BackingField: {fileID: 6578747469787437173, guid: 2d350e19883cdcb4f8d9461609a59c22, type: 3}
+  _ageStage: 1
+  _type: 0
+  _isFriendly: 1
+  _gameObject: {fileID: 0}
+  _sfx:
+  - _type: 0
+    _audioClip: {fileID: 8300000, guid: 4652c5da23d529e4d84fc1bf9002ded0, type: 3}
+    _volume: 0.1
+  _prefab: {fileID: 6578747469787437173, guid: 2d350e19883cdcb4f8d9461609a59c22, type: 3}
   Cost: 10
   DeployDelayTime: 1
-  _moneyWhenKilled: 0
+  MoneyWhenKilled: 0
   OppositeBaseTag: Enemy Base
   OppositeUnitTag: Enemy Character
   OppositeUnitMask:

@@ -1,6 +1,7 @@
 ﻿
-using Assets.Scripts.Enems;
+using Assets.Scripts.BackEnd.Enems;
 using Assets.Scripts.units;
+using BackEnd.Data__ScriptableOBj_;
 
 
 public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
@@ -18,7 +19,7 @@ public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
     //TODO: Enemy AgeUpgrade
     public void UpdateUnitReward(UnitData unit, UnitLevelUpData levelUpData)
     {
-        unit._moneyWhenKilled += levelUpData._moneyWhenKilled;
+        unit.MoneyWhenKilled += levelUpData._moneyWhenKilled;
 
     }
 

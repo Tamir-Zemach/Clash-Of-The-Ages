@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f50dbcd44b1267a418cd2c2abf028558, type: 3}
   m_Name: E - StrongTurret - StoneAge 1
   m_EditorClassIdentifier: 
-  <AgeStage>k__BackingField: 1
-  <Type>k__BackingField: 2
-  <IsFriendly>k__BackingField: 0
-  <Prefab>k__BackingField: {fileID: 6152897977360850917, guid: 410fb0151b90f544a8a32bf3acab054f, type: 3}
+  ageStage: 1
+  type: 2
+  isFriendly: 0
+  prefab: {fileID: 6152897977360850917, guid: 410fb0151b90f544a8a32bf3acab054f, type: 3}
   <OppositeUnitLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 264

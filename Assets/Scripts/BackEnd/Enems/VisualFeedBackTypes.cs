@@ -1,5 +1,5 @@
 ﻿
-namespace Assets.Scripts.Enems
+namespace Assets.Scripts.BackEnd.Enems
 {
     public enum VisualFeedbackType
     {

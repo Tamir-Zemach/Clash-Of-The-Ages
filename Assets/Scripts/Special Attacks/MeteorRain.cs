@@ -1,90 +1,72 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
-public class MeteorRain : MonoBehaviour
+namespace Special_Attacks
 {
-    [SerializeField, Tooltip("Prefab of the meteor object to be spawned during the attack.")]
-    private GameObject _meteorPrefab;
-
-    [SerializeField, Tooltip("The defined area within which meteors will randomly spawn.")]
-    private Collider _specialAttackArea;
-
-    [SerializeField, Tooltip("Strength For Meteor")]
-    private int _meteorSterngth;
-
-    [SerializeField, Tooltip("Total duration (in seconds) that the meteor shower will last. Can be desimal number.")]
-    private float _timeOfTheSpecialAttack;
-
-    [SerializeField, Tooltip("Minimum delay (in seconds) between consecutive meteor spawns. Can be desimal number.")]
-    private float _minSpawnTime;
-
-    [SerializeField, Tooltip("Maximum delay (in seconds) between consecutive meteor spawns. Can be desimal number.")]
-    private float _maxSpawnTime;
-
-    private float _timer;
-
-    private SpecialAttackSpawnPos _specialAttackSpawnPos;
-
-    private void Awake()
+    public class MeteorRain : MonoBehaviour
     {
-        _specialAttackSpawnPos = FindAnyObjectByType<SpecialAttackSpawnPos>();
-         StartCoroutine(SpawnCycle());
-    }
+        public event Action OnMeteorSpawned;
+        [SerializeField, Tooltip("Prefab of the meteor object to be spawned during the attack.")]
+        private GameObject _meteorPrefab;
 
-    private void Update()
-    {
-        MeteorRainDuretion();
-    }
+        [SerializeField, Tooltip("The defined area within which meteors will randomly spawn.")]
+        private Collider _specialAttackArea;
 
-    private Vector3 RandomSpawnPoint()
-    {
-        Vector3 areaMin = _specialAttackArea.bounds.min;
-        Vector3 areaMax = _specialAttackArea.bounds.max;
+        [FormerlySerializedAs("_meteorSterngth")] [SerializeField, Tooltip("Strength For Meteor")]
+        private int _meteorStrength;
 
-        Vector3 spawnPos = new Vector3(
-            Random.Range(areaMin.x, areaMax.x),
-            Random.Range(areaMin.y, areaMax.y),
-            Random.Range(areaMin.z, areaMax.z)
-        );
-        return spawnPos;
-    }
-    private float RandomSpawnTime(float minSpawnTime, float maxSpawntime)
-    {
-        float randomSpawnTime;
-        return randomSpawnTime = Random.Range(minSpawnTime, maxSpawntime);
-    }
+        [SerializeField, Tooltip("Minimum delay (in seconds) between consecutive meteor spawns. Can be desimal number.")]
+        private float _minSpawnTime;
 
-    private IEnumerator SpawnCycle()
-    {
-        while (true)
+        [SerializeField, Tooltip("Maximum delay (in seconds) between consecutive meteor spawns. Can be desimal number.")]
+        private float _maxSpawnTime;
+
+        private void Awake()
         {
-            yield return new WaitForSeconds(RandomSpawnTime(_minSpawnTime, _maxSpawnTime));
-            SpawnMeteorAtRandomPos();
+            StartCoroutine(SpawnCycle());
         }
-    }
-    private void SpawnMeteorAtRandomPos()
-    {
-        GameObject meteorReference = Instantiate(_meteorPrefab, RandomSpawnPoint(), Quaternion.identity);
-
-        Meteor meteorScript = meteorReference.GetComponent<Meteor>();
-        if (meteorScript != null)
+        
+        private Vector3 RandomSpawnPoint()
         {
-            meteorScript.SetStrength(_meteorSterngth);
+            var areaMin = _specialAttackArea.bounds.min;
+            var areaMax = _specialAttackArea.bounds.max;
+
+            var spawnPos = new Vector3(
+                Random.Range(areaMin.x, areaMax.x),
+                Random.Range(areaMin.y, areaMax.y),
+                Random.Range(areaMin.z, areaMax.z)
+            );
+            return spawnPos;
         }
-    }
-
-
-    private void MeteorRainDuretion()
-    {
-        _timer += Time.deltaTime;
-        if (_timer >= _timeOfTheSpecialAttack )
+        private float RandomSpawnTime(float minSpawnTime, float maxSpawntime)
         {
-            StopAllCoroutines();
-            _specialAttackSpawnPos.IsSpecialAttackAccruing = false;
-            Destroy(gameObject);
+            return Random.Range(minSpawnTime, maxSpawntime);
         }
-    }
 
+        private IEnumerator SpawnCycle()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(RandomSpawnTime(_minSpawnTime, _maxSpawnTime));
+                SpawnMeteorAtRandomPos();
+            }
+        }
+        private void SpawnMeteorAtRandomPos()
+        {
+            var meteorReference = Instantiate(_meteorPrefab, RandomSpawnPoint(), Quaternion.identity);
+            OnMeteorSpawned?.Invoke();
+
+            var meteorScript = meteorReference.GetComponent<Meteor>();
+            if (meteorScript != null)
+            {
+                meteorScript.SetStrength(_meteorStrength);
+            }
+        }
+        
+    }
 }
 
 

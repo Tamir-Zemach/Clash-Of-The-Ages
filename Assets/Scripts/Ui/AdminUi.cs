@@ -163,7 +163,7 @@ public class AdminUI : PersistentMonoBehaviour<AdminUI>
         foreach (var unit in GameDataRepository.Instance.EnemyUnits)
         {
             info += $"{unit.name}\n" +
-                    $"Reward: {unit._moneyWhenKilled}, Health: {unit.Health}, Speed: {unit.Speed}, Strength: {unit.Strength}\n" +
+                    $"Reward: {unit.MoneyWhenKilled}, Health: {unit.Health}, Speed: {unit.Speed}, Strength: {unit.Strength}\n" +
                     $"Attack Speed: {unit.InitialAttackDelay}, Range: {unit.Range}\n\n";
         }
         enemyUnitText.text = info;

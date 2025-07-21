@@ -1,148 +1,149 @@
-
 using System;
 using System.Collections.Generic;
+using BackEnd.Data__ScriptableOBj_;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
-
-
-public class DeployManager : SceneAwareMonoBehaviour<DeployManager>
+namespace Managers.Spawners
 {
-    public static event Action OnQueueChanged;
-
-    public readonly Queue<UnitData> _unitQueue = new Queue<UnitData>();
-    private bool isDeploying = false;
-
-
-    [Tooltip("The spawn area where the friendly unit will not spawn if another one is already present.")]
-    [SerializeField, TagSelector] private string _spawnArea;
-
-    [Tooltip("The player base Tag:")]
-    [SerializeField, TagSelector] private string _baseTag;
-
-    private SpawnArea SpawnArea;
-    private Transform _unitSpawnPoint;
-    private UnitData nextCharacter;
-    private GameObject unitReference;
-
-    private float timer;
-
-    protected override void Awake()
+    public class DeployManager : SceneAwareMonoBehaviour<DeployManager>
     {
-        base.Awake();
-    }
+        public static event Action OnQueueChanged;
 
-    private void ResetQueueState()
-    {
-        nextCharacter = null;
-        isDeploying = false;
-        timer = 0;
-        _unitQueue.Clear();
-    }
-    protected override void InitializeOnSceneLoad()
-    {
-        if (LevelLoader.Instance.InStartMenu()) return;
-        ResetQueueState();
-        GameObject areaGO = GameObject.FindGameObjectWithTag(_spawnArea);
-        if (areaGO == null)
+        public readonly Queue<UnitData> UnitQueue = new Queue<UnitData>();
+        private bool _isDeploying = false;
+
+
+        [FormerlySerializedAs("_spawnArea")]
+        [Tooltip("The spawn area where the friendly unit will not spawn if another one is already present.")]
+        [SerializeField, TagSelector] private string _spawnAreaTag;
+
+        [Tooltip("The player base Tag:")]
+        [SerializeField, TagSelector] private string _baseTag;
+
+        private SpawnArea _spawnArea;
+        private Transform _unitSpawnPoint;
+        private UnitData _nextCharacter;
+        private GameObject _unitReference;
+
+        private float _timer;
+
+        protected override void Awake()
         {
-            Debug.LogWarning($"[DeployManager] No GameObject with tag '{_spawnArea}' found in scene.");
-            return;
+            base.Awake();
         }
 
-        SpawnArea = areaGO.GetComponent<SpawnArea>();
-        if (SpawnArea == null)
+        private void ResetQueueState()
         {
-            Debug.LogWarning($"[DeployManager] GameObject tagged '{_spawnArea}' is missing SpawnArea component.");
-            return;
+            _nextCharacter = null;
+            _isDeploying = false;
+            _timer = 0;
+            UnitQueue.Clear();
+        }
+        protected override void InitializeOnSceneLoad()
+        {
+            if (LevelLoader.Instance.InStartMenu()) return;
+            ResetQueueState();
+            
+            var areaGo = GameObject.FindGameObjectWithTag(_spawnAreaTag);
+            if (areaGo == null)
+            {
+                Debug.LogWarning($"[DeployManager] No GameObject with tag '{_spawnAreaTag}' found in scene.");
+                return;
+            }
+
+            _spawnArea = areaGo.GetComponent<SpawnArea>();
+            if (_spawnArea == null)
+            {
+                Debug.LogWarning($"[DeployManager] GameObject tagged '{_spawnAreaTag}' is missing SpawnArea component.");
+                return;
+            }
+
+            _unitSpawnPoint = _spawnArea.GetComponentInParent<Transform>();
+            if (_unitSpawnPoint == null)
+            {
+                Debug.LogWarning("[DeployManager] Failed to locate parent transform for spawn point.");
+            }
+
         }
 
-        _unitSpawnPoint = SpawnArea.GetComponentInParent<Transform>();
-        if (_unitSpawnPoint == null)
+        private void Update()
         {
-            Debug.LogWarning("[DeployManager] Failed to locate parent transform for spawn point.");
+            if (_nextCharacter != null)
+                HandleDelayedDeployment();
         }
 
-    }
-
-    private void Update()
-    {
-        if (nextCharacter != null)
-            HandleDelayedDeployment();
-    }
 
 
-
-    /// <summary>
-    /// Adds the specified unit to the deployment queue.
-    /// If no deployment is currently in progress, starts deploying immediately.
-    /// </summary>
-    /// <param name="unit">The UnitData to queue for deployment.</param>
-    public void AddUnitToDeploymentQueue(UnitData unit)
-    {
-        _unitQueue.Enqueue(unit);
-
-        //Event invoke for Ui purpses 
-        OnQueueChanged?.Invoke();
-
-        // If no deployment is currently happening, start the queue process
-        if (!isDeploying)
+        /// <summary>
+        /// Adds the specified unit to the deployment queue.
+        /// If no deployment is currently in progress, starts deploying immediately.
+        /// </summary>
+        /// <param name="unit">The UnitData to queue for deployment.</param>
+        public void AddUnitToDeploymentQueue(UnitData unit)
         {
-            ProcessNextUnitInQueue();
-        }
-    }
-
-    /// <summary>
-    /// Retrieves the next unit from the queue and marks deployment as in progress.
-    /// If the queue is empty, resets deployment state.
-    /// </summary>
-
-    private void ProcessNextUnitInQueue()
-    {
-        if (_unitQueue.Count > 0)
-        {
-            //remove unit from queue
-            nextCharacter = _unitQueue.Dequeue();
+            UnitQueue.Enqueue(unit);
 
             //Event invoke for Ui purpses 
             OnQueueChanged?.Invoke();
 
-            isDeploying = true;
-        }
-        else
-        {
-            nextCharacter = null;
-            isDeploying = false;
-        }
-    }
-
-
-
-    /// <summary>
-    /// Handles unit instantiation after a delay.
-    /// Waits for sufficient time and an available spawn area before deploying.
-    /// Resets timer and triggers the next deployment if available.
-    /// </summary>
-
-    private void HandleDelayedDeployment()
-    {
-        timer += Time.deltaTime;
-        if (timer >= nextCharacter.DeployDelayTime && !SpawnArea._hasUnitInside)
-        {
-            unitReference = Instantiate(nextCharacter.Prefab, _unitSpawnPoint.position, _unitSpawnPoint.rotation);
-
-            if (unitReference.TryGetComponent(out UnitBaseBehaviour behaviour))
+            // If no deployment is currently happening, start the queue process
+            if (!_isDeploying)
             {
-                behaviour.Initialize(nextCharacter);
+                ProcessNextUnitInQueue();
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the next unit from the queue and marks deployment as in progress.
+        /// If the queue is empty, resets deployment state.
+        /// </summary>
+
+        private void ProcessNextUnitInQueue()
+        {
+            if (UnitQueue.Count > 0)
+            {
+                //remove unit from queue
+                _nextCharacter = UnitQueue.Dequeue();
+
+                //Event invoke for Ui purpses 
+                OnQueueChanged?.Invoke();
+
+                _isDeploying = true;
+            }
+            else
+            {
+                _nextCharacter = null;
+                _isDeploying = false;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Handles unit instantiation after a delay.
+        /// Waits for sufficient time and an available spawn area before deploying.
+        /// Resets timer and triggers the next deployment if available.
+        /// </summary>
+
+        private void HandleDelayedDeployment()
+        {
+            _timer += Time.deltaTime;
+            if (!(_timer >= _nextCharacter.DeployDelayTime) || _spawnArea._hasUnitInside) return;
+            _unitReference = Instantiate(_nextCharacter.Prefab, _unitSpawnPoint.position, _unitSpawnPoint.rotation);
+
+            if (_unitReference.TryGetComponent(out UnitBaseBehaviour behaviour))
+            {
+                behaviour.Initialize(_nextCharacter);
             }
 
-            timer = 0;
-            isDeploying = false;
+            _timer = 0;
+            _isDeploying = false;
             ProcessNextUnitInQueue();
         }
+
+
     }
-
-
 }
 
 

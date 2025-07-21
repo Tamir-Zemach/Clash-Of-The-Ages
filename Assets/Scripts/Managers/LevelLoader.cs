@@ -7,9 +7,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
+public class LevelLoader : SceneAwareMonoBehaviour<LevelLoader>
 {
-
+    public event Action OnSceneChanged;
     public Toggle AdminUi;
 
     [SerializeField]
@@ -30,6 +30,10 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
     public int LevelIndex => _currentLevelIndex;
 
     public List<SceneReference> SceneList => _scenes;
+    protected override void InitializeOnSceneLoad()
+    {
+        OnSceneChanged?.Invoke();
+    }
 
     public void LoadNextLevel()
     {
@@ -100,6 +104,7 @@ public class LevelLoader : PersistentMonoBehaviour<LevelLoader>
     {
         return _currentLevelIndex == 0;
     }
+
 
 }
 

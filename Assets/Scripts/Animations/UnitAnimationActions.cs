@@ -1,38 +1,50 @@
+using System;
 using Assets.Scripts;
 using UnityEngine;
 
-public class UnitAnimationActions : MonoBehaviour
+namespace Animations
 {
-    private GameObject _parent;
-    private UnitBaseBehaviour UnitBaseBehaviour;
+    public class UnitAnimationActions : MonoBehaviour
+    {
+        public event Action OnAttack;
+        private GameObject _parent;
+        private UnitBaseBehaviour _unitBaseBehaviour;
 
-    private void Awake()
-    {
-        UnitBaseBehaviour = GetComponentInParent<UnitBaseBehaviour>();
-        _parent = UnitBaseBehaviour.gameObject;
-    }
-    public void DestroyObject()
-    {
-        if (_parent != null)
+        private void Awake()
         {
-            Destroy(_parent.gameObject);
+            _unitBaseBehaviour = GetComponentInParent<UnitBaseBehaviour>();
+            _parent = _unitBaseBehaviour.gameObject;
         }
-    }
-
-    public void AttackInvoke()
-    {
-        GameObject target = UnitBaseBehaviour.GetAttackTarget();
-        if (target == null) return;
-
-        Attacker attacker = UnitBaseBehaviour.GetComponent<Attacker>();
-        if (attacker != null)
+        public void DestroyObject()
         {
-            attacker.Attack(target);
+            if (_parent != null)
+            {
+                Destroy(_parent.gameObject);
+            }
         }
-        Range ranger = UnitBaseBehaviour.GetComponent<Range>();
-        if (ranger != null)
+
+        public void AttackInvoke()
         {
-            ranger.FireProjectile(target);
+            GameObject target = _unitBaseBehaviour.GetAttackTarget();
+            if (target == null) return;
+
+            Attacker attacker = _unitBaseBehaviour.GetComponent<Attacker>();
+            if (attacker != null)
+            {
+                attacker.Attack(target);
+                OnAttack?.Invoke();
+                return;
+            }
+            else
+            {
+                Range ranger = _unitBaseBehaviour.GetComponent<Range>();
+                if (ranger != null)
+                {
+                    ranger.FireProjectile(target);
+                    OnAttack?.Invoke();
+                }
+            }
+
         }
     }
 }

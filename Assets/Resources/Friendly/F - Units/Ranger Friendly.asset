@@ -10,15 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec32066ff55a8e84a8f8b11ff40d3feb, type: 3}
-  m_Name: Tank Friendly
+  m_Name: Ranger Friendly
   m_EditorClassIdentifier: 
-  <AgeStage>k__BackingField: 1
-  <Type>k__BackingField: 2
-  <IsFriendly>k__BackingField: 1
-  <Prefab>k__BackingField: {fileID: 6578747469787437173, guid: 807f2b6c2ed9f8146be47706d839b5e1, type: 3}
-  Cost: 30
-  DeployDelayTime: 2
-  _moneyWhenKilled: 0
+  _ageStage: 1
+  _type: 1
+  _isFriendly: 1
+  _gameObject: {fileID: 0}
+  _sfx:
+  - _type: 0
+    _audioClip: {fileID: 8300000, guid: 4652c5da23d529e4d84fc1bf9002ded0, type: 3}
+    _volume: 0.1
+  _prefab: {fileID: 2906663908437237772, guid: 60f55190c838fbf478d03148d24220f9, type: 3}
+  Cost: 20
+  DeployDelayTime: 1.5
+  MoneyWhenKilled: 0
   OppositeBaseTag: Enemy Base
   OppositeUnitTag: Enemy Character
   OppositeUnitMask:
@@ -26,10 +31,10 @@ MonoBehaviour:
     m_Bits: 576
   FriendlyUnitTag: Friendly Character
   Speed: 2
-  Health: 150
-  Strength: 8
-  InitialAttackDelay: 1.2
+  Health: 80
+  Strength: 7
+  InitialAttackDelay: 0.8
   RayLengthForFriendlyUnit: 2
-  Range: 2
+  Range: 5
   boxSize: {x: 0.5, y: 0.5, z: 0.5}
-  boxColor: {r: 0.8988769, g: 1, b: 0, a: 1}
+  boxColor: {r: 0, g: 0.1660657, b: 1, a: 1}

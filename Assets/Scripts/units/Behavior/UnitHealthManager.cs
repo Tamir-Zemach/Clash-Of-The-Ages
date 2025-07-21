@@ -1,60 +1,65 @@
 using System;
 using Assets.Scripts;
-using UnityEngine;
 using Assets.Scripts.InterFaces;
+using BackEnd.Data__ScriptableOBj_;
+using UnityEngine;
 
-[RequireComponent(typeof(UnitBaseBehaviour))]
-public class UnitHealthManager : MonoBehaviour, IDamageable
+namespace units.Behavior
 {
-    public event Action OnHealthChanged;
-    public event Action OnDying;
-    private UnitData Unit;
-    private UnitBaseBehaviour UnitBaseBehaviour;
-    private int _currentHealth;
-    private Animator _animator;
-    private bool isDying;
-
-    public int currentHealth => _currentHealth;
-
-    private void Start()
+    [RequireComponent(typeof(UnitBaseBehaviour))]
+    public class UnitHealthManager : MonoBehaviour, IDamageable
     {
-        UnitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
-        Unit = UnitBaseBehaviour.Unit;
-        _currentHealth = Unit.Health;
-    }
+        public event Action OnHealthChanged;
+        public event Action OnDying;
+        private UnitData _unit;
+        private UnitBaseBehaviour _unitBaseBehaviour;
+        //private UnitAudioManager unitAudioManager;
+        private int _currentHealth;
+        private Animator _animator;
+        private bool _isDying;
 
-    public void GetHurt(int damage)
-    {
-        _currentHealth -= damage;
+        public int CurrentHealth => _currentHealth;
 
-        OnHealthChanged?.Invoke();
-
-        if (_currentHealth <= 0 && !isDying)
+        private void Start()
         {
-            isDying = true;
+            _unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
+            //unitAudioManager = GetComponent<UnitAudioManager>();
+
+            _unit = _unitBaseBehaviour.Unit;
+            _currentHealth = _unit.Health;
+        }
+
+        public void GetHurt(int damage)
+        {
+            _currentHealth -= damage;
+
+            OnHealthChanged?.Invoke();
+
+            if (_currentHealth > 0 || _isDying) return;
+            _isDying = true;
             Die();
         }
-    }
 
-    private void Die()
-    {
-        PlayerCurrency.Instance.AddMoney(Unit._moneyWhenKilled);
-        TrygetAnimator();
-        if (_animator != null)
+        private void Die()
         {
-            OnDying?.Invoke();
+            PlayerCurrency.Instance.AddMoney(_unit.MoneyWhenKilled);
+            TrygetAnimator();
+            if (_animator != null)
+            {
+                OnDying?.Invoke();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        else
+
+        private void TrygetAnimator()
         {
-            Destroy(gameObject);
+            _animator = GetComponentInChildren<Animator>();
         }
-    }
 
-    private void TrygetAnimator()
-    {
-       _animator = GetComponentInChildren<Animator>();
     }
-
 }
 
 

@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Data;
 using Assets.Scripts.Managers;
-using Assets.Scripts.turrets;
 using Assets.Scripts.units;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,7 @@
-using Assets.Scripts.BackEnd.Base_Classes;
+using Assets.Scripts.BackEnd.BaseClasses;
 using Assets.Scripts.Data;
-using Assets.Scripts.Enems;
+using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Data__ScriptableOBj_;
 using UnityEngine;
 
 public class EnemySpecialAttackSpawner : EnemySpawner<EnemySpecialAttackSpawner>

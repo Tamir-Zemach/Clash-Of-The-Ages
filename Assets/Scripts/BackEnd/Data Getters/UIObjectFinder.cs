@@ -1,18 +1,20 @@
-
 using Assets.Scripts.InterFaces;
 using UnityEngine;
 
-public static class UIObjectFinder 
+namespace BackEnd.Data_Getters
 {
-    public static TButton GetButton<TButton, TType>()
-        where TButton : Component, IImgeSwichable<TType>
+    public static class UIObjectFinder 
     {
-        return Object.FindFirstObjectByType<TButton>();
-    }
-    public static TButtons[] GetButtons<TButtons, TType>()
-    where TButtons : Component, IImgeSwichable<TType>
-    {
-        return Object.FindObjectsByType<TButtons>(FindObjectsSortMode.None);
-    }
+        public static TButton GetButton<TButton, TType>()
+            where TButton : Component, IImgeSwichable<TType>
+        {
+            return Object.FindFirstObjectByType<TButton>();
+        }
+        public static TButtons[] GetButtons<TButtons, TType>()
+            where TButtons : Component, IImgeSwichable<TType>
+        {
+            return Object.FindObjectsByType<TButtons>(FindObjectsSortMode.None);
+        }
 
+    }
 }

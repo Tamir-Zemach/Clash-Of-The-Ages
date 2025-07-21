@@ -1,5 +1,6 @@
-﻿using Assets.Scripts.Enems;
+﻿using Assets.Scripts.BackEnd.Enems;
 using System;
+using turrets;
 using UnityEngine;
 
 namespace Assets.Scripts.Ui.TurretButton
@@ -16,25 +17,7 @@ namespace Assets.Scripts.Ui.TurretButton
             // Perform the action tied to this interaction
             logicToExecute?.Invoke(slot);
         }
-
-        private void ResetVisualFeedBack()
-        {
-            // Stop flashing on all spawn points
-            SetVisualFeedback(_ => true, VisualFeedbackType.StopFlash);
-
-            // Keep unlocked slots highlighted
-            SetVisualFeedback(point => point.IsUnlocked, VisualFeedbackType.Highlight);
-
-            // Turn off visibility for all locked slots
-            SetVisualFeedback(point => !point.IsUnlocked, VisualFeedbackType.Off);
-
-            ShowCanvas();
-
-            ////if there is an overlay - fade it away
-            //CleanupOverlay();
-        }
-
-
+        
 
         //Actual logic to aplly when all the conditions are matching 
         private void AddSlotLogic(TurretSpawnPoint slot)
@@ -53,13 +36,9 @@ namespace Assets.Scripts.Ui.TurretButton
             slot.HasTurret = false;
 
             var turret = slot.GetComponentInChildren<TurretBaseBehavior>();
-            if (turret != null)
-            {
-                Destroy(turret.gameObject);
-            }
-
-
-            // onTurretSelled?.Invoke();
+            if (turret == null) return;
+            Destroy(turret.gameObject);
+            
         }
 
         private void AddTurretToEmptySlotLogic(TurretSpawnPoint slot)
@@ -67,11 +46,20 @@ namespace Assets.Scripts.Ui.TurretButton
             PlayerCurrency.Instance.SubtractMoney(_cost);
             slot.HasTurret = true;
 
-            GameObject turret = Instantiate(_turret.Prefab, slot.transform.position, slot.transform.rotation);
-
+            var turret = Instantiate(_turret.Prefab, slot.transform.position, slot.transform.rotation);
             turret.transform.parent = slot.transform;
+            var behaviour = turret.GetComponent<TurretBaseBehavior>();
 
-            // onTurretPlaced?.Invoke();
+            if (behaviour != null)
+            {
+                behaviour.Initialize(_turret);
+            }
+            else
+            {
+                Debug.LogWarning("TurretBaseBehaviour not found on spawned enemy prefab.");
+            }
+
+
         }
 
 

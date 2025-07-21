@@ -1,7 +1,9 @@
 
-using Assets.Scripts.Enems;
+using Assets.Scripts.BackEnd.Enems;
 using System.Data;
 using System.Linq;
+using BackEnd.Data__ScriptableOBj_;
+using Managers.Spawners;
 using TMPro;
 using UnityEngine;
 
@@ -48,7 +50,7 @@ public class UnitQueueUiHandler : MonoBehaviour
         }
 
         // Filter queue to only include characters matching _assignedCharacter
-        _queueArray = DeployManager.Instance._unitQueue.Where(c => c == _assignedUnit).ToArray();
+        _queueArray = DeployManager.Instance.UnitQueue.Where(c => c == _assignedUnit).ToArray();
 
         _queueCountText.text = _queueArray.Length > 0 ? $"+ {_queueArray.Length}" : "";
     }
@@ -56,7 +58,7 @@ public class UnitQueueUiHandler : MonoBehaviour
     private bool NullChecksForSafety()
     {
         if (_assignedUnit == null ||
-            DeployManager.Instance == null || DeployManager.Instance._unitQueue == null)
+            DeployManager.Instance == null || DeployManager.Instance.UnitQueue == null)
         {
             _queueCountText.text = "Error: Queue not initialized";
             return true;

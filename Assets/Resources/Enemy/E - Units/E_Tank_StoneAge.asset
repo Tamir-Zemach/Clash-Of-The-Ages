@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec32066ff55a8e84a8f8b11ff40d3feb, type: 3}
   m_Name: E_Tank_StoneAge
   m_EditorClassIdentifier: 
-  <AgeStage>k__BackingField: 1
-  <Type>k__BackingField: 0
-  <IsFriendly>k__BackingField: 0
-  <Prefab>k__BackingField: {fileID: 7476198131129608348, guid: 99516be2335f6b1478910acda10230c8, type: 3}
+  ageStage: 1
+  type: 2
+  isFriendly: 0
+  _sfx:
+  - <Type>k__BackingField: 0
+    <AudioClip>k__BackingField: {fileID: 0}
+  prefab: {fileID: 7476198131129608348, guid: 99516be2335f6b1478910acda10230c8, type: 3}
   Cost: 0
   DeployDelayTime: 0
   _moneyWhenKilled: 30

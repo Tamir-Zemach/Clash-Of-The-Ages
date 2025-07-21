@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.BackEnd.Utilities;
-using Assets.Scripts.Enems;
+using Assets.Scripts.BackEnd.Enems;
 using System;
 
 //TODO: implement the UpgradeStateManager logics
@@ -58,6 +58,24 @@ namespace Assets.Scripts.Ui.TurretButton
             _overLay.blocksRaycasts = false;
             _overLay.interactable = false;
         }
+        
+        private void ResetVisualFeedBack()
+        {
+            // Stop flashing on all spawn points
+            SetVisualFeedback(_ => true, VisualFeedbackType.StopFlash);
+
+            // Keep unlocked slots highlighted
+            SetVisualFeedback(point => point.IsUnlocked, VisualFeedbackType.Highlight);
+
+            // Turn off visibility for all locked slots
+            SetVisualFeedback(point => !point.IsUnlocked, VisualFeedbackType.Off);
+
+            ShowCanvas();
+
+            ////if there is an overlay - fade it away
+            //CleanupOverlay();
+        }
+
 
 
     }

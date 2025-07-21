@@ -73,3 +73,6 @@ UserSettings/Layouts/*.dwlt
 # Ignore Unity Editor personal settings
 UserSettings/
 
+
+.idea/
+*.iml
