@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-
-namespace Assets.Scripts.Managers
+namespace BackEnd.Economy
 {
     internal class PlayerHealth
     {
@@ -12,10 +11,10 @@ namespace Assets.Scripts.Managers
 
         private bool _hasDroppedBelowHalfHealth = false;
 
-        private static PlayerHealth instance;
+        private static PlayerHealth _instance;
 
         // Public property to access the instance
-        public static PlayerHealth Instance => instance ??= new PlayerHealth();
+        public static PlayerHealth Instance => _instance ??= new PlayerHealth();
 
         // Private constructor to prevent external instantiation
         private PlayerHealth() { }
@@ -70,12 +69,9 @@ namespace Assets.Scripts.Managers
 
         private int ValidateAmount(int amount, string operation)
         {
-            if (amount < 0)
-            {
-                Debug.LogWarning($"{amount} is negative. Please use a positive amount for {operation}.");
-                return 0;
-            }
-            return amount;
+            if (amount >= 0) return amount;
+            Debug.LogWarning($"{amount} is negative. Please use a positive amount for {operation}.");
+            return 0;
         }
 
         private void EvaluateHealthThresholds()
@@ -85,11 +81,10 @@ namespace Assets.Scripts.Managers
                 _hasDroppedBelowHalfHealth = true;
                 OnDroppedBelowHalfHealth?.Invoke();
             }
-            if (_hasDroppedBelowHalfHealth && (float)_currentHealth / _maxHealth > 0.5f)
-            {
-                _hasDroppedBelowHalfHealth = false;
-                OnHealedAboveHalfHealth?.Invoke();
-            }
+
+            if (!_hasDroppedBelowHalfHealth || !((float)_currentHealth / _maxHealth > 0.5f)) return;
+            _hasDroppedBelowHalfHealth = false;
+            OnHealedAboveHalfHealth?.Invoke();
         }
 
 

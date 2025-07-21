@@ -1,4 +1,4 @@
-using Assets.Scripts.Managers;
+using BackEnd.Economy;
 using UnityEngine;
 using UnityEngine.UI;
 

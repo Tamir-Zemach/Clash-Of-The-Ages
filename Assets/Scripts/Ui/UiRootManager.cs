@@ -1,46 +1,35 @@
-﻿
-using UnityEngine.SceneManagement;
-using Assets.Scripts.BackEnd.Enems;
-using Assets.Scripts.Ui.TurretButton;
+﻿using System;
 using UnityEngine;
-using System;
 
-public class UIRootManager : SceneAwareMonoBehaviour<UIRootManager>
+namespace Ui
 {
-    [SerializeField] private CanvasGroup[] _canvasesToShowOnAwake;
-
-    protected override void Awake()
+    public class UIRootManager : SceneAwareMonoBehaviour<UIRootManager>
     {
-        base.Awake();
-    }
+        [SerializeField] private CanvasGroup[] _canvasesToShowOnAwake;
+    
 
 
-    protected override void InitializeOnSceneLoad()
-    {
-        ResetaAlphaInAllCanvasGroups();
-    }
-
-
-    private void ResetaAlphaInAllCanvasGroups()
-    {
-        CanvasGroup[] canvasGroups = GetComponentsInChildren<CanvasGroup>();
-        for (int i = 0; i < _canvasesToShowOnAwake.Length; i++)
+        protected override void InitializeOnSceneLoad()
         {
+            ResetAlphaInAllCanvasGroups();
+        }
+
+
+        private void ResetAlphaInAllCanvasGroups()
+        {
+            var canvasGroups = GetComponentsInChildren<CanvasGroup>();
+
             foreach (var group in canvasGroups)
             {
-                if (group != null && group != _canvasesToShowOnAwake[i])
-                {
-                    group.alpha = 0;
-                    group.interactable = false;
-                    group.blocksRaycasts = false;
-                }
+                if (group == null || Array.Exists(_canvasesToShowOnAwake, cg => cg == group)) continue;
 
+                group.alpha = 0f;
+                group.interactable = false;
+                group.blocksRaycasts = false;
             }
         }
 
 
+
     }
-
-
-
 }

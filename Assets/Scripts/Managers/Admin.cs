@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts;
-using Assets.Scripts.Managers;
+using BackEnd.Economy;
 using UnityEngine;
 
 public class Admin : PersistentMonoBehaviour<Admin>

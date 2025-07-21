@@ -1,7 +1,7 @@
 using Assets.Scripts.BackEnd.Enems;
 using Assets.Scripts;
+using BackEnd.Economy;
 using UnityEngine;
-using Assets.Scripts.Managers;
 
 public class PlayerUpgradeButton : MonoBehaviour
 {

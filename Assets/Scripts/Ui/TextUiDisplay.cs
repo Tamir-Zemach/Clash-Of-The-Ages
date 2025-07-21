@@ -1,5 +1,5 @@
 using Assets.Scripts;
-using Assets.Scripts.Managers;
+using BackEnd.Economy;
 using TMPro;
 using UnityEngine;
 

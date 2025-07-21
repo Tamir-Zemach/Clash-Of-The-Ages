@@ -1,9 +1,9 @@
 ﻿using Assets.Scripts;
 using Assets.Scripts.Data;
-using Assets.Scripts.Managers;
 using Assets.Scripts.units;
 using System.Collections.Generic;
 using System.Linq;
+using BackEnd.Economy;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class GameManager : SceneAwareMonoBehaviour<GameManager>

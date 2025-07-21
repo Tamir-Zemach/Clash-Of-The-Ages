@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace BackEnd.Economy
 {
     public class PlayerCurrency
     {

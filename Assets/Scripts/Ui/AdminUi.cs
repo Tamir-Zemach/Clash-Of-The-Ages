@@ -1,8 +1,8 @@
 ﻿using Assets.Scripts;
-using Assets.Scripts.Managers;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using BackEnd.Economy;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

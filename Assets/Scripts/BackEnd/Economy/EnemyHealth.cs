@@ -1,18 +1,20 @@
 ﻿using System;
 using UnityEngine;
 
-
-namespace Assets.Scripts.Managers
+namespace BackEnd.Economy
 {
     internal class EnemyHealth
     {
         public static event Action OnEnemyHealthChanged;
         public event Action OnEnemyDied;
+        public static event Action OnDroppedBelowHalfHealth;
 
-        private static EnemyHealth instance;
+        private bool _hasDroppedBelowHalfHealth = false;
+        
+        private static EnemyHealth _instance;
 
         // Public property to access the instance
-        public static EnemyHealth Instance => instance ??= new EnemyHealth();
+        public static EnemyHealth Instance => _instance ??= new EnemyHealth();
 
         // Private constructor to prevent external instantiation
         private EnemyHealth() { }
@@ -28,9 +30,11 @@ namespace Assets.Scripts.Managers
             if (_currentHealth > _maxHealth)
             {
                 _currentHealth = _maxHealth;
+                EvaluateHealthThresholds();
                 return _currentHealth;
             }
             OnEnemyHealthChanged?.Invoke();
+            EvaluateHealthThresholds();
             return _currentHealth;
         }
 
@@ -39,6 +43,7 @@ namespace Assets.Scripts.Managers
         public int SubtractHealth(int amount)
         {
             _currentHealth -= ValidateAmount(Math.Max(0, amount), "subtracting");
+            EvaluateHealthThresholds();
             OnEnemyHealthChanged?.Invoke();
 
             if (_currentHealth <= 0)
@@ -66,18 +71,29 @@ namespace Assets.Scripts.Managers
         public void FullHealth()
         {
             _currentHealth = _maxHealth;
+            EvaluateHealthThresholds();
             OnEnemyHealthChanged?.Invoke();
         }
 
-        private int ValidateAmount(int amount, string operation)
+        private static int ValidateAmount(int amount, string operation)
         {
-            if (amount < 0)
-            {
-                Debug.LogWarning($"{amount} is negative. Please use a positive amount for {operation}.");
-                return 0;
-            }
-            return amount;
+            if (amount >= 0) return amount;
+            Debug.LogWarning($"{amount} is negative. Please use a positive amount for {operation}.");
+            return 0;
         }
+        
+        private void EvaluateHealthThresholds()
+        {
+            if (!_hasDroppedBelowHalfHealth && (float)_currentHealth / _maxHealth < 0.5f)
+            {
+                _hasDroppedBelowHalfHealth = true;
+                OnDroppedBelowHalfHealth?.Invoke();
+            }
+
+            if (!_hasDroppedBelowHalfHealth || !((float)_currentHealth / _maxHealth > 0.5f)) return;
+            _hasDroppedBelowHalfHealth = false;
+        }
+
 
         public void DisplyHealthInConsole()
         {

@@ -2,6 +2,7 @@ using Assets.Scripts.BackEnd.BaseClasses;
 using Assets.Scripts.Data;
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Data__ScriptableOBj_;
+using Special_Attacks;
 using UnityEngine;
 
 public class EnemySpecialAttackSpawner : EnemySpawner<EnemySpecialAttackSpawner>
@@ -46,16 +47,28 @@ public class EnemySpecialAttackSpawner : EnemySpawner<EnemySpecialAttackSpawner>
     private void SpawnPrefabsWithRandomTime()
     {
         Timer += Time.deltaTime;
-        if (CanDeploy())
-        {
-            Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.transform.position, _specialAttackSpawnPos.transform.rotation);
-            _specialAttackSpawnPos.IsSpecialAttackAccruing = true;
-            Timer = 0;
-            RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
-        }
+        if (!CanDeploy()) return;
+        SpawnSpecialAttack();
+        _specialAttackSpawnPos.IsSpecialAttackAccruing = true;
+        Timer = 0;
+        RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
     }
 
 
+    private void SpawnSpecialAttack()
+    {
+        var specialAttack = Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.transform.position, _specialAttackSpawnPos.transform.rotation);
+        var behaviour = specialAttack.GetComponent<SpecialAttackBaseBehavior>();
 
+        if (behaviour != null)
+        {
+            behaviour.Initialize(_specialAttack, _specialAttackSpawnPos);
+        }
+        else
+        {
+            Debug.LogWarning("SpecialAttackBaseBehaviour not found on spawned enemy prefab.");
+        }
+
+    }
 
 }

@@ -62,15 +62,15 @@ public class EnemyTurretSpawner : EnemySpawner<EnemyTurretSpawner>
     {
         if (_enemyTurrets == null || _enemyTurrets.Count == 0) return;
 
-        TurretData randomTurretData = _enemyTurrets[Random.Range(0, _enemyTurrets.Count)];
+        var randomTurretData = _enemyTurrets[Random.Range(0, _enemyTurrets.Count)];
 
-        GameObject enemyReference = Instantiate(
+        var enemyReference = Instantiate(
             randomTurretData.Prefab,
             _availableSpawnPoint.transform.position,
             _availableSpawnPoint.transform.rotation
         );
         enemyReference.transform.SetParent(_availableSpawnPoint.transform);
-        TurretBaseBehavior behaviour = enemyReference.GetComponent<TurretBaseBehavior>();
+        var behaviour = enemyReference.GetComponent<TurretBaseBehavior>();
 
         if (behaviour != null)
         {

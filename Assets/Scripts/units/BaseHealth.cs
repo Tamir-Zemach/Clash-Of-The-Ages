@@ -1,7 +1,8 @@
-using Assets.Scripts.Managers;
 using UnityEngine;
 using Assets.Scripts.InterFaces;
 using System;
+using BackEnd.Economy;
+
 public class BaseHealth : MonoBehaviour, IDamageable
 {
     public bool isFriendly;
