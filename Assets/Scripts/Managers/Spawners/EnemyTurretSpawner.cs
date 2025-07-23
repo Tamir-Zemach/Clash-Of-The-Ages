@@ -1,104 +1,107 @@
-using Assets.Scripts.BackEnd.BaseClasses;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.BackEnd.BaseClasses;
 using BackEnd.Data__ScriptableOBj_;
 using turrets;
 using UnityEngine;
 
-public class EnemyTurretSpawner : EnemySpawner<EnemyTurretSpawner>
+namespace Managers.Spawners
 {
-    public event System.Action OnTurretPlaced;
-
-    protected override float RandomSpawnTimer { get; set; }
-    protected override float Timer { get; set; }
-
-    private TurretSpawnPoint _availableSpawnPoint;
-
-    private List<TurretData> _enemyTurrets;
-
-    private bool _isTurretWaitingToSpawn = false;    
-
-    protected override void Awake()
+    public class EnemyTurretSpawner : EnemySpawner<EnemyTurretSpawner>
     {
-        base.Awake();
-        RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
-    }
+        public event System.Action OnTurretPlaced;
 
-    protected override void InitializeOnSceneLoad()
-    {
-        if (LevelLoader.Instance.InStartMenu()) return;
-        _enemyTurrets = GameDataRepository.Instance.EnemyTurrets;
-        RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
-        EnemyTurretSlotSpawner.Instance.OnTurretSlotActivated += StartTimer;
-        ResetTimer();
-    }
+        protected override float RandomSpawnTimer { get; set; }
+        protected override float Timer { get; set; }
 
+        private TurretSpawnPoint _availableSpawnPoint;
 
+        private List<TurretData> _enemyTurrets;
 
-    private void StartTimer(TurretSpawnPoint slot)
-    {
-        _isTurretWaitingToSpawn = true;
-        _availableSpawnPoint = slot;
-        ResetTimer();
-    }
+        private bool _isTurretWaitingToSpawn = false;    
 
-    private void Update()
-    {
-        if (LevelLoader.Instance.InStartMenu()) return;
-        if (!_isTurretWaitingToSpawn) return;
-        CheckIfSpawnable();
-    }
-
-    private void CheckIfSpawnable()
-    {
-        Timer += Time.deltaTime;
-        if (CanDeploy())
+        protected override void Awake()
         {
-            SpawnRandomEnemyTurret();
+            base.Awake();
+            RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
         }
-    }
 
-    private void SpawnRandomEnemyTurret()
-    {
-        if (_enemyTurrets == null || _enemyTurrets.Count == 0) return;
-
-        var randomTurretData = _enemyTurrets[Random.Range(0, _enemyTurrets.Count)];
-
-        var enemyReference = Instantiate(
-            randomTurretData.Prefab,
-            _availableSpawnPoint.transform.position,
-            _availableSpawnPoint.transform.rotation
-        );
-        enemyReference.transform.SetParent(_availableSpawnPoint.transform);
-        var behaviour = enemyReference.GetComponent<TurretBaseBehavior>();
-
-        if (behaviour != null)
+        protected override void InitializeOnSceneLoad()
         {
-            behaviour.Initialize(randomTurretData);
+            if (LevelLoader.Instance.InStartMenu()) return;
+            _enemyTurrets = GameDataRepository.Instance.EnemyTurrets;
+            RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
+            EnemyTurretSlotSpawner.Instance.OnTurretSlotActivated += StartTimer;
+            ResetTimer();
         }
-        else
+
+
+
+        private void StartTimer(TurretSpawnPoint slot)
         {
-            Debug.LogWarning("UnitBaseBehaviour not found on spawned enemy prefab.");
+            _isTurretWaitingToSpawn = true;
+            _availableSpawnPoint = slot;
+            ResetTimer();
         }
-        _availableSpawnPoint.HasTurret = true;
-        _availableSpawnPoint = null;
-        _isTurretWaitingToSpawn = false;
-        OnTurretPlaced?.Invoke();
+
+        private void Update()
+        {
+            if (LevelLoader.Instance.InStartMenu()) return;
+            if (!_isTurretWaitingToSpawn) return;
+            CheckIfSpawnable();
+        }
+
+        private void CheckIfSpawnable()
+        {
+            Timer += Time.deltaTime;
+            if (CanDeploy())
+            {
+                SpawnRandomEnemyTurret();
+            }
+        }
+
+        private void SpawnRandomEnemyTurret()
+        {
+            if (_enemyTurrets == null || _enemyTurrets.Count == 0) return;
+
+            var randomTurretData = _enemyTurrets[Random.Range(0, _enemyTurrets.Count)];
+
+            var enemyReference = Instantiate(
+                randomTurretData.Prefab,
+                _availableSpawnPoint.transform.position,
+                _availableSpawnPoint.transform.rotation
+            );
+            enemyReference.transform.SetParent(_availableSpawnPoint.transform);
+            var behaviour = enemyReference.GetComponent<TurretBaseBehavior>();
+
+            if (behaviour)
+            {
+                behaviour.Initialize(randomTurretData);
+            }
+            else
+            {
+                Debug.LogWarning("UnitBaseBehaviour not found on spawned enemy prefab.");
+            }
+            _availableSpawnPoint.HasTurret = true;
+            _availableSpawnPoint = null;
+            _isTurretWaitingToSpawn = false;
+            OnTurretPlaced?.Invoke();
+        }
+
+
+        protected override bool CanDeploy()
+        {
+            return Timer >= RandomSpawnTimer 
+                   && EnemyTurretSlotSpawner.Instance.TurretSpawnPoints.Any(spawnPoint => !spawnPoint.HasTurret);
+        }
+
+        private void ResetTimer()
+        {
+            RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
+            Timer = 0;
+        }
+
+
+
     }
-
-
-    protected override bool CanDeploy()
-    {
-        return Timer >= RandomSpawnTimer 
-            && EnemyTurretSlotSpawner.Instance.TurretSpawnPoints.Any(spawnPoint => !spawnPoint.HasTurret);
-    }
-
-    private void ResetTimer()
-    {
-        RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
-        Timer = 0;
-    }
-
-
-
 }

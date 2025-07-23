@@ -12,13 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec32066ff55a8e84a8f8b11ff40d3feb, type: 3}
   m_Name: E_Attacker_StoneAge
   m_EditorClassIdentifier: 
-  ageStage: 1
-  type: 0
-  isFriendly: 0
-  prefab: {fileID: 7476198131129608348, guid: 24c6171552fef6c4ca2e6b752b3e7dee, type: 3}
+  _ageStage: 1
+  _type: 0
+  _isFriendly: 0
+  _gameObject: {fileID: 0}
+  _sfx:
+  - _type: 0
+    _audioClip: {fileID: 0}
+    _volume: 0
+  _prefab: {fileID: 7476198131129608348, guid: 24c6171552fef6c4ca2e6b752b3e7dee, type: 3}
   Cost: 0
   DeployDelayTime: 0
-  _moneyWhenKilled: 10
+  MoneyWhenKilled: 10
   OppositeBaseTag: Player Base
   OppositeUnitTag: Friendly Character
   OppositeUnitMask:

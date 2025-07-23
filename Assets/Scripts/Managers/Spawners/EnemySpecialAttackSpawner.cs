@@ -14,12 +14,7 @@ public class EnemySpecialAttackSpawner : EnemySpawner<EnemySpecialAttackSpawner>
     protected override float RandomSpawnTimer { get; set; }
 
     protected override float Timer { get; set; }
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-    }
+    
 
     private void Update()
     {
@@ -40,7 +35,8 @@ public class EnemySpecialAttackSpawner : EnemySpawner<EnemySpecialAttackSpawner>
         {
             return false;
         }
-        //TODO: deside what are the conditions for the enemy special attack and implement them
+        //TODO: decide what are the conditions for the enemy special attack and implement them
+        
         return Timer >= RandomSpawnTimer && !_specialAttackSpawnPos.IsSpecialAttackAccruing;
     }
 

@@ -16,7 +16,10 @@ MonoBehaviour:
   _type: 1
   _isFriendly: 1
   _gameObject: {fileID: 0}
-  _sfx: []
+  _sfx:
+  - _type: 0
+    _audioClip: {fileID: 0}
+    _volume: 0
   _prefab: {fileID: 6152897977360850917, guid: 9ac2bbfb1ab831243a67e596589a75ed, type: 3}
   <OppositeUnitLayer>k__BackingField:
     serializedVersion: 2
