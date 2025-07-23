@@ -37,7 +37,7 @@ namespace Assets.Scripts.Ui.TurretButton
             slot.HasTurret = false;
 
             var turret = slot.GetComponentInChildren<TurretBaseBehavior>();
-            if (turret == null) return;
+            if (!turret) return;
             Destroy(turret.gameObject);
             
         }
@@ -51,7 +51,7 @@ namespace Assets.Scripts.Ui.TurretButton
             turret.transform.parent = slot.transform;
             var behaviour = turret.GetComponent<TurretBaseBehavior>();
 
-            if (behaviour != null)
+            if (behaviour)
             {
                 behaviour.Initialize(_turret);
             }
