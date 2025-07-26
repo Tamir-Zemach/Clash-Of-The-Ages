@@ -6,6 +6,7 @@ namespace BackEnd.Economy
     public class PlayerCurrency
     {
         public static event Action OnMoneyChanged;
+        public static event Action OnDoesntHaveEnoughMoney;
 
         private static PlayerCurrency instance;
 
@@ -28,11 +29,15 @@ namespace BackEnd.Economy
         public int SubtractMoney(int amount)
         {
             _money -= ValidateAmount(Math.Max(0, amount), "subtracting");
+            if (_money < 0)
+            {
+                _money = 0;
+            }
             OnMoneyChanged?.Invoke();
             return _money;
         }
 
-
+        
         private int ValidateAmount(int amount, string operation)
         {
             if (amount < 0)
@@ -45,13 +50,15 @@ namespace BackEnd.Economy
 
         public bool HasEnoughMoney(int cost)
         {
-            return _money >= cost;
+            if (_money >= cost)
+            {
+                return true;
+            }
+            else
+            {
+                OnDoesntHaveEnoughMoney?.Invoke();
+                return false;
+            }
         }
-
-        public void DisplyMoneyInConsole()
-        {
-            Debug.Log($"current money amount = {_money}");
-        }
-
     }
 }

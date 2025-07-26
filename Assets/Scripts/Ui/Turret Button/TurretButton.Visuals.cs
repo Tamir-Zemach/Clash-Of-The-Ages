@@ -1,13 +1,15 @@
-﻿using Assets.Scripts.BackEnd.Utilities;
+﻿
 using Assets.Scripts.BackEnd.Enems;
 using System;
+using BackEnd.Utilities;
+using DG.Tweening;
 
-//TODO: implement the UpgradeStateManager logics
 
 namespace Assets.Scripts.Ui.TurretButton
 {
     public partial class TurretButton
     {
+        private Tween _fadeTween;
         /// <summary>
         /// Applies visual feedback to turret spawn points based on a condition and feedback mode.
         /// </summary>
@@ -45,22 +47,32 @@ namespace Assets.Scripts.Ui.TurretButton
             }
         }
 
-        private void ShowCanvas()
+        private void ShowCanvasGroup()
         {
-            StartCoroutine(UIEffects.FadeTo(1f, _overLay, 0.3f));
-            _overLay.blocksRaycasts = true;
-            _overLay.interactable = true;
+            _fadeTween?.Kill();
+
+            _fadeTween = UIEffects.FadeCanvasGroup(_canvasGroupToFade, 1f, 0.3f, () =>
+            {
+                _canvasGroupToFade.blocksRaycasts = true;
+                _canvasGroupToFade.interactable = true;
+            });
         }
 
-        private void CleanupOverlay()
+        private void CleanupCanvasGroup()
         {
-            StartCoroutine(UIEffects.FadeTo(0f, _overLay, 0.3f));
-            _overLay.blocksRaycasts = false;
-            _overLay.interactable = false;
+            
+            _fadeTween?.Kill();
+
+            _fadeTween = UIEffects.FadeCanvasGroup(_canvasGroupToFade, 0f, 0.3f, () =>
+            {
+                _canvasGroupToFade.blocksRaycasts = false;
+                _canvasGroupToFade.interactable = false;
+            });
         }
         
         private void ResetVisualFeedBack()
         {
+            print("resetVisualFeedBack");
             // Stop flashing on all spawn points
             SetVisualFeedback(_ => true, VisualFeedbackType.StopFlash);
 
@@ -70,10 +82,8 @@ namespace Assets.Scripts.Ui.TurretButton
             // Turn off visibility for all locked slots
             SetVisualFeedback(point => !point.IsUnlocked, VisualFeedbackType.Off);
 
-            ShowCanvas();
-
-            ////if there is an overlay - fade it away
-            //CleanupOverlay();
+            ShowCanvasGroup();
+            
         }
 
 

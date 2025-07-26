@@ -1,75 +1,161 @@
-﻿
-using System.Collections;
+﻿using System;
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-namespace Assets.Scripts.BackEnd.Utilities
+namespace BackEnd.Utilities
 {
     public static class UIEffects
     {
+        #region CanvasGroups
 
-        public static IEnumerator FadeTo(float targetAlpha, CanvasGroup canvasGroup, float fadeDuration)
+        /// <summary>
+        /// Smoothly fades a CanvasGroup's alpha to a target value over a set duration.
+        /// </summary>
+        public static Tween FadeCanvasGroup(CanvasGroup canvasGroup, float targetAlpha, float duration, Action onComplete = null)
         {
-            float startAlpha = canvasGroup.alpha;
-            float timer = 0f;
-
-            while (timer < fadeDuration)
-            {
-                canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timer / fadeDuration);
-                timer += Time.deltaTime;
-                yield return null;
-            }
-
-            canvasGroup.alpha = targetAlpha;
+            return canvasGroup.DOFade(targetAlpha, duration)
+                .SetEase(Ease.InCirc)
+                .OnComplete(() => onComplete?.Invoke());
         }
-
         
-        public static IEnumerator CanvasGroupFlashLoopCoroutine(
-            CanvasGroup canvasGroup,
-            float targetAlpha1,
-            float targetAlpha2,
-            float fadeDuration,
-            float timeBetweenFlashes,
-            int flashCount)
+        /// <summary>
+        /// Creates a repeating flash effect by fading a CanvasGroup between two alpha levels.
+        /// Adjustable parameters for duration, interval, and number of flashes.
+        /// </summary>
+        public static Sequence FlashCanvasGroup(CanvasGroup canvasGroup,
+            float targetAlpha1 = 1f, float targetAlpha2 = 0f,
+            float fadeDuration = 0.3f, float timeBetweenFlashes = 0.25f,
+            int flashCount = 4, Action onComplete = null)
         {
+            Sequence flashSequence = DOTween.Sequence();
+
             for (int i = 0; i < flashCount; i++)
             {
-                yield return FadeTo(targetAlpha1, canvasGroup, fadeDuration);
-                yield return new WaitForSeconds(timeBetweenFlashes);
-                yield return FadeTo(targetAlpha2, canvasGroup, fadeDuration);
-                yield return new WaitForSeconds(timeBetweenFlashes);
+                flashSequence
+                    .Append(canvasGroup.DOFade(targetAlpha1, fadeDuration))
+                    .AppendInterval(timeBetweenFlashes)
+                    .Append(canvasGroup.DOFade(targetAlpha2, fadeDuration))
+                    .AppendInterval(timeBetweenFlashes);
             }
-        }
 
+            if (onComplete != null)
+                flashSequence.OnComplete(() => onComplete());
+
+            return flashSequence;
+        }
+        #endregion
+
+        #region Generic Graphic Feedback 
+
+        // Stores original colors and scales of Graphic elements to restore them after effects.
+        private static readonly Dictionary<Graphic, Color> OriginalColors = new();
+        private static readonly Dictionary<Transform, Vector3> OriginalScales = new();
         
-        public static IEnumerator CanvasGroupFlashLoopCoroutine(CanvasGroup canvasGroup)
+
+        /// <summary>
+        /// Applies visual feedback effects to any Graphic UI element (Image, Text, etc.).
+        /// Supports dynamic color flash, alpha fade, scale bounce, and shake—all customizable.
+        /// </summary>
+        public static Sequence ApplyGraphicFeedback(Graphic graphic,
+            bool changeColor = true, Color colorToChangeTo = default, float colorChangeDuration = 0.3f,
+            bool changeScale = true, float scaleMultiplier = 1.1f,
+            bool shakeGraphic = false, float shakeDuration = 0.3f,
+            bool changeAlpha = false, float alpha = 0)
         {
-            return CanvasGroupFlashLoopCoroutine(
-                canvasGroup,
-                1f,           // targetAlpha1
-                0f,           // targetAlpha2
-                0.3f,         // fadeDuration
-                0.25f,        // timeBetweenFlashes
-                4             // flashCount
-            );
+            if (!TryInitGraphic(graphic, out var transform, out var originalColor, out var originalScale))
+                return null;
+
+            return BuildGraphicSequence(graphic,
+                transform, originalColor, originalScale,
+                changeColor, colorToChangeTo,
+                changeAlpha, alpha,
+                changeScale, scaleMultiplier,
+                shakeGraphic, shakeDuration,
+                colorChangeDuration);
         }
 
-        public static IEnumerator CanvasGroupFlashLoopCoroutine(CanvasGroup canvasGroup, float timeBetweenFlashes, int flashCount)
+        /// <summary>
+        /// Initializes a Graphic element for animation by storing its original color and scale.
+        /// Returns false if graphic is null or invalid.
+        /// </summary>
+        private static bool TryInitGraphic(Graphic graphic, out Transform transform, out Color originalColor, out Vector3 originalScale)
         {
-            return CanvasGroupFlashLoopCoroutine(
-                canvasGroup,
-                1f,           // targetAlpha1
-                0f,           // targetAlpha2
-                0.3f,         // fadeDuration
-                timeBetweenFlashes,
-                flashCount
-            );
+            transform = null;
+            originalColor = default;
+            originalScale = default;
+
+            if (graphic == null)
+            {
+                Debug.LogWarning("ApplyGraphicFeedback failed: Graphic is null.");
+                return false;
+            }
+
+            transform = graphic.transform;
+
+            if (!OriginalColors.ContainsKey(graphic))
+                OriginalColors[graphic] = graphic.color;
+
+            if (!OriginalScales.ContainsKey(transform))
+                OriginalScales[transform] = transform.localScale;
+
+            originalColor = OriginalColors[graphic];
+            originalScale = OriginalScales[transform];
+            return true;
         }
 
+        /// <summary>
+        /// Assembles a visual effect sequence for a Graphic element.
+        /// Builds fade, color, scale, and shake tweens, then restores original states.
+        /// </summary>
+        private static Sequence BuildGraphicSequence(Graphic graphic,
+            Transform transform, Color originalColor, Vector3 originalScale,
+            bool changeColor, Color colorToChangeTo,
+            bool changeAlpha, float alpha,
+            bool changeScale, float scaleMultiplier, 
+            bool shakeGraphic, float shakeDuration, float duration)
+        {
+            Sequence sequence = DOTween.Sequence();
+            List<Tweener> startTweens = new();
+            List<Tweener> endTweens = new();
 
+            if (changeColor)
+            {
+                startTweens.Add(graphic.DOColor(colorToChangeTo, duration));
+                endTweens.Add(graphic.DOColor(originalColor, duration));
+            }
 
+            if (changeAlpha)
+            {
+                startTweens.Add(graphic.DOFade(alpha, duration));
+                endTweens.Add(graphic.DOFade(originalColor.a, duration));
+            }
 
+            if (changeScale)
+            {
+                startTweens.Add(transform.DOScale(originalScale * scaleMultiplier, duration));
+                endTweens.Add(transform.DOScale(originalScale, duration));
+            }
 
+            if (shakeGraphic)
+            {
+                startTweens.Add(transform.DOShakeScale(shakeDuration, strength: 0.1f, vibrato: 10, randomness: 90f));
+            }
 
+            foreach (var tween in startTweens)
+                sequence.Join(tween);
+
+            if (startTweens.Count == 0)
+                sequence.AppendInterval(duration);
+
+            foreach (var tween in endTweens)
+                sequence.Append(tween);
+
+            return sequence;
+        }
+
+        #endregion
     }
 }
+

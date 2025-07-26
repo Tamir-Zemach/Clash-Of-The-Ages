@@ -1,59 +1,62 @@
-using Assets.Scripts;
+using System.Collections.Generic;
 using Assets.Scripts.BackEnd.Enems;
 using Assets.Scripts.InterFaces;
-using System.Collections.Generic;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Economy;
+using Managers;
 using Managers.Spawners;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitDeployButton : MonoBehaviour, IImgeSwichable<UnitType>
+namespace Ui.Deploy_Button
 {
-    [SerializeField] private UnitType _unitType;
-
-    private UnitData _unit;
-
-    private Image _image;
-
-
-    public UnitType Type => _unitType;
-    public void SetSprite(Sprite sprite)
+    public class UnitDeployButton : MonoBehaviour, IImgeSwichable<UnitType>
     {
-       _image.sprite = sprite;
-    }
-    private void Awake()
-    {
-        _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
-        _image = GetComponent<Image>();
-        GameManager.Instance.OnAgeUpgrade += UpdateSprite;
-    }
-    public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
-    {
-        foreach (var data in upgradeDataList)
+        [SerializeField] private UnitType _unitType;
+
+        private UnitData _unit;
+
+        private Image _image;
+
+
+        public UnitType Type => _unitType;
+        public void SetSprite(Sprite sprite)
         {
-            if (data is SpritesLevelUpData levelUpData)
+            _image.sprite = sprite;
+        }
+        private void Awake()
+        {
+            _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
+            _image = GetComponent<Image>();
+            GameManager.Instance.OnAgeUpgrade += UpdateSprite;
+        }
+        public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
+        {
+            foreach (var data in upgradeDataList)
             {
-                _image.sprite = levelUpData.GetSpriteFromList(_unitType, levelUpData.UnitSpriteMap);
+                if (data is SpritesLevelUpData levelUpData)
+                {
+                    _image.sprite = levelUpData.GetSpriteFromList(_unitType, levelUpData.UnitSpriteMap);
+                }
             }
         }
-    }
 
-    public void DeployUnit()
-    {
-        if (_unit == null)
+        public void DeployUnit()
         {
-            Debug.LogWarning($"[UnitDeployButton] Unit data not initialized for {_unitType}");
-            return;
-        }
-
-        if (PlayerCurrency.Instance.HasEnoughMoney(_unit.Cost))
-        {
-            PlayerCurrency.Instance.SubtractMoney(_unit.Cost);
-
-            if (GameManager.Instance != null && DeployManager.Instance != null)
+            if (_unit == null)
             {
-                DeployManager.Instance.AddUnitToDeploymentQueue(_unit);
+                Debug.LogWarning($"[UnitDeployButton] Unit data not initialized for {_unitType}");
+                return;
+            }
+
+            if (PlayerCurrency.Instance.HasEnoughMoney(_unit.Cost))
+            {
+                PlayerCurrency.Instance.SubtractMoney(_unit.Cost);
+
+                if (GameManager.Instance != null && DeployManager.Instance != null)
+                {
+                    DeployManager.Instance.AddUnitToDeploymentQueue(_unit);
+                }
             }
         }
     }

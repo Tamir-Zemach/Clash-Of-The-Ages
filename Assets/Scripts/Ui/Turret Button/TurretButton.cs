@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Data__ScriptableOBj_;
+using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static SpritesLevelUpData;
 using static UnityEditor.U2D.ScriptablePacker;
@@ -27,7 +29,7 @@ namespace Assets.Scripts.Ui.TurretButton
         [SerializeField] private int _moneyToGiveBack;
 
 
-        [SerializeField] private CanvasGroup _overLay;
+        [FormerlySerializedAs("_overLay")] [SerializeField] private CanvasGroup _canvasGroupToFade;
 
         private List<TurretSpawnPoint> _turretSpawnPoints = new();
 
@@ -95,7 +97,7 @@ namespace Assets.Scripts.Ui.TurretButton
             public const string TurretType = nameof(_turretType);
             public const string Cost = nameof(_cost);
             public const string Refund = nameof(_moneyToGiveBack);
-            public const string OverLay = nameof(_overLay);
+            public const string OverLay = nameof(_canvasGroupToFade);
         }
 #endif
     }

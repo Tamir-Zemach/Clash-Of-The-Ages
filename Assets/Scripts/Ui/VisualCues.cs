@@ -2,6 +2,8 @@
 using System.Linq;
 using Assets.Scripts.BackEnd.Utilities;
 using BackEnd.Economy;
+using BackEnd.Utilities;
+using DG.Tweening;
 using Managers.Camera;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,9 +22,10 @@ namespace Ui
 
         [Tooltip("Invoked when the player drops below half health.")]
         public UnityEvent OnPlayerAtHalfHealth;
-
-        private Coroutine _flashingCoroutine;
-        private Coroutine _fadingCoroutine;
+        
+        private Sequence _flashSequence;
+        private Tween _fadeTween;
+        
         private CanvasGroup _canvasGroupToFlash;
         private CanvasGroup _canvasGroupToFade;
 
@@ -53,6 +56,8 @@ namespace Ui
             PlayerHealth.OnHealedAboveHalfHealth -= IndexForPlayerHealed;
             EnemyHealth.OnDroppedBelowHalfHealth -= IndexForEnemyHealthDrop;
             CameraMovement.OnCameraMoved -= RecalculateFrustum;
+            _canvasGroupToFlash = null;
+            _canvasGroupToFade = null;
             
         }
 
@@ -61,7 +66,10 @@ namespace Ui
             if (LevelLoader.Instance.InStartMenu()) return;
             _camera = Camera.main;
             StopAllCoroutines();
-            _fadingCoroutine = null;
+            _fadeTween?.Kill();
+            _fadeTween = null;
+            _canvasGroupToFlash = null;
+            _canvasGroupToFade = null;
             _checkedEnemyOnce = false;
         }
         private void RecalculateFrustum()
@@ -98,16 +106,14 @@ namespace Ui
             if (EnemyVisible())
             {
                 _checkedEnemyOnce = true;
-
-                if (_fadingCoroutine != null)
-                {
-                    _fadingCoroutine = StartCoroutine(UIEffects.FadeTo(0, _canvasGroupToFade, 0.3f));
-                }
+                _fadeTween?.Kill();
+                _fadeTween = null;
+                _fadeTween = UIEffects.FadeCanvasGroup(_canvasGroupToFade, 0,0.3f);
                 return;
             }
 
             // If no fade is in progress, enemies exist, and we've not yet checked—trigger visual cue for unseen enemies
-            if (_fadingCoroutine == null && UnitCounter.EnemyCount > 0 && !_checkedEnemyOnce)
+            if (_fadeTween == null && UnitCounter.EnemyCount > 0 && !_checkedEnemyOnce)
             {
                 OnEnemySpawnAndUnseen?.Invoke();
             }
@@ -124,18 +130,18 @@ namespace Ui
         public void FlashCanvasGroup(CanvasGroup canvasGroup)
         {
             _canvasGroupToFlash = canvasGroup;
-            _flashingCoroutine = StartCoroutine(UIEffects.CanvasGroupFlashLoopCoroutine(_canvasGroupToFlash, 0.5f, 0f, 0.3f, 0.2f, 5));
+            _flashSequence = UIEffects.FlashCanvasGroup(_canvasGroupToFlash, 0.2f, 0.7f,onComplete: () =>
+            {
+                UIEffects.FadeCanvasGroup(_canvasGroupToFlash, 0, 0.3f);
+            }); 
         }
 
         public void FadeCanvasGroup(CanvasGroup canvasGroup)
         {
             _canvasGroupToFade = canvasGroup;
-            if (_fadingCoroutine != null)
-            {
-                StopCoroutine(_fadingCoroutine);
-                _fadingCoroutine = null;
-            }
-            _fadingCoroutine = StartCoroutine(UIEffects.FadeTo(0.7f, _canvasGroupToFade, 0.3f));
+            _fadeTween?.Kill();
+            _fadeTween = null;
+            _fadeTween = UIEffects.FadeCanvasGroup(_canvasGroupToFade, 0.7f,0.3f);
         }
         
 
@@ -146,13 +152,11 @@ namespace Ui
 
         private void IndexForPlayerHealed()
         {
-            if (_flashingCoroutine != null)
-            {
-                StopCoroutine(_flashingCoroutine);
-                _flashingCoroutine = null;
-                _canvasGroupToFlash.alpha = 0;
-                _canvasGroupToFlash = null;
-            }
+            _flashSequence?.Kill(true); 
+            _flashSequence = null;
+            _canvasGroupToFlash?.DOFade(0f, 0.1f);
+            _canvasGroupToFlash = null;
+            
             PlayerHealth.Instance.ResetHealthFlags();
         }
 

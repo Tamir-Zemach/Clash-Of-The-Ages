@@ -4,6 +4,7 @@ using Assets.Scripts.BackEnd.Enems;
 using Assets.Scripts.InterFaces;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Economy;
+using Managers;
 using Special_Attacks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -38,7 +39,6 @@ namespace Ui
 
         private void Update()
         {
-            
             IsTimerFinished();
         }
 

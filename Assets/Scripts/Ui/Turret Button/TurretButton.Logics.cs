@@ -10,7 +10,6 @@ namespace Assets.Scripts.Ui.TurretButton
 
     public partial class TurretButton 
     {
-
         private void ConfirmSlotAndInvoke(TurretSpawnPoint slot, Action<TurretSpawnPoint> logicToExecute)
         { 
             ResetVisualFeedBack();

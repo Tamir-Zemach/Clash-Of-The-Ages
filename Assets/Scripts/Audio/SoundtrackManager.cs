@@ -20,7 +20,6 @@ public class SoundtrackManager : SceneAwareMonoBehaviour<SoundtrackManager>
         _audioSource.clip = StartMenuSoundtrack;
         if (StartMenuSoundtrack == null) return;
         _audioSource.Play();
- 
     }
 
     protected override void InitializeOnSceneLoad()

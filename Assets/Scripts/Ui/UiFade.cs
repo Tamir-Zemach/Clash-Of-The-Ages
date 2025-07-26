@@ -1,48 +1,52 @@
+using BackEnd.Utilities;
 using UnityEngine;
-using System.Collections;
-using UnityEngine.EventSystems;
-using Assets.Scripts.BackEnd.Utilities;
+using UnityEngine.Serialization;
+using DG.Tweening;
 
-public class UiFade : MonoBehaviour
+namespace Ui
 {
-    private CanvasGroup canvasGroup;
-    private Coroutine currentFade;
-    private bool _shouldShow;
-
-    public float fadeDuration = 0.3f;
-
-    private void Awake()
+    public class UiFade : MonoBehaviour
     {
-        canvasGroup = GetComponent<CanvasGroup>();
-    }
+        private CanvasGroup _canvasGroup;
+        private Tween _currentTween;
+        private bool _shouldShow;
 
-    public void ToggleFade()
-    {
-        _shouldShow = canvasGroup.alpha <= 0f;
-        if (currentFade != null)
+        [FormerlySerializedAs("fadeDuration")] public float FadeDuration = 0.3f;
+
+        private void Awake()
         {
-            StopCoroutine(currentFade);
+            _canvasGroup = GetComponent<CanvasGroup>();
         }
-        if (_shouldShow)
+
+        public void ToggleFade()
         {
-            StartCoroutine(MouseRayCaster.Instance.WaitForMouseClick(
-                onValidHit: null, onMissedClick: HandleClickFadeOut));
+            _shouldShow = _canvasGroup.alpha <= 0f;
+
+            _currentTween?.Kill();
+
+            if (_shouldShow)
+            {
+                MouseRayCaster.Instance.WaitForMouseClick(
+                    onValidHit: null,
+                    onMissedClick: HandleClickFadeOut
+                );
+            }
+
+            _currentTween = UIEffects.FadeCanvasGroup(_canvasGroup, _shouldShow ? 1f : 0f, FadeDuration, () =>
+            {
+                _canvasGroup.interactable = _shouldShow;
+                _canvasGroup.blocksRaycasts = _shouldShow;
+            });
         }
-        currentFade = StartCoroutine(UIEffects.FadeTo(_shouldShow ? 1f : 0f, canvasGroup, fadeDuration));
-        canvasGroup.interactable = _shouldShow;
-        canvasGroup.blocksRaycasts = _shouldShow;
+
+        private void HandleClickFadeOut()
+        {
+            _currentTween?.Kill();
+            _currentTween = UIEffects.FadeCanvasGroup(_canvasGroup, 0f, FadeDuration, () =>
+            {
+                _canvasGroup.interactable = false;
+                _canvasGroup.blocksRaycasts = false;
+            });
+        }
     }
-
-    private void HandleClickFadeOut()
-    {
-        StartCoroutine(UIEffects.FadeTo(0f, canvasGroup, fadeDuration));
-        canvasGroup.interactable = false;
-        canvasGroup.blocksRaycasts = false;
-    }
-
-
-
-
-
-
 }

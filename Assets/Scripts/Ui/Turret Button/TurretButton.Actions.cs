@@ -2,6 +2,9 @@
 using Assets.Scripts.BackEnd.Enems;
 using System;
 using BackEnd.Economy;
+using BackEnd.Utilities;
+using Ui;
+using UnityEngine;
 
 namespace Assets.Scripts.Ui.TurretButton
 {
@@ -45,21 +48,21 @@ namespace Assets.Scripts.Ui.TurretButton
             Action<TurretSpawnPoint> logic,
             Func<bool> currencyCheck)
         {
-            if (!currencyCheck()) return;
+            if (!currencyCheck()) return;   
 
             var condition = _conditions[type];
             SetVisualFeedback(condition, feedback);
 
-            CleanupOverlay();
+            CleanupCanvasGroup();
 
             StartCoroutine(MouseRayCaster.Instance.WaitForMouseClick(
                 onValidHit: hit =>
                 {
+                    print("check");
                     if (hit.collider.TryGetComponent<TurretSpawnPoint>(out var slot) && condition(slot))
                     {
                         ConfirmSlotAndInvoke(slot, logic);
                     }
-
                     ResetVisualFeedBack();
                 },
                 onMissedClick: ResetVisualFeedBack)
