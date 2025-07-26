@@ -4,23 +4,25 @@ using Assets.Scripts.BackEnd.Enems;
 using Assets.Scripts.InterFaces;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Economy;
+using BackEnd.InterFaces;
 using Managers;
 using Special_Attacks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Ui
 {
-    public class SpecialAttackButton : MonoBehaviour, IImgeSwichable<SpecialAttackType>
+    public class SpecialAttackButton : MonoBehaviour, IImageSwitchable<SpecialAttackType>, ICostable
     {
         
         public UnityEvent OnTimerStarted;
         public UnityEvent OnTimerStoped;
         [field: SerializeField] public SpecialAttackType Type {  get; private set; }
 
-        [SerializeField] private int _cost;
-        
+        [field: SerializeField] public int Cost { get; set; }
+
         [SerializeField] private float _specialAttackTimer;
 
         private SpecialAttackSpawnPos _specialAttackSpawnPos;
@@ -29,7 +31,7 @@ namespace Ui
 
         private Image _image;
         private float _timer;
-
+        
 
 
         private void Start()
@@ -71,7 +73,7 @@ namespace Ui
         public void PerformSpecialAttack()
         {
             if (!CanPreformAttack()) return;
-            PlayerCurrency.Instance.SubtractMoney(_cost);
+            PlayerCurrency.Instance.SubtractMoney(Cost);
             _specialAttackSpawnPos.IsSpecialAttackAccruing = true;
             SpawnSpecialAttack();
             ResetTimer();
@@ -95,7 +97,7 @@ namespace Ui
 
         private bool CanPreformAttack()
         {
-            return PlayerCurrency.Instance.HasEnoughMoney(_cost) && !_specialAttackSpawnPos.IsSpecialAttackAccruing && IsTimerFinished();
+            return PlayerCurrency.Instance.HasEnoughMoney(Cost) && !_specialAttackSpawnPos.IsSpecialAttackAccruing && IsTimerFinished();
         }
 
         private bool IsTimerFinished()

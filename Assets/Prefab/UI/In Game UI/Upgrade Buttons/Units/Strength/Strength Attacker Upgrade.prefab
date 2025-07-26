@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7153727847865603509}
   - component: {fileID: 5864182641242842978}
   - component: {fileID: -8905652621793537657}
+  - component: {fileID: 2468736108907297461}
   m_Layer: 5
   m_Name: Strength Attacker Upgrade
   m_TagString: Untagged
@@ -145,9 +146,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b74d305136a70448ba3e25f86419532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitType: 0
-  statType: 0
+  _unitType: 0
+  _statType: 0
   _statBonus: 10
   _attackDelayReductionPercent: 0
-  _statCost: 100
+  _cost: 100
   _statCostInc: 50
+--- !u!114 &2468736108907297461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230439035441565609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97b69e5dc236df4ab6db63187020e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CostDisplay: {fileID: 0}

@@ -1,11 +1,9 @@
-﻿
+﻿using System;
 using Assets.Scripts.BackEnd.Enems;
-using System;
 using BackEnd.Utilities;
 using DG.Tweening;
 
-
-namespace Assets.Scripts.Ui.TurretButton
+namespace Ui.Buttons.Turret_Button
 {
     public partial class TurretButton
     {

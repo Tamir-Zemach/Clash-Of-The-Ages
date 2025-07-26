@@ -1,29 +1,27 @@
-﻿
-using Assets.Scripts.BackEnd.Enems;
-using Assets.Scripts.InterFaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
+using BackEnd.InterFaces;
 using Managers;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static SpritesLevelUpData;
-using static UnityEditor.U2D.ScriptablePacker;
 
-namespace Assets.Scripts.Ui.TurretButton
+namespace Ui.Buttons.Turret_Button
 {
-    public partial class TurretButton : MonoBehaviour , IImgeSwichable<TurretType>
+    public partial class TurretButton : ButtonWithCost , IImageSwitchable<TurretType>
     {
         [Tooltip("The type of action this button triggers.")]
         [SerializeField] private TurretButtonType _turretButtonType;
 
         [Tooltip("The type of action this button triggers.")]
         [SerializeField] private TurretType _turretType;
-
-        [Tooltip("Cost for triggering this action.")]
-        [SerializeField] private int _cost;
+        
 
         [Tooltip("Refund granted when selling a turret.")]
         [SerializeField] private int _moneyToGiveBack;
@@ -39,7 +37,8 @@ namespace Assets.Scripts.Ui.TurretButton
         private Dictionary<TurretButtonType, Func<TurretSpawnPoint, bool>> _conditions;
 
         public TurretType Type => _turretType;
-
+        
+        
         private void Awake()
         {
             _conditions = new Dictionary<TurretButtonType, Func<TurretSpawnPoint, bool>>
@@ -64,6 +63,18 @@ namespace Assets.Scripts.Ui.TurretButton
             GetAllFriendlyTurretSpawnPoints();
         }
 
+        
+        public override void OnPointerEnter(PointerEventData eventData)
+        {
+            var isSell = _turretButtonType == TurretButtonType.SellTurret;
+            
+            var label = isSell ? "+$" : "$";
+            var color = isSell ? Color.green : Color.black;
+            
+            var amountToShow = isSell ? _moneyToGiveBack : Cost;
+
+            HoverCostDisplay.Instance.ShowTooltip(eventData, amountToShow, label, color);
+        }
 
 
         public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
@@ -95,10 +106,10 @@ namespace Assets.Scripts.Ui.TurretButton
         {
             public const string TurretButtonType = nameof(_turretButtonType);
             public const string TurretType = nameof(_turretType);
-            public const string Cost = nameof(_cost);
             public const string Refund = nameof(_moneyToGiveBack);
             public const string OverLay = nameof(_canvasGroupToFade);
         }
 #endif
+        
     }
 }

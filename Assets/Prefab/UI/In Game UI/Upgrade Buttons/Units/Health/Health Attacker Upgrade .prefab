@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7168790528072793571}
   - component: {fileID: 2871426885195813791}
   - component: {fileID: 7217249734352331430}
+  - component: {fileID: 4117398216446440157}
   m_Layer: 5
   m_Name: 'Health Attacker Upgrade '
   m_TagString: Untagged
@@ -149,5 +150,18 @@ MonoBehaviour:
   _statType: 2
   _statBonus: 50
   _attackDelayReductionPercent: 0
-  _statCost: 100
+  _cost: 100
   _statCostInc: 50
+--- !u!114 &4117398216446440157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4950690704377447549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97b69e5dc236df4ab6db63187020e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CostDisplay: {fileID: 0}

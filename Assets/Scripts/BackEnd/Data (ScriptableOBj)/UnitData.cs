@@ -11,10 +11,6 @@ namespace BackEnd.Data__ScriptableOBj_
     public class UnitData : DataObject<UnitType>
     {
 
-        [Tooltip("Cost required to deploy this unit.")]
-        [Min(0)]
-        public int Cost;
-
         [Tooltip("Delay in seconds between button press and unit deployment.")]
         [Min(0f)]
         public float DeployDelayTime;

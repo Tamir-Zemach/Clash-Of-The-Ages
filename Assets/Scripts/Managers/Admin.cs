@@ -64,7 +64,6 @@ public class Admin : PersistentMonoBehaviour<Admin>
         foreach (var unit in GameDataRepository.Instance.FriendlyUnits)
         {
             Debug.Log($"{unit.name} " +
-                      $"Unit Cost: {unit.Cost}, " +
                       $"Health: {unit.Health}, " +
                       $"Speed: {unit.Speed}, " +
                       $"Strength: {unit.Strength}, " +

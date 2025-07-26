@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 549901020158604588}
   - component: {fileID: 8412945918355566717}
   - component: {fileID: 3884640521835901371}
+  - component: {fileID: 4236141384410232027}
   m_Layer: 5
   m_Name: 'AttackSpeed Attacker Upgrade '
   m_TagString: Untagged
@@ -149,5 +150,18 @@ MonoBehaviour:
   _statType: 1
   _statBonus: 10
   _attackDelayReductionPercent: 10
-  _statCost: 100
+  _cost: 100
   _statCostInc: 50
+--- !u!114 &4236141384410232027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5302088151966919228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97b69e5dc236df4ab6db63187020e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CostDisplay: {fileID: 0}

@@ -1,10 +1,10 @@
-﻿using Assets.Scripts.BackEnd.Enems;
-using System;
+﻿using System;
+using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Economy;
 using turrets;
 using UnityEngine;
 
-namespace Assets.Scripts.Ui.TurretButton
+namespace Ui.Buttons.Turret_Button
 {
 
 
@@ -22,7 +22,7 @@ namespace Assets.Scripts.Ui.TurretButton
         //Actual logic to aplly when all the conditions are matching 
         private void AddSlotLogic(TurretSpawnPoint slot)
         {
-            PlayerCurrency.Instance.SubtractMoney(_cost);
+            PlayerCurrency.Instance.SubtractMoney(Cost);
             slot.IsUnlocked = true;
 
             SetVisualFeedback(point => point.IsUnlocked, VisualFeedbackType.Highlight);
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Ui.TurretButton
 
         private void AddTurretToEmptySlotLogic(TurretSpawnPoint slot)
         {
-            PlayerCurrency.Instance.SubtractMoney(_cost);
+            PlayerCurrency.Instance.SubtractMoney(Cost);
             slot.HasTurret = true;
 
             var turret = Instantiate(_turret.Prefab, slot.transform.position, slot.transform.rotation);

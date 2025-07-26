@@ -1,12 +1,8 @@
-﻿
+﻿using System;
 using Assets.Scripts.BackEnd.Enems;
-using System;
 using BackEnd.Economy;
-using BackEnd.Utilities;
-using Ui;
-using UnityEngine;
 
-namespace Assets.Scripts.Ui.TurretButton
+namespace Ui.Buttons.Turret_Button
 {
     public partial class TurretButton
     {
@@ -16,7 +12,7 @@ namespace Assets.Scripts.Ui.TurretButton
                 TurretButtonType.DeployTurret,
                 VisualFeedbackType.Flash,
                 AddTurretToEmptySlotLogic,
-                () => PlayerCurrency.Instance.HasEnoughMoney(_cost) && CanDeployTurret());
+                () => PlayerCurrency.Instance.HasEnoughMoney(Cost) && CanDeployTurret());
         }
 
         public void AddTurretSlot()
@@ -25,7 +21,7 @@ namespace Assets.Scripts.Ui.TurretButton
                 TurretButtonType.AddSlot,
                 VisualFeedbackType.Flash,
                 AddSlotLogic,
-                () => PlayerCurrency.Instance.HasEnoughMoney(_cost) && CanAddSlot());
+                () => PlayerCurrency.Instance.HasEnoughMoney(Cost) && CanAddSlot());
         }
 
         public void SellTurret()

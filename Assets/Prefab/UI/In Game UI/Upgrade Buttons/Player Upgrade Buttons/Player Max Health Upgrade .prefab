@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3613913983031939026}
   - component: {fileID: 7568604495452038851}
   - component: {fileID: 4028356634371522869}
+  - component: {fileID: 7466609906976494939}
   m_Layer: 5
   m_Name: 'Player Max Health Upgrade '
   m_TagString: Untagged
@@ -145,7 +146,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb65e58c1b6ed0045b2b64e07f2ff0e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeType: 0
+  <Type>k__BackingField: 0
   _statBonus: 100
-  _statUpgradeCost: 100
+  <Cost>k__BackingField: 100
   _statCostInc: 100
+--- !u!114 &7466609906976494939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7236297294376917723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97b69e5dc236df4ab6db63187020e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CostDisplay: {fileID: 0}

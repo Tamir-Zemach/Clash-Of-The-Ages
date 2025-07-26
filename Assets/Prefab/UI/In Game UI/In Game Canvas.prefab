@@ -201,7 +201,7 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   <Type>k__BackingField: 0
-  _cost: 80
+  <Cost>k__BackingField: 80
   _specialAttackTimer: 30
 --- !u!225 &4628963316967724051
 CanvasGroup:
@@ -361,6 +361,7 @@ GameObject:
   - component: {fileID: 8791762325864638588}
   - component: {fileID: 3898397953889622846}
   - component: {fileID: 7201705651895369616}
+  - component: {fileID: 201648856642779149}
   m_Layer: 5
   m_Name: In Game Canvas
   m_TagString: Untagged
@@ -389,6 +390,7 @@ RectTransform:
   - {fileID: 6568207404568318717}
   - {fileID: 5681591458431666456}
   - {fileID: 2149653526847540841}
+  - {fileID: 8146548156944857818}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -519,6 +521,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &201648856642779149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855463166427717871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a97b69e5dc236df4ab6db63187020e01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CostDisplay: {fileID: 589824605541050079}
+  Offset: {x: 15, y: -15}
 --- !u!1 &2528013215429292569
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,7 +1012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 563880856e7e42b4587989672fbccf28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ageUpgradeCost: 500
+  _cost: 500
 --- !u!1 &8354702865596613142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,7 +1219,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7466609906976494939, guid: 8a57b0995a5b4344dbd8948204a877e8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1309,7 +1326,8 @@ PrefabInstance:
       propertyPath: _attackDelayReductionPercent
       value: 25
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6216409002073867000, guid: 674334833eb79ce43b5ec72e4d28285d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1318,6 +1336,117 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2706151973309879449, guid: 674334833eb79ce43b5ec72e4d28285d, type: 3}
   m_PrefabInstance: {fileID: 77253544120333672}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &295755275684975779
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2048046215435173484}
+    m_Modifications:
+    - target: {fileID: 879822065214534268, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_Name
+      value: 'CostPanel '
+      objectReference: {fileID: 0}
+    - target: {fileID: 4420014465440905112, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+--- !u!1 &589824605541050079 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 879822065214534268, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+  m_PrefabInstance: {fileID: 295755275684975779}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &8146548156944857818 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8436616189943819897, guid: 0f4f2ed4da818fd49a320e2b88f7eede, type: 3}
+  m_PrefabInstance: {fileID: 295755275684975779}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &385921425945328940
 PrefabInstance:
@@ -1515,7 +1644,9 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 777691115124291588, guid: a8c7d09d57f4c1f44bdf9acf339bd647, type: 3}
+    - {fileID: 1260225542975617966, guid: a8c7d09d57f4c1f44bdf9acf339bd647, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -1646,7 +1777,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Strength Tank Upgrade
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6101374041624399358, guid: 077abb52ab9b94f479f6c9b34d48416e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1752,7 +1884,8 @@ PrefabInstance:
       propertyPath: _attackDelayReductionPercent
       value: 25
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6260575761100980886, guid: a42b266bc8cca1d479944e797834dcd6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1770,6 +1903,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2307425383627182016}
     m_Modifications:
+    - target: {fileID: 2119628869957594205, guid: 5cc024af95a810446b9179a53a97d11a, type: 3}
+      propertyPath: _cost
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 3887625025720280998, guid: 5cc024af95a810446b9179a53a97d11a, type: 3}
       propertyPath: m_Name
       value: 'Ranger Deploy Button '
@@ -1854,7 +1991,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2936693951929376586, guid: 5cc024af95a810446b9179a53a97d11a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1956,7 +2094,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8714954216834875003, guid: 4e702c9239f74bc418a39de0cb9f0da6, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2282,7 +2421,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Health Attacker Upgrade '
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4117398216446440157, guid: 0bacfa5c988e4f24ca578d9d43e972e0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2384,7 +2524,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Strength Ranger Upgrade '
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6135748439308570844, guid: fc146fb0c613d3c458e2ba30f8ecd566, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2486,7 +2627,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7645680167942653781, guid: c0176a1a6ea125b47a9ab2c4583b3d4e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2588,7 +2730,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Health Ranger Upgrade  '
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1190213019570655976, guid: 0d54059a41032ef41b3a9cc9198ae5bc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2690,7 +2833,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7744885679519346071, guid: b4157dc726741e640bb13f0f12584f06, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2800,7 +2944,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2468736108907297461, guid: 834b384f8dcea57479e3793cab971ee8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2898,11 +3043,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4925434812951198679, guid: 7e4a276f6fd392c4498e0dcf30336b3a, type: 3}
+      propertyPath: _cost
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7837206435624235052, guid: 7e4a276f6fd392c4498e0dcf30336b3a, type: 3}
       propertyPath: m_Name
       value: 'Tank Deploy Button '
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8210621157229562048, guid: 7e4a276f6fd392c4498e0dcf30336b3a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3004,7 +3154,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Attacker Deploy Button
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6974771833412993262, guid: 91d9d2698333030469e116f713ac7675, type: 3}
+      propertyPath: _cost
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6151928817797477369, guid: 91d9d2698333030469e116f713ac7675, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3361,7 +3516,8 @@ PrefabInstance:
       propertyPath: m_Colors.m_SelectedColor.r
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4236141384410232027, guid: daf92b608b2819b4f8ba352cde2926de, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
