@@ -4,15 +4,18 @@ using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Economy;
 using BackEnd.InterFaces;
+using BackEnd.Utilities;
 using Managers;
 using Managers.Spawners;
 using UnityEngine;
 using UnityEngine.UI;
+using static BackEnd.Utilities.SpriteKeys;
 
 namespace Ui.Buttons.Deploy_Button
 {
     public class UnitDeployButton : ButtonWithCost, IImageSwitchable<UnitType>
     {
+        
         [SerializeField] private UnitType _unitType;
 
         private UnitData _unit;
@@ -25,16 +28,22 @@ namespace Ui.Buttons.Deploy_Button
         {
             _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
             _image = GetComponent<Image>();
-            GameManager.Instance.OnAgeUpgrade += UpdateSprite;
+            UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprite;
         }
 
-        private void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
+
+        private void UpdateSprite(List<SpriteEntries.SpriteEntry<UnitType>> spriteMap)
         {
-            foreach (var data in upgradeDataList)
+            foreach (var s in spriteMap)
             {
-                if (data is SpritesLevelUpData levelUpData)
+                if (s.GetKey() == _unitType)
                 {
-                    _image.sprite = levelUpData.GetSpriteFromList(_unitType, levelUpData.UnitSpriteMap);
+                    var newSprite = s.GetSprite();
+                    if (_image != null && newSprite != null)
+                    {
+                        _image.sprite = newSprite;
+                    }
+                    break; 
                 }
             }
         }

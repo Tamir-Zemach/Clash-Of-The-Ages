@@ -9,9 +9,13 @@ namespace Managers.Spawners
     public class DeployManager : SceneAwareMonoBehaviour<DeployManager>
     {
         public static event Action OnQueueChanged;
+        
+        public static event Action<UnitData, int> OnUnitQueued;
+        public static event Action<UnitData> OnUnitReadyToDeploy;
+        public static event Action OnUnitDeployed;
 
         public readonly Queue<UnitData> UnitQueue = new Queue<UnitData>();
-        private bool _isDeploying = false;
+        private bool _isDeploying;
 
 
         [FormerlySerializedAs("_spawnArea")]
@@ -27,11 +31,7 @@ namespace Managers.Spawners
         private GameObject _unitReference;
 
         private float _timer;
-
-        protected override void Awake()
-        {
-            base.Awake();
-        }
+        
 
         private void ResetQueueState()
         {
@@ -79,15 +79,13 @@ namespace Managers.Spawners
         /// Adds the specified unit to the deployment queue.
         /// If no deployment is currently in progress, starts deploying immediately.
         /// </summary>
-        /// <param name="unit">The UnitData to queue for deployment.</param>
         public void AddUnitToDeploymentQueue(UnitData unit)
         {
             UnitQueue.Enqueue(unit);
 
-            //Event invoke for Ui purpses 
+            OnUnitQueued?.Invoke(unit, UnitQueue.Count - 1); // 🧠 Position starts at 0
             OnQueueChanged?.Invoke();
 
-            // If no deployment is currently happening, start the queue process
             if (!_isDeploying)
             {
                 ProcessNextUnitInQueue();
@@ -103,13 +101,11 @@ namespace Managers.Spawners
         {
             if (UnitQueue.Count > 0)
             {
-                //remove unit from queue
                 _nextCharacter = UnitQueue.Dequeue();
-
-                //Event invoke for Ui purpses 
-                OnQueueChanged?.Invoke();
-
                 _isDeploying = true;
+
+                OnQueueChanged?.Invoke();
+                OnUnitReadyToDeploy?.Invoke(_nextCharacter);
             }
             else
             {
@@ -137,6 +133,7 @@ namespace Managers.Spawners
                 behaviour.Initialize(_nextCharacter);
             }
 
+            OnUnitDeployed?.Invoke();
             _timer = 0;
             _isDeploying = false;
             ProcessNextUnitInQueue();

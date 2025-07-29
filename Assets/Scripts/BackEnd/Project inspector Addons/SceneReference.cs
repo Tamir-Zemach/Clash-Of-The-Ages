@@ -1,43 +1,58 @@
 ﻿using System;
-using UnityEditor;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+//TODO: Fix SHITSHOW 2 - ugly and unnecessary code 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-[Serializable]
-public class SceneReference
+namespace BackEnd.Project_inspector_Addons
 {
-    public SceneAsset sceneAsset;
-
-    public string GetScenePath()
+    [Serializable]
+    public class SceneReference
     {
 #if UNITY_EDITOR
-        return UnityEditor.AssetDatabase.GetAssetPath(sceneAsset);
-#else
-        return string.Empty;
+        public SceneAsset sceneAsset;
+        public void UpdateScenePath()
+        {
+            if (sceneAsset != null)
+            {
+                scenePath = AssetDatabase.GetAssetPath(sceneAsset);
+            }
+            else
+            {
+                scenePath = string.Empty;
+            }
+        }
 #endif
-    }
+        
+        [SerializeField, HideInInspector] private string scenePath;
 
-    public int GetBuildIndex()
-    {
-        string path = GetScenePath();
-        return SceneUtility.GetBuildIndexByScenePath(path);
-    }
+        public string GetScenePath() => scenePath;
 
-    public string GetSceneName()
-    {
+        public int GetBuildIndex() => SceneUtility.GetBuildIndexByScenePath(scenePath);
+
+        public string GetSceneName()
+        {
+            return string.IsNullOrEmpty(scenePath) 
+                ? string.Empty 
+                : System.IO.Path.GetFileNameWithoutExtension(scenePath);
+        }
+
+        public override string ToString() => GetSceneName();
+
 #if UNITY_EDITOR
-        string path = GetScenePath();
-        if (string.IsNullOrEmpty(path))
-            return string.Empty;
-
-        string fileName = System.IO.Path.GetFileNameWithoutExtension(path);
-        return fileName;
-#else
-    return string.Empty;
+        private void OnValidate()
+        {
+            if (sceneAsset != null)
+            {
+                scenePath = AssetDatabase.GetAssetPath(sceneAsset);
+            }
+            else
+            {
+                scenePath = string.Empty;
+            }
+        }
 #endif
     }
-    public override string ToString()
-    {
-        return GetSceneName();
-    }
-
 }

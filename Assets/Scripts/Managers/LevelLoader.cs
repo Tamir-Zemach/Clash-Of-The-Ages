@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using BackEnd.Project_inspector_Addons;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -43,21 +44,19 @@ public class LevelLoader : SceneAwareMonoBehaviour<LevelLoader>
             Debug.Log("No more levels to load.");
             return;
         }
-
-
-
-        LoadAdditiveScene(_inGameUiScene, _isUiLoaded);
+        
+        LoadAdditiveScene(_inGameUiScene, ref _isUiLoaded);
+       
 
         if (_adminUi) 
         {
-            LoadAdditiveScene(_adminUiScene, _isAdminUiLoaded);
+            LoadAdditiveScene(_adminUiScene, ref _isAdminUiLoaded);
         }
 
         SceneManager.LoadScene(_currentLevelIndex);
     }
-    private void LoadAdditiveScene(SceneReference scene, bool isLoaded)
+    private void LoadAdditiveScene(SceneReference scene, ref bool isLoaded)
     {
-        // Load scene if not already loaded
         if (!isLoaded)
         {
             int uiBuildIndex = scene.GetBuildIndex();

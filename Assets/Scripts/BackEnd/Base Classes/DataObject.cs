@@ -12,6 +12,8 @@ namespace BackEnd.Base_Classes
 {
     public abstract class DataObject<TType> : ScriptableObject, IUpgradable<TType>
     {
+
+        
         [FormerlySerializedAs("ageStage")]
         [Header("Identity")]
         [Tooltip("The age stage during which this Data becomes available.")]
@@ -75,6 +77,6 @@ namespace BackEnd.Base_Classes
         public float GetClipVolume(SfxType type) =>
         _sfx.FirstOrDefault(entry => entry.Type == type)!.Volume;
 
-
+        
     }
 }

@@ -1,55 +1,50 @@
-using System;
 using System.Collections.Generic;
 using Assets.Scripts.BackEnd.Enems;
-using Assets.Scripts.InterFaces;
+using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Economy;
 using BackEnd.InterFaces;
+using BackEnd.Utilities;
 using Managers;
 using Special_Attacks;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace Ui
+namespace Ui.Buttons
 {
-    public class SpecialAttackButton : MonoBehaviour, IImageSwitchable<SpecialAttackType>, ICostable
+    public class SpecialAttackButton : ButtonWithCost, IImageSwitchable<SpecialAttackType>
     {
         
         public UnityEvent OnTimerStarted;
         public UnityEvent OnTimerStoped;
         [field: SerializeField] public SpecialAttackType Type {  get; private set; }
 
-        [field: SerializeField] public int Cost { get; set; }
-
         [SerializeField] private float _specialAttackTimer;
+        
+        private Slider _cooldownSlider;
 
         private SpecialAttackSpawnPos _specialAttackSpawnPos;
 
         private SpecialAttackData _specialAttack;
 
         private Image _image;
-        private float _timer;
         
-
-
+        
+        
         private void Start()
         {
             GetData();
         }
-
-        private void Update()
-        {
-            IsTimerFinished();
-        }
+        
 
         private void GetData()
         {
             _specialAttack = GameDataRepository.Instance.FriendlySpecialAttacks.GetData(Type);
+            _cooldownSlider = GetComponentInChildren<Slider>();
             _image = GetComponent<Image>();
             LevelLoader.Instance.OnSceneChanged += GetSpawnPos;
-            GameManager.Instance.OnAgeUpgrade += UpdateSprite;
+            UiAgeUpgrade.Instance.OnUiRefreshSpecialAttack += UpdateSprite;
             GetSpawnPos();
             ResetTimer();
         }
@@ -59,13 +54,19 @@ namespace Ui
             _specialAttackSpawnPos = FindAnyObjectByType<SpecialAttackSpawnPos>(); 
         }
 
-        private void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
+        
+        private void UpdateSprite(List<SpriteEntries.SpriteEntry<SpecialAttackType>> spriteMap)
         {
-            foreach (var data in upgradeDataList)
+            foreach (var s in spriteMap)
             {
-                if (data is SpritesLevelUpData levelUpData)
+                if (s.GetKey() == Type)
                 {
-                    _image.sprite = levelUpData.GetSpriteFromList(Type, levelUpData.SpecialAttackSpriteMap);
+                    var newSprite = s.GetSprite();
+                    if (_image != null && newSprite != null)
+                    {
+                        _image.sprite = newSprite;
+                    }
+                    break; 
                 }
             }
         }
@@ -97,27 +98,27 @@ namespace Ui
 
         private bool CanPreformAttack()
         {
-            return PlayerCurrency.Instance.HasEnoughMoney(Cost) && !_specialAttackSpawnPos.IsSpecialAttackAccruing && IsTimerFinished();
+            return PlayerCurrency.Instance.HasEnoughMoney(Cost)
+                   && !_specialAttackSpawnPos.IsSpecialAttackAccruing
+                   && _cooldownSlider.value >= 1f;
         }
-
-        private bool IsTimerFinished()
-        {
-            _timer += Time.deltaTime;
-            if (_timer > _specialAttackTimer)
-            {
-                OnTimerStoped?.Invoke();
-                return true;
-            }
-            else
-            {
-                return false;  
-            }
-        }
+        
         
         private void ResetTimer()
         {
-            _timer = 0;
+            _cooldownSlider.value = 0f;
             OnTimerStarted?.Invoke();
+
+            UIEffects.AnimateSliderFill(_cooldownSlider, 1f, _specialAttackTimer, () =>
+            {
+                UIEffects.ApplyGraphicFeedback(
+                    graphic: _image,
+                    shakeGraphic: true, shakeDuration: 0.3f, 
+                    changeScale: true, scaleMultiplier: 1.2f, scaleChangeDuration: 0.2f,
+                    onComplete: () => {  OnTimerStoped?.Invoke(); }
+                );
+               
+            });
         }
     
     

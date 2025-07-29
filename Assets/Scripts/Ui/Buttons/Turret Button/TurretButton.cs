@@ -5,12 +5,13 @@ using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.InterFaces;
+using BackEnd.Utilities;
 using Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using static SpritesLevelUpData;
+using static BackEnd.Utilities.SpriteKeys; 
 
 namespace Ui.Buttons.Turret_Button
 {
@@ -59,11 +60,29 @@ namespace Ui.Buttons.Turret_Button
             _turret = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
             _image = GetComponent<Image>();
             LevelLoader.Instance.OnSceneChanged += GetAllFriendlyTurretSpawnPoints;
-            GameManager.Instance.OnAgeUpgrade += UpdateSprite;
+            UiAgeUpgrade.Instance.OnUiRefreshTurrets += UpdateSprite;
             GetAllFriendlyTurretSpawnPoints();
         }
 
-        
+        private void UpdateSprite(List<SpriteEntries.SpriteEntry<TurretKey>> spriteMap)
+        {
+            foreach (var s in spriteMap)
+            {
+                var key = s.GetKey();
+
+                if (key.ButtonType == _turretButtonType && key.TurretType == _turretType)
+                {
+                    var newSprite = s.GetSprite();
+                    if (_image != null && newSprite != null)
+                    {
+                        _image.sprite = newSprite;
+                    }
+                    break; 
+                }
+            }
+        }
+
+
         public override void OnPointerEnter(PointerEventData eventData)
         {
             var isSell = _turretButtonType == TurretButtonType.SellTurret;
@@ -75,23 +94,7 @@ namespace Ui.Buttons.Turret_Button
 
             HoverCostDisplay.Instance.ShowTooltip(eventData, amountToShow, label, color);
         }
-
-
-        public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
-        {
-            foreach (var data in upgradeDataList)
-            {
-                if (data is SpritesLevelUpData levelUpData)
-                {
-                    _image.sprite = levelUpData.GetSpriteFromList(new TurretKey 
-                    { 
-                         ButtonType = _turretButtonType , TurretType = _turretType
-                    }, 
-                    levelUpData.turretSpriteMap);
-                }
-            }
-        }
-
+        
 
         private void GetAllFriendlyTurretSpawnPoints()
         {

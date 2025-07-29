@@ -10,7 +10,7 @@ namespace Ui.Buttons.Deploy_Button
     public class UnitQueueUiHandler : MonoBehaviour
     {
 
-        [Tooltip("Text to dipsplay the queue index, needs to be child of this GameObject")]
+        [Tooltip("Text to display the queue index, needs to be child of this GameObject")]
         [SerializeField] private TextMeshProUGUI _queueCountText;
 
         [SerializeField] private UnitType _unitType;

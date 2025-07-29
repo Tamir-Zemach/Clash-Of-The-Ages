@@ -1,9 +1,8 @@
-﻿using Assets.Scripts.BackEnd.Enems;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.BackEnd.Utilities
+namespace BackEnd.Utilities
 {
-    public class SpriteEntries
+    public abstract class SpriteEntries
     {
         [System.Serializable]
         public class SpriteEntry<TType> : ISpriteEntry<TType>

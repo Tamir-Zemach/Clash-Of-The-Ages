@@ -1,7 +1,8 @@
 ﻿using Assets.Scripts.BackEnd.Enems;
 using UnityEditor;
 using UnityEngine;
-using static SpritesLevelUpData;
+using static BackEnd.Utilities.SpriteKeys; 
+
 
 [CustomPropertyDrawer(typeof(TurretKey))]
 public class TurretKeyDrawer : PropertyDrawer

@@ -21,7 +21,6 @@ MonoBehaviour:
     _audioClip: {fileID: 0}
     _volume: 0
   _prefab: {fileID: 7476198131129608348, guid: 24c6171552fef6c4ca2e6b752b3e7dee, type: 3}
-  Cost: 0
   DeployDelayTime: 0
   MoneyWhenKilled: 10
   OppositeBaseTag: Player Base

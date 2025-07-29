@@ -47,7 +47,7 @@ namespace BackEnd.Utilities
         }
         #endregion
 
-        #region Generic Graphic Feedback 
+        #region Global Generic Graphic Feedback 
 
         // Stores original colors and scales of Graphic elements to restore them after effects.
         private static readonly Dictionary<Graphic, Color> OriginalColors = new();
@@ -58,22 +58,30 @@ namespace BackEnd.Utilities
         /// Applies visual feedback effects to any Graphic UI element (Image, Text, etc.).
         /// Supports dynamic color flash, alpha fade, scale bounce, and shake—all customizable.
         /// </summary>
-        public static Sequence ApplyGraphicFeedback(Graphic graphic,
+        public static Sequence ApplyGraphicFeedback(
+            Graphic graphic,
             bool changeColor = true, Color colorToChangeTo = default, float colorChangeDuration = 0.3f,
-            bool changeScale = true, float scaleMultiplier = 1.1f,
+            bool changeScale = true, float scaleMultiplier = 1.1f, float scaleChangeDuration = 0.3f, // 👈 added
             bool shakeGraphic = false, float shakeDuration = 0.3f,
-            bool changeAlpha = false, float alpha = 0)
+            bool changeAlpha = false, float alpha = 0, float alphaChangeDuration = 0.3f, // 👈 added
+            Action onComplete = null)
         {
             if (!TryInitGraphic(graphic, out var transform, out var originalColor, out var originalScale))
                 return null;
 
-            return BuildGraphicSequence(graphic,
+            var sequence = BuildGraphicSequence(
+                graphic,
                 transform, originalColor, originalScale,
-                changeColor, colorToChangeTo,
-                changeAlpha, alpha,
-                changeScale, scaleMultiplier,
-                shakeGraphic, shakeDuration,
-                colorChangeDuration);
+                changeColor, colorToChangeTo, colorChangeDuration,
+                changeAlpha, alpha, alphaChangeDuration,
+                changeScale, scaleMultiplier, scaleChangeDuration,
+                shakeGraphic, shakeDuration
+            );
+
+            if (onComplete != null)
+                sequence.OnComplete(() => onComplete.Invoke());
+
+            return sequence;
         }
 
         /// <summary>
@@ -109,12 +117,13 @@ namespace BackEnd.Utilities
         /// Assembles a visual effect sequence for a Graphic element.
         /// Builds fade, color, scale, and shake tweens, then restores original states.
         /// </summary>
-        private static Sequence BuildGraphicSequence(Graphic graphic,
+        private static Sequence BuildGraphicSequence(
+            Graphic graphic,
             Transform transform, Color originalColor, Vector3 originalScale,
-            bool changeColor, Color colorToChangeTo,
-            bool changeAlpha, float alpha,
-            bool changeScale, float scaleMultiplier, 
-            bool shakeGraphic, float shakeDuration, float duration)
+            bool changeColor, Color colorToChangeTo, float colorDuration,
+            bool changeAlpha, float alpha, float alphaDuration,
+            bool changeScale, float scaleMultiplier, float scaleDuration,
+            bool shakeGraphic, float shakeDuration)
         {
             Sequence sequence = DOTween.Sequence();
             List<Tweener> startTweens = new();
@@ -122,20 +131,20 @@ namespace BackEnd.Utilities
 
             if (changeColor)
             {
-                startTweens.Add(graphic.DOColor(colorToChangeTo, duration));
-                endTweens.Add(graphic.DOColor(originalColor, duration));
+                startTweens.Add(graphic.DOColor(colorToChangeTo, colorDuration));
+                endTweens.Add(graphic.DOColor(originalColor, colorDuration));
             }
 
             if (changeAlpha)
             {
-                startTweens.Add(graphic.DOFade(alpha, duration));
-                endTweens.Add(graphic.DOFade(originalColor.a, duration));
+                startTweens.Add(graphic.DOFade(alpha, alphaDuration));
+                endTweens.Add(graphic.DOFade(originalColor.a, alphaDuration));
             }
 
             if (changeScale)
             {
-                startTweens.Add(transform.DOScale(originalScale * scaleMultiplier, duration));
-                endTweens.Add(transform.DOScale(originalScale, duration));
+                startTweens.Add(transform.DOScale(originalScale * scaleMultiplier, scaleDuration));
+                endTweens.Add(transform.DOScale(originalScale, scaleDuration));
             }
 
             if (shakeGraphic)
@@ -147,7 +156,7 @@ namespace BackEnd.Utilities
                 sequence.Join(tween);
 
             if (startTweens.Count == 0)
-                sequence.AppendInterval(duration);
+                sequence.AppendInterval(Mathf.Max(colorDuration, alphaDuration, scaleDuration));
 
             foreach (var tween in endTweens)
                 sequence.Append(tween);
@@ -156,6 +165,34 @@ namespace BackEnd.Utilities
         }
 
         #endregion
+
+        #region Specific Generic Graphic Feedback
+
+        public static Sequence ShrinkAndDestroy(Transform target, float midScale, float finalScale, Action onComplete = null)
+        {
+            Sequence seq = DOTween.Sequence();
+            seq.Append(target.DOScale(midScale, 0.1f))
+                .Append(target.DOScale(finalScale, 0.2f));
+
+            if (onComplete != null)
+                seq.OnComplete(() => onComplete.Invoke());
+
+            return seq;
+        }
+        
+        public static Tween AnimateSliderFill(Slider slider, float targetValue, float duration, Action onComplete = null)
+        {
+            return DOTween.To(() => slider.value, x => slider.value = x, targetValue, duration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() => onComplete?.Invoke());
+        }
+        
+        
+
+        #endregion
+        
+
+            
     }
 }
 

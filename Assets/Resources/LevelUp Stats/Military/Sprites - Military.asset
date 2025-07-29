@@ -23,7 +23,7 @@ MonoBehaviour:
   SpecialAttackSpriteMap:
   - _key: 0
     _sprite: {fileID: -7954900579209456137, guid: 97894ee56a6c2194baadf894b4627705, type: 3}
-  turretSpriteMap:
+  TurretSpriteMap:
   - _key:
       ButtonType: 0
       TurretType: 1

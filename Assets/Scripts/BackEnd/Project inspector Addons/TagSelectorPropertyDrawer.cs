@@ -1,32 +1,35 @@
-﻿
-using UnityEngine;
+﻿using System;
 using UnityEditor;
+using UnityEngine;
 
-[CustomPropertyDrawer(typeof(TagSelectorAttribute))]
-public class TagSelectorPropertyDrawer : PropertyDrawer
+namespace BackEnd.Project_inspector_Addons
 {
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+#if UNITY_EDITOR
+    [CustomPropertyDrawer(typeof(TagSelectorAttribute))]
+    public class TagSelectorPropertyDrawer : PropertyDrawer
     {
-        TagSelectorAttribute tagSelector = (TagSelectorAttribute)attribute;
-        GUIContent dynamicLabel = new GUIContent(label.text, tagSelector.Tooltip);
-
-        if (property.propertyType == SerializedPropertyType.String)
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, dynamicLabel, property);
+            TagSelectorAttribute tagSelector = (TagSelectorAttribute)attribute;
+            GUIContent dynamicLabel = new GUIContent(label.text, tagSelector.Tooltip);
 
-            // Draw the label manually
-            position = EditorGUI.PrefixLabel(position, label);
+            if (property.propertyType == SerializedPropertyType.String)
+            {
+                EditorGUI.BeginProperty(position, dynamicLabel, property);
+                position = EditorGUI.PrefixLabel(position, label);
 
-            string[] tags = UnityEditorInternal.InternalEditorUtility.tags;
-            int index = System.Array.IndexOf(tags, property.stringValue);
-            index = EditorGUI.Popup(position, index, tags);
-            property.stringValue = index >= 0 ? tags[index] : "";
+                string[] tags = UnityEditorInternal.InternalEditorUtility.tags;
+                int index = Array.IndexOf(tags, property.stringValue);
+                index = EditorGUI.Popup(position, index, tags);
+                property.stringValue = index >= 0 ? tags[index] : "";
 
-            EditorGUI.EndProperty();
-        }
-        else
-        {
-            EditorGUI.PropertyField(position, property, dynamicLabel);
+                EditorGUI.EndProperty();
+            }
+            else
+            {
+                EditorGUI.PropertyField(position, property, dynamicLabel);
+            }
         }
     }
+#endif
 }

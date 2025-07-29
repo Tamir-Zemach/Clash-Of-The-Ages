@@ -4,10 +4,10 @@ using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Economy;
 using BackEnd.InterFaces;
-using Managers;
+using BackEnd.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
-using static SpritesLevelUpData;
+using static BackEnd.Utilities.SpriteKeys; 
 
 
 namespace Ui.Buttons.Upgrade_Buttons
@@ -49,21 +49,24 @@ namespace Ui.Buttons.Upgrade_Buttons
         {
             _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
             _image = GetComponent<Image>();
-            GameManager.Instance.OnAgeUpgrade += UpdateSprite;
+            UiAgeUpgrade.Instance.OnUiRefreshUpgradeUnits += UpdateSprite;
         }
 
 
-        public void UpdateSprite(List<LevelUpDataBase> upgradeDataList)
+        private void UpdateSprite(List<SpriteEntries.SpriteEntry<UnitUpgradeButtonKey>> spriteMap)
         {
-            foreach (var data in upgradeDataList)
+            foreach (var s in spriteMap)
             {
-                if (data is SpritesLevelUpData levelUpData)
+                var key = s.GetKey();
+
+                if (key.StatType == _statType && key.UnitType == _unitType)
                 {
-                    _image.sprite = levelUpData.GetSpriteFromList(new UnitUpgradeButtonKey
-                        {
-                            UnitType = _unitType, StatType = _statType
-                        },
-                        levelUpData.UnitUpgradeButtonSpriteMap);
+                    var newSprite = s.GetSprite();
+                    if (_image != null && newSprite != null)
+                    {
+                        _image.sprite = newSprite;
+                    }
+                    break; 
                 }
             }
         }
