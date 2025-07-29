@@ -31,7 +31,8 @@ MonoBehaviour:
   FriendlyUnitTag: Enemy Character
   Speed: 2
   Health: 100
-  Strength: 10
+  MinStrength: 25
+  MaxStrength: 35
   InitialAttackDelay: 1
   RayLengthForFriendlyUnit: 2
   Range: 2

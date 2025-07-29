@@ -30,9 +30,10 @@ MonoBehaviour:
     m_Bits: 264
   FriendlyUnitTag: Enemy Character
   Speed: 2
-  Health: 150
-  Strength: 8
-  InitialAttackDelay: 1.2
+  Health: 175
+  MinStrength: 30
+  MaxStrength: 40
+  InitialAttackDelay: 1.4
   RayLengthForFriendlyUnit: 2
   Range: 2
   boxSize: {x: 0.5, y: 0.5, z: 0.5}

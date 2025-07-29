@@ -24,8 +24,9 @@ MonoBehaviour:
   <OppositeUnitTag>k__BackingField: Friendly Character
   <OppositeBase>k__BackingField: Player Base
   <FriendlyBase>k__BackingField: Enemy Base
-  <Range>k__BackingField: 11
+  <Range>k__BackingField: 8
   BoxSize: {x: 3, y: 3, z: 1}
   <InitialAttackDelay>k__BackingField: 1
-  <BulletStrength>k__BackingField: 10
+  <MinBulletStrength>k__BackingField: 8
+  <MaxBulletStrength>k__BackingField: 16
   <BulletSpeed>k__BackingField: 10

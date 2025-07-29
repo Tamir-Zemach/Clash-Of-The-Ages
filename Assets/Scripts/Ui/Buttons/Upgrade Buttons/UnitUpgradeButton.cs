@@ -86,7 +86,8 @@ namespace Ui.Buttons.Upgrade_Buttons
             switch (_statType)
             {
                 case StatType.Strength:
-                    unit.Strength += _statBonus;
+                    unit.MinStrength += _statBonus;
+                    unit.MaxStrength += _statBonus;
                     break;
 
                 case StatType.Health:

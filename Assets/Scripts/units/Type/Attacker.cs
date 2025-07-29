@@ -1,10 +1,9 @@
-﻿
-using Assets.Scripts.InterFaces;
+﻿using Assets.Scripts.InterFaces;
 using BackEnd.Data__ScriptableOBj_;
 using units.Behavior;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace units.Type
 {
 
 
@@ -12,39 +11,34 @@ namespace Assets.Scripts
 
     public class Attacker : MonoBehaviour
     {
-        private UnitBaseBehaviour UnitBaseBehaviour;
-        private UnitData unit;
-
+        private UnitBaseBehaviour _unitBaseBehaviour;
+        private int _strength;
         private void Awake()
         {
-            UnitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
-            if (UnitBaseBehaviour != null)
+            _unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
+            if (_unitBaseBehaviour != null)
             {
-                UnitBaseBehaviour.OnAttack += Attack;
+                _unitBaseBehaviour.OnAttack += Attack;
             }
 
         }
         private void OnDestroy()
         {
-            if (UnitBaseBehaviour != null)
+            if (_unitBaseBehaviour != null)
             {
-                UnitBaseBehaviour.OnAttack -= Attack;
+                _unitBaseBehaviour.OnAttack -= Attack;
             }
         }
-        private void Start()
+        public void Attack(GameObject target, int strength)
         {
-            unit = UnitBaseBehaviour.Unit;
-        }
-
-        public void Attack(GameObject target)
-        {
+            _strength = strength;
             GiveDamage(target); 
         }
         private void GiveDamage(GameObject target)
         {
             (target.GetComponent<UnitHealthManager>() as IDamageable
              ?? target.GetComponent<BaseHealth>() as IDamageable)
-            ?.GetHurt(unit.Strength);
+            ?.GetHurt(_strength);
         }
 
     }

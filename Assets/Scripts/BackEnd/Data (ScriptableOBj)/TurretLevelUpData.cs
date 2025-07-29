@@ -27,11 +27,17 @@ namespace Assets.Scripts.Data
                  "For example, a value of 20 reduces the delay by 20%.")]
         [Min(0f)]
         public float AttackDelayReductionPercent;
+        
 
-        [Tooltip("Bonus damage added to the turret's original bullet strength.")]
+        [Tooltip("Bonus damage added to the turret's original bullet Minstrength.")]
         [Min(0)]
-        public int BulletStrength;
+        public int MinBulletStrength;
 
+        [Tooltip("Bonus damage added to the turret's original bullet Maxstrength.")]
+        [Min(0)]
+        public int MaxBulletStrength; 
+        
+        
         [Tooltip("Additional bullet speed applied to the base turret projectile.")]
         [Min(0)]
         public int BulletSpeed;

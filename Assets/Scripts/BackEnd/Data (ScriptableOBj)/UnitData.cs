@@ -45,10 +45,15 @@ namespace BackEnd.Data__ScriptableOBj_
         [Tooltip("Maximum health of the unit.")]
         [Min(1)]
         public int Health = 1;
-
-        [Tooltip("Damage dealt with each attack.")]
+        
+        
+        [Tooltip("MinStrength dealt with each attack.")]
         [Min(0)]
-        public int Strength = 1;
+        public int MinStrength = 1;
+        
+        [Tooltip("MaxStrength dealt with each attack.")]
+        [Min(0)]
+        public int MaxStrength = 1;
 
         [Tooltip("Time delay before the unit performs its first attack (lower is faster).")]
         [Min(0f)]
@@ -82,7 +87,8 @@ namespace BackEnd.Data__ScriptableOBj_
                     Range += levelUpData._range;
                     Speed += levelUpData._speed;
                     Health += levelUpData._health;
-                    Strength += levelUpData._strength;
+                    MinStrength += levelUpData.MinStrength;
+                    MaxStrength += levelUpData.MaxStrength;
                     InitialAttackDelay *= 1f - (levelUpData.AttackDelayReductionPercent / 100f);
                     InitialAttackDelay = Mathf.Max(0.1f, InitialAttackDelay);
 

@@ -66,7 +66,7 @@ public class Admin : PersistentMonoBehaviour<Admin>
             Debug.Log($"{unit.name} " +
                       $"Health: {unit.Health}, " +
                       $"Speed: {unit.Speed}, " +
-                      $"Strength: {unit.Strength}, " +
+                      $"Strength: {unit.MinStrength} - {unit.MaxStrength}, " +
                       $"Attack Speed (Initial Attack Delay): {unit.InitialAttackDelay}, " +
                       $"Range: {unit.Range}");
         }
@@ -79,7 +79,7 @@ public class Admin : PersistentMonoBehaviour<Admin>
                       $"Reward: {unit.MoneyWhenKilled}, " +
                       $"Health: {unit.Health}, " +
                       $"Speed: {unit.Speed}, " +
-                      $"Strength: {unit.Strength}, " +
+                      $"Strength: {unit.MinStrength} - {unit.MaxStrength}, " +
                       $"Attack Speed (Initial Attack Delay): {unit.InitialAttackDelay}, " +
                       $"Range: {unit.Range}");
         }

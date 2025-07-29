@@ -33,7 +33,7 @@ namespace units.Behavior
         public void GetHurt(int damage)
         {
             _currentHealth -= damage;
-
+            //print($"{gameObject.name} has been hurt {damage} damage.");
             OnHealthChanged?.Invoke();
 
             if (_currentHealth > 0 || _isDying) return;

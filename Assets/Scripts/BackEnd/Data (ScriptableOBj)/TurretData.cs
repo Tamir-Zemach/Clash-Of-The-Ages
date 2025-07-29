@@ -36,10 +36,11 @@ namespace BackEnd.Data__ScriptableOBj_
         [Min(0f)]
         [Tooltip("The amount of time before a Unit Attacks (when lower its faster)")]
         [field: SerializeField] public float InitialAttackDelay { get; private set; }
-
-        [Tooltip("Base damage each bullet inflicts.")]
-        [Min(0)]
-        [field: SerializeField] public int BulletStrength { get; private set; }
+        
+        [field: SerializeField] public int MinBulletStrength { get; private set; }
+        
+        [field: SerializeField] public int MaxBulletStrength { get; private set; }
+        
 
         [Tooltip("Speed applied to bullets when fired.")]
         [Min(0)]
@@ -54,7 +55,10 @@ namespace BackEnd.Data__ScriptableOBj_
                     //---Core Stat---
                     Range += levelUpData.Range;
                     BulletSpeed += levelUpData.BulletSpeed;
-                    BulletStrength += levelUpData.BulletStrength;
+                    
+                    MinBulletStrength += levelUpData.MinBulletStrength;
+                    MaxBulletStrength += levelUpData.MaxBulletStrength;
+                    
                     InitialAttackDelay *= 1f - (levelUpData.AttackDelayReductionPercent / 100f);
                     InitialAttackDelay = Mathf.Max(0.1f, InitialAttackDelay);
 

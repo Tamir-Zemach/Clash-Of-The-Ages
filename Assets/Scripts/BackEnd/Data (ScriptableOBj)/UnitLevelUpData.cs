@@ -32,8 +32,15 @@ namespace Assets.Scripts.units
         public float _speed = 1;
         [Tooltip("The Health Of the Unit")]
         public int _health = 1;
-        [Tooltip("How much every Hit will give damage")]
-        public int _strength = 1;
+        
+        [Tooltip("Strength to add to MinStrength.")]
+        [Min(0)]
+        public int MinStrength = 1;
+        
+        [Tooltip("Strength to add to MaxStrength.")]
+        [Min(0)]
+        public int MaxStrength = 1;
+        
         [Tooltip("Percentage reduction applied to initial attack delay after upgrade.\n" +
                  "For example, a value of 20 reduces the delay by 20%.")]
         public float AttackDelayReductionPercent = 1;

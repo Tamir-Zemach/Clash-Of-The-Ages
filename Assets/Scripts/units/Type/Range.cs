@@ -1,52 +1,58 @@
 using BackEnd.Data__ScriptableOBj_;
+using units.Behavior;
 using UnityEngine;
 
-[RequireComponent(typeof(UnitBaseBehaviour))]
-public class Range : MonoBehaviour
+namespace units.Type
 {
-    private UnitBaseBehaviour UnitBaseBehaviour;
-    private UnitData unit;
-    [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private Transform _bulletSpawnPoint;
-
-    private void Awake()
+    [RequireComponent(typeof(UnitBaseBehaviour))]
+    public class Range : MonoBehaviour
     {
-        UnitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
-        if (UnitBaseBehaviour != null)
+        private UnitBaseBehaviour _unitBaseBehaviour;
+        private UnitData _unit;
+        private int _strength;
+        [SerializeField] private GameObject _bulletPrefab;
+        [SerializeField] private Transform _bulletSpawnPoint;
+
+        private void Awake()
         {
-            UnitBaseBehaviour.OnAttack += Attack;
+            _unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
+            if (_unitBaseBehaviour != null)
+            {
+                _unitBaseBehaviour.OnAttack += Attack;
+            }
         }
-    }
-    private void Start()
-    {
-        unit = UnitBaseBehaviour.Unit;
-    }
-
-
-    public void FireProjectile(GameObject target)
-    {
-        if (target == null) return;
-
-        var instance = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
-        var bulletScript = instance.GetComponent<RangeBullet>();
-
-        if (bulletScript != null)
+        private void Start()
         {
-            bulletScript.Initialize(target.transform, unit.Strength);
+            _unit = _unitBaseBehaviour.Unit;
         }
 
-        target = null; // clear after shot
-    }
 
-    private void Attack(GameObject target)
-    {
-        var instance = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
-        var bulletScript = instance.GetComponent<RangeBullet>();
-
-        if (bulletScript != null)
+        public void FireProjectile(GameObject target, int strength)
         {
-            bulletScript.Initialize(target.transform, unit.Strength);
-        }
-    }
+            if (target == null) return;
 
+            var instance = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
+            var bulletScript = instance.GetComponent<RangeBullet>();
+
+            if (bulletScript != null)
+            {
+                bulletScript.Initialize(target.transform, strength);
+            }
+
+            target = null; // clear after shot
+        }
+
+        private void Attack(GameObject target, int strength)
+        {
+            _strength =  strength;
+            var instance = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
+            var bulletScript = instance.GetComponent<RangeBullet>();
+
+            if (bulletScript != null)
+            {
+                bulletScript.Initialize(target.transform, _strength);
+            }
+        }
+
+    }
 }

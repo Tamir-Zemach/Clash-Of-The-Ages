@@ -21,7 +21,7 @@ MonoBehaviour:
     _audioClip: {fileID: 8300000, guid: 4652c5da23d529e4d84fc1bf9002ded0, type: 3}
     _volume: 0.1
   _prefab: {fileID: 6578747469787437173, guid: 807f2b6c2ed9f8146be47706d839b5e1, type: 3}
-  DeployDelayTime: 15
+  DeployDelayTime: 2
   MoneyWhenKilled: 0
   OppositeBaseTag: Enemy Base
   OppositeUnitTag: Enemy Character
@@ -30,9 +30,10 @@ MonoBehaviour:
     m_Bits: 576
   FriendlyUnitTag: Friendly Character
   Speed: 2
-  Health: 150
-  Strength: 8
-  InitialAttackDelay: 1.2
+  Health: 175
+  MinStrength: 30
+  MaxStrength: 40
+  InitialAttackDelay: 1.4
   RayLengthForFriendlyUnit: 2
   Range: 2
   boxSize: {x: 0.5, y: 0.5, z: 0.5}
