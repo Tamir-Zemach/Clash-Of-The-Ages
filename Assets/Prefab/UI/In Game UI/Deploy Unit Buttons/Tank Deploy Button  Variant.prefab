@@ -97,6 +97,10 @@ PrefabInstance:
       value: Tank Deploy Button  Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6974771833412993262, guid: 91d9d2698333030469e116f713ac7675, type: 3}
+      propertyPath: _cost
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6974771833412993262, guid: 91d9d2698333030469e116f713ac7675, type: 3}
       propertyPath: unitType
       value: 2
       objectReference: {fileID: 0}

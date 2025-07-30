@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Base_Classes;
@@ -24,12 +25,16 @@ namespace Ui.Buttons.Deploy_Button
         
         public UnitType Type => _unitType;
         
+        
+        
         private void Awake()
         {
             _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
             _image = GetComponent<Image>();
             UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprite;
         }
+        
+        
 
 
         private void UpdateSprite(List<SpriteEntries.SpriteEntry<UnitType>> spriteMap)
@@ -56,7 +61,7 @@ namespace Ui.Buttons.Deploy_Button
                 return;
             }
 
-            if (PlayerCurrency.Instance.HasEnoughMoney(Cost))
+            if (CanDeployUnit())
             {
                 PlayerCurrency.Instance.SubtractMoney(Cost);
 
@@ -66,5 +71,11 @@ namespace Ui.Buttons.Deploy_Button
                 }
             }
         }
+
+        private bool CanDeployUnit()
+        {
+            return PlayerCurrency.Instance.HasEnoughMoney(Cost) && !DeployManager.Instance.MaxUnitCapacity();
+        }
+        
     }
 }

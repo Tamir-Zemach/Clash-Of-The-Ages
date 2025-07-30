@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Data_Getters;
 using BackEnd.Economy;
 using turrets;
 using UnityEngine;
@@ -32,19 +35,27 @@ namespace Ui.Buttons.Turret_Button
 
         private void SellTurretLogic(TurretSpawnPoint slot)
         {
-            PlayerCurrency.Instance.AddMoney(_moneyToGiveBack);
+            var refundAmount = GetOtherTurretCost(slot.TurretType) / 2;
+
+            if (refundAmount <= 0)
+            {
+                Debug.LogWarning($"No refund amount for turret type {slot.TurretType}");
+                return;
+            }
+
+            PlayerCurrency.Instance.AddMoney(refundAmount);
             slot.HasTurret = false;
 
             var turret = slot.GetComponentInChildren<TurretBaseBehavior>();
             if (!turret) return;
             Destroy(turret.gameObject);
-            
         }
 
         private void AddTurretToEmptySlotLogic(TurretSpawnPoint slot)
         {
             PlayerCurrency.Instance.SubtractMoney(Cost);
             slot.HasTurret = true;
+            slot.TurretType = _turretType;
 
             var turret = Instantiate(_turret.Prefab, slot.transform.position, slot.transform.rotation);
             turret.transform.parent = slot.transform;
@@ -59,7 +70,23 @@ namespace Ui.Buttons.Turret_Button
                 Debug.LogWarning("TurretBaseBehaviour not found on spawned enemy prefab.");
             }
 
+        }
+        
 
+        private int GetOtherTurretCost(TurretType typeToFind)
+        {
+            var otherButtons = UIObjectFinder.GetButtons<TurretButton, TurretType>();
+
+            foreach (var button in otherButtons)
+            {
+                if (button != null && button.Type == typeToFind)
+                {
+                    return button.Cost;
+                }
+            }
+
+            Debug.LogWarning($"No turret button found for type {typeToFind}");
+            return 0;
         }
 
 

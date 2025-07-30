@@ -50,8 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meteorPrefab: {fileID: 6357827531889126963, guid: e35fd14c588b424409bdb1cbc620f2aa, type: 3}
   _specialAttackArea: {fileID: 4388196287644028814}
-  _meteorStrength: 50
-  _minSpawnTime: 0.5
+  _meteorStrength: 200
+  _minSpawnTime: 0.2
   _maxSpawnTime: 1
 --- !u!114 &-7628481921381484072
 MonoBehaviour:
@@ -240,7 +240,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 28d0fd7c2cbb4d44aac69515b0388aaa, type: 2}
+  - {fileID: 2100000, guid: 5fdc988e224552348acab2652a385992, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

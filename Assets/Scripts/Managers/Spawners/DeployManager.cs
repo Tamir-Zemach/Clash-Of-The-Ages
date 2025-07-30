@@ -14,6 +14,7 @@ namespace Managers.Spawners
         public static event Action<UnitData, int> OnUnitQueued;
         public static event Action<UnitData> OnUnitReadyToDeploy;
         public static event Action OnUnitDeployed;
+        public static event Action OnMaxCapacity;
 
         public readonly Queue<UnitData> UnitQueue = new Queue<UnitData>();
         private bool _isDeploying;
@@ -26,11 +27,13 @@ namespace Managers.Spawners
         [Tooltip("The player base Tag:")]
         [SerializeField, TagSelector] private string _baseTag;
 
+        public int MaxUnits;
+        
         private SpawnArea _spawnArea;
         private Transform _unitSpawnPoint;
         private UnitData _nextCharacter;
         private GameObject _unitReference;
-
+        private int _currentUnitsInQueue;
         private float _timer;
         
 
@@ -82,10 +85,11 @@ namespace Managers.Spawners
         /// </summary>
         public void AddUnitToDeploymentQueue(UnitData unit)
         {
-            UnitQueue.Enqueue(unit);
 
-            OnUnitQueued?.Invoke(unit, UnitQueue.Count - 1); // 🧠 Position starts at 0
+            UnitQueue.Enqueue(unit);
+            OnUnitQueued?.Invoke(unit, UnitQueue.Count - 1);
             OnQueueChanged?.Invoke();
+            _currentUnitsInQueue++;
 
             if (!_isDeploying)
             {
@@ -126,7 +130,7 @@ namespace Managers.Spawners
         private void HandleDelayedDeployment()
         {
             _timer += Time.deltaTime;
-            if (!(_timer >= _nextCharacter.DeployDelayTime) || _spawnArea._hasUnitInside) return;
+            if (!CanDeploy()) return;
             _unitReference = Instantiate(_nextCharacter.Prefab, _unitSpawnPoint.position, _unitSpawnPoint.rotation);
 
             if (_unitReference.TryGetComponent(out UnitBaseBehaviour behaviour))
@@ -135,12 +139,32 @@ namespace Managers.Spawners
             }
 
             OnUnitDeployed?.Invoke();
+            _currentUnitsInQueue--;
+            
             _timer = 0;
             _isDeploying = false;
             ProcessNextUnitInQueue();
         }
 
+        private bool CanDeploy()
+        {
+            return _timer >= _nextCharacter.DeployDelayTime && !_spawnArea._hasUnitInside;
+        }
 
+        public bool MaxUnitCapacity()
+        {
+            if (UnitCounter.FriendlyCount + _currentUnitsInQueue >= MaxUnits)
+            {
+                OnMaxCapacity?.Invoke();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+        
     }
 }
 

@@ -50,8 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meteorPrefab: {fileID: 6357827531889126963, guid: 9c921f3ed8f30ab48b372b171ceca89a, type: 3}
   _specialAttackArea: {fileID: 4388196287644028814}
-  _meteorStrength: 50
-  _minSpawnTime: 0.5
+  _meteorStrength: 200
+  _minSpawnTime: 0.2
   _maxSpawnTime: 1
 --- !u!114 &5346495362125907546
 MonoBehaviour:

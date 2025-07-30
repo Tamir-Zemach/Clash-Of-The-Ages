@@ -16,7 +16,6 @@ namespace BackEnd.Project_inspector_Addons.Editor
             var turretButtonTypeProp = serializedObject.FindProperty(TurretButton.FieldNames.TurretButtonType);
             var turretTypeProp = serializedObject.FindProperty(TurretButton.FieldNames.TurretType);
             var costProp = serializedObject.FindProperty(ButtonWithCost.ButtonWithCostFields.Cost); 
-            var refundProp = serializedObject.FindProperty(TurretButton.FieldNames.Refund);
             var overLay = serializedObject.FindProperty(TurretButton.FieldNames.OverLay);
 
             EditorGUILayout.PropertyField(turretButtonTypeProp);
@@ -29,11 +28,6 @@ namespace BackEnd.Project_inspector_Addons.Editor
             if ((TurretButtonType)turretButtonTypeProp.enumValueIndex != TurretButtonType.SellTurret)
             {
                 EditorGUILayout.PropertyField(costProp);
-            }
-
-            if ((TurretButtonType)turretButtonTypeProp.enumValueIndex == TurretButtonType.SellTurret)
-            {
-                EditorGUILayout.PropertyField(refundProp);
             }
 
             EditorGUILayout.PropertyField(overLay);

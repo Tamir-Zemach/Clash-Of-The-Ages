@@ -146,12 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b74d305136a70448ba3e25f86419532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cost: 300
   _unitType: 0
   _statType: 2
-  _statBonus: 50
+  _statBonus: 20
   _attackDelayReductionPercent: 0
-  _cost: 100
-  _statCostInc: 50
+  _statCostInc: 150
 --- !u!114 &4117398216446440157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,3 +165,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CostDisplay: {fileID: 0}
+  Offset: {x: 15, y: -15}

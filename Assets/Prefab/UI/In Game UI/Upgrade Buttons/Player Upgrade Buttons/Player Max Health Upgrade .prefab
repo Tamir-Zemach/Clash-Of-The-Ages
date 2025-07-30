@@ -146,10 +146,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb65e58c1b6ed0045b2b64e07f2ff0e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cost: 400
   <Type>k__BackingField: 0
-  _statBonus: 100
-  <Cost>k__BackingField: 100
-  _statCostInc: 100
+  _statBonus: 500
+  _statCostInc: 600
 --- !u!114 &7466609906976494939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,3 +163,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CostDisplay: {fileID: 0}
+  Offset: {x: 15, y: -15}

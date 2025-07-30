@@ -4,9 +4,11 @@ using System.Linq;
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
+using BackEnd.Data_Getters;
 using BackEnd.InterFaces;
 using BackEnd.Utilities;
 using Managers;
+using turrets;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
@@ -23,9 +25,6 @@ namespace Ui.Buttons.Turret_Button
         [Tooltip("The type of action this button triggers.")]
         [SerializeField] private TurretType _turretType;
         
-
-        [Tooltip("Refund granted when selling a turret.")]
-        [SerializeField] private int _moneyToGiveBack;
 
 
         [FormerlySerializedAs("_overLay")] [SerializeField] private CanvasGroup _canvasGroupToFade;
@@ -62,6 +61,7 @@ namespace Ui.Buttons.Turret_Button
             LevelLoader.Instance.OnSceneChanged += GetAllFriendlyTurretSpawnPoints;
             UiAgeUpgrade.Instance.OnUiRefreshTurrets += UpdateSprite;
             GetAllFriendlyTurretSpawnPoints();
+
         }
 
         private void UpdateSprite(List<SpriteEntries.SpriteEntry<TurretKey>> spriteMap)
@@ -81,19 +81,7 @@ namespace Ui.Buttons.Turret_Button
                 }
             }
         }
-
-
-        public override void OnPointerEnter(PointerEventData eventData)
-        {
-            var isSell = _turretButtonType == TurretButtonType.SellTurret;
-            
-            var label = isSell ? "+$" : "$";
-            var color = isSell ? Color.green : Color.black;
-            
-            var amountToShow = isSell ? _moneyToGiveBack : Cost;
-
-            HoverCostDisplay.Instance.ShowTooltip(eventData, amountToShow, label, color);
-        }
+        
         
 
         private void GetAllFriendlyTurretSpawnPoints()
@@ -102,14 +90,12 @@ namespace Ui.Buttons.Turret_Button
                                     .Where(spawnPoint => spawnPoint.IsFriendly)
                                     .ToList();
         }
-
-
+        
 #if UNITY_EDITOR
         public static class FieldNames
         {
             public const string TurretButtonType = nameof(_turretButtonType);
             public const string TurretType = nameof(_turretType);
-            public const string Refund = nameof(_moneyToGiveBack);
             public const string OverLay = nameof(_canvasGroupToFade);
         }
 #endif

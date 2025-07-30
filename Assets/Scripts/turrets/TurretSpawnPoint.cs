@@ -1,48 +1,55 @@
 ﻿using System.Collections;
+using Assets.Scripts.BackEnd.Enems;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class TurretSpawnPoint : MonoBehaviour
+namespace turrets
 {
-    [SerializeField] private GameObject highlightGfx;
-
-    [field: SerializeField] public bool IsFriendly { get; private set; }
-
-    public bool IsUnlocked {  get; set; }
-
-    public bool HasTurret { get; set; }
-
-
-    private Coroutine _flashRoutine;
-    public void ShowHighlight(bool show)
+    public class TurretSpawnPoint : MonoBehaviour
     {
-        if (highlightGfx != null)
-            highlightGfx.SetActive(show);
-    }
+        [FormerlySerializedAs("highlightGfx")] [SerializeField] private GameObject _highlightGfx;
 
-    public void StartFlashing(float timeBetweenFlashes)
-    {
-        if (_flashRoutine == null)
-            _flashRoutine = StartCoroutine(FlashLoop(timeBetweenFlashes));
-    }
+        [field: SerializeField] public bool IsFriendly { get; private set; }
 
-    public void StopFlashing()
-    {
-        if (_flashRoutine != null)
+        public bool IsUnlocked {  get; set; }
+
+        public bool HasTurret { get; set; }
+        
+        public TurretType TurretType { get; set; }
+
+
+        private Coroutine _flashRoutine;
+        public void ShowHighlight(bool show)
         {
-            StopCoroutine(_flashRoutine);
-            highlightGfx.SetActive(false);
-            _flashRoutine = null;
+            if (_highlightGfx != null)
+                _highlightGfx.SetActive(show);
         }
-    }
 
-    private IEnumerator FlashLoop(float timeBetweenFlashes)
-    {
-        while (true)
+        public void StartFlashing(float timeBetweenFlashes)
         {
-            highlightGfx.SetActive(true);
-            yield return new WaitForSeconds(timeBetweenFlashes);
-            highlightGfx.SetActive(false);
-            yield return new WaitForSeconds(timeBetweenFlashes);
+            if (_flashRoutine == null)
+                _flashRoutine = StartCoroutine(FlashLoop(timeBetweenFlashes));
+        }
+
+        public void StopFlashing()
+        {
+            if (_flashRoutine != null)
+            {
+                StopCoroutine(_flashRoutine);
+                _highlightGfx.SetActive(false);
+                _flashRoutine = null;
+            }
+        }
+
+        private IEnumerator FlashLoop(float timeBetweenFlashes)
+        {
+            while (true)
+            {
+                _highlightGfx.SetActive(true);
+                yield return new WaitForSeconds(timeBetweenFlashes);
+                _highlightGfx.SetActive(false);
+                yield return new WaitForSeconds(timeBetweenFlashes);
+            }
         }
     }
 }

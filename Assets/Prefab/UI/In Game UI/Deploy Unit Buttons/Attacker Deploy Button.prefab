@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32e8c6af7cca4a34da638193e2d54234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cost: 130
   _unitType: 0
-  <Cost>k__BackingField: 10
 --- !u!114 &7007148196912447120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CostDisplay: {fileID: 0}
+  Offset: {x: 15, y: -15}
 --- !u!1 &6282026925331862492
 GameObject:
   m_ObjectHideFlags: 0

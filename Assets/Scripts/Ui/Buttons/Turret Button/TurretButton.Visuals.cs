@@ -2,6 +2,7 @@
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Utilities;
 using DG.Tweening;
+using turrets;
 
 namespace Ui.Buttons.Turret_Button
 {
@@ -70,7 +71,6 @@ namespace Ui.Buttons.Turret_Button
         
         private void ResetVisualFeedBack()
         {
-            print("resetVisualFeedBack");
             // Stop flashing on all spawn points
             SetVisualFeedback(_ => true, VisualFeedbackType.StopFlash);
 

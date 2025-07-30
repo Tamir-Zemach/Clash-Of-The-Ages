@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Economy;
+using turrets;
 
 namespace Ui.Buttons.Turret_Button
 {
@@ -54,7 +55,6 @@ namespace Ui.Buttons.Turret_Button
             StartCoroutine(MouseRayCaster.Instance.WaitForMouseClick(
                 onValidHit: hit =>
                 {
-                    print("check");
                     if (hit.collider.TryGetComponent<TurretSpawnPoint>(out var slot) && condition(slot))
                     {
                         ConfirmSlotAndInvoke(slot, logic);
