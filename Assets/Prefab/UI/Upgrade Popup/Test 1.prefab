@@ -10,8 +10,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 904271810235389937, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: m_Name
-      value: Attacker Strength Upgrade Variant
+      value: Test 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3536314145875068856, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: de49f8785686d2348b52c05ed293b342, type: 3}
     - target: {fileID: 7529915342754289938, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -92,8 +96,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1811779614465051172, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 904271810235389937, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1441503000512701659}
   m_SourcePrefab: {fileID: 100100000, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+--- !u!1 &6262027579768821617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 904271810235389937, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+  m_PrefabInstance: {fileID: 6515493203929137280}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1441503000512701659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6262027579768821617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c19b37243a8442bb60f77f830f9f041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rectTransform: {fileID: 0}

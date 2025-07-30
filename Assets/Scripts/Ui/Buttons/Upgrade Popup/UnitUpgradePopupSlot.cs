@@ -1,10 +1,12 @@
 using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace Ui.Buttons
+namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UnitUpgradePopupSlot : MonoBehaviour
+    public class UnitUpgradePopupSlot : PopupSlot
     {
         [Tooltip("Which unit should be upgraded")]
         [SerializeField] private UnitType _unitType;
@@ -23,11 +25,17 @@ namespace Ui.Buttons
         private UnitData _unit;
         private void Start()
         {
+            Transform parent = transform;
+            while (parent != null) {
+                Debug.Log($"{parent.name}: {parent.GetComponent<LayoutGroup>()}");
+                parent = parent.parent;
+            }
             GetData();
         }
 
         private void GetData()
         {
+            if (GameDataRepository.Instance == null) return;
             _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
         }
         
