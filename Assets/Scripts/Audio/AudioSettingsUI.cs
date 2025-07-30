@@ -1,30 +1,35 @@
 
+using System;
+using BackEnd.Base_Classes;
 using BackEnd.Utilities;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Audio
 {
-    public class AudioSettingsUI : MonoBehaviour
+    public class AudioSettingsUI : PersistentMonoBehaviour<AudioSettingsUI>
     {
         private AudioSource _audioSource;
-        [SerializeField] private Slider _sfxVolumeSlider;
-        [SerializeField] private Slider _soundtrackVolumeSlider;
-        private void Awake()
+
+
+        protected override void Awake()
         {
+            base.Awake();
             _audioSource = GetComponent<AudioSource>();
-            OnSFXVolumeChanged();
+        }
+        
+
+        public void OnSFXVolumeChanged(Slider sfxSlider)
+        {
+            AudioManager.GlobalSfxVolume = sfxSlider.value;
         }
 
-        public void OnSFXVolumeChanged()
+        public void OnSoundtrackVolumeChange(Slider soundtrackSlider)
         {
-            AudioManager.GlobalSfxVolume = _sfxVolumeSlider.value;
+            AudioManager.GlobalSoundtrackVolume = soundtrackSlider.value;
+            _audioSource.volume = soundtrackSlider.value;
         }
-
-        public void OnSoundtrackVolumeChange()
-        {
-            AudioManager.GlobalSoundtrackVolume = _soundtrackVolumeSlider.value;
-            _audioSource.volume = _soundtrackVolumeSlider.value;
-        }
+        
     }
 }

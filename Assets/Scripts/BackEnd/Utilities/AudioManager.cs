@@ -11,8 +11,8 @@ namespace BackEnd.Utilities
     public static class AudioManager
     {
 
-        public static float GlobalSfxVolume;
-        public static float GlobalSoundtrackVolume;
+        public static float GlobalSfxVolume = 0;
+        public static float GlobalSoundtrackVolume = 0;
         
         
 

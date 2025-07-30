@@ -64,9 +64,7 @@ namespace Ui
 
         private void InitializeOnSceneLoad()
         {
-            if (LevelLoader.Instance.InStartMenu()) return;
             _camera = Camera.main;
-            StopAllCoroutines();
             _fadeTween?.Kill();
             _fadeTween = null;
             _canvasGroupToFlash = null;

@@ -68,7 +68,7 @@ namespace Managers
         }
         private void StartGame()
         {
-            PlayerCurrency.Instance.AddMoney(_startingMoney);
+            PlayerCurrency.Instance.SetMoney(_startingMoney);
             PlayerHealth.Instance.SetMaxHealth(_startingHealth);
             PlayerHealth.Instance.FullHealth();
         }

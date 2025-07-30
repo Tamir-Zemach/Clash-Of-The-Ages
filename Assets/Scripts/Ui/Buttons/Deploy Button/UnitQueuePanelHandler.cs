@@ -28,6 +28,13 @@ namespace Ui.Buttons.Deploy_Button
             DeployManager.OnUnitDeployed += HandleUnitDeploymentEnd;
             UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprites;
         }
+        private void OnDestroy()
+        {
+            DeployManager.OnUnitQueued -= CreateQueueSlot;
+            DeployManager.OnUnitReadyToDeploy -= ActivateCountdown;
+            DeployManager.OnUnitDeployed -= HandleUnitDeploymentEnd;
+            UiAgeUpgrade.Instance.OnUiRefreshDeployUnits -= UpdateSprites;
+        }
 
         private void UpdateSprites(List<SpriteEntries.SpriteEntry<UnitType>> spriteMap)
         {

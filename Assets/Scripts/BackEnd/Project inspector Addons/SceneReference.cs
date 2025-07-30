@@ -26,7 +26,7 @@ namespace BackEnd.Project_inspector_Addons
         }
 #endif
         
-        [SerializeField, HideInInspector] private string scenePath;
+        [SerializeField] private string scenePath; 
 
         public string GetScenePath() => scenePath;
 
@@ -41,18 +41,6 @@ namespace BackEnd.Project_inspector_Addons
 
         public override string ToString() => GetSceneName();
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (sceneAsset != null)
-            {
-                scenePath = AssetDatabase.GetAssetPath(sceneAsset);
-            }
-            else
-            {
-                scenePath = string.Empty;
-            }
-        }
-#endif
+
     }
 }

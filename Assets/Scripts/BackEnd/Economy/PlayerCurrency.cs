@@ -25,6 +25,13 @@ namespace BackEnd.Economy
             OnMoneyChanged?.Invoke();
             return _money;
         }
+        
+        public int SetMoney(int amount)
+        {
+            _money = ValidateAmount(Math.Max(0, amount), "setting");
+            OnMoneyChanged?.Invoke();
+            return _money;
+        }
 
         public int SubtractMoney(int amount)
         {
@@ -38,14 +45,11 @@ namespace BackEnd.Economy
         }
 
         
-        private int ValidateAmount(int amount, string operation)
+        private static int ValidateAmount(int amount, string operation)
         {
-            if (amount < 0)
-            {
-                Debug.LogWarning($"{amount} is negative. Please use a positive amount for {operation}.");
-                return 0;
-            }
-            return amount;
+            if (amount >= 0) return amount;
+            Debug.LogWarning($"{amount} is negative. Please use a positive amount for {operation}.");
+            return 0;
         }
 
         public bool HasEnoughMoney(int cost)

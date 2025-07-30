@@ -11,7 +11,6 @@ namespace Managers
     public sealed class LevelLoader : PersistentMonoBehaviour<LevelLoader>
     {
         public event Action OnSceneChanged;
-        public Toggle AdminUi;
 
         [SerializeField]
         private List<SceneReference> _scenes = new();
@@ -53,7 +52,7 @@ namespace Managers
                 OnSceneChanged?.Invoke();
             }
         }
-
+        
         public void LoadNextLevel()
         {
             _currentLevelIndex++;
@@ -63,19 +62,11 @@ namespace Managers
                 return;
             }
             SceneManager.LoadScene(_currentLevelIndex);
-            
-            LoadAdditiveScene(_inGameUiScene, ref _isUiLoaded);
-            LoadAdditiveScene(_pauseUiScene, ref _isPauseUiLoaded);
-       
 
-            if (_adminUi) 
-            {
-                LoadAdditiveScene(_adminUiScene, ref _isAdminUiLoaded);
-            }
+            LoadUiScenes();
 
-            
         }
-        private void LoadAdditiveScene(SceneReference scene, ref bool isLoaded)
+        private static void LoadAdditiveScene(SceneReference scene, ref bool isLoaded)
         {
             if (!isLoaded)
             {
@@ -91,16 +82,29 @@ namespace Managers
                 }
             }
         }
-        public void AdminUiToggle()
+
+        private void LoadUiScenes()
         {
-            _adminUi = AdminUi.isOn;
+            LoadAdditiveScene(_inGameUiScene, ref _isUiLoaded);
+            LoadAdditiveScene(_pauseUiScene, ref _isPauseUiLoaded);
+            if (_adminUi) 
+            {
+                LoadAdditiveScene(_adminUiScene, ref _isAdminUiLoaded);
+            }
+        }
+        public void AdminUiToggle(bool isAdmin)
+        {
+            _adminUi = isAdmin;
         }
 
         public void ReloadCurrentLevel()
         {
             int buildIndex = _scenes[_currentLevelIndex].GetBuildIndex();
             if (buildIndex >= 0)
+            {
                 SceneManager.LoadScene(buildIndex);
+            }
+
         }
 
         public void LoadSpecificLevel(int sceneIndex)
@@ -111,11 +115,32 @@ namespace Managers
                 return;
             }
 
-            int buildIndex = _scenes[sceneIndex].GetBuildIndex();
-            if (buildIndex >= 0)
-                SceneManager.LoadScene(buildIndex);
+            var selectedScene = _scenes[sceneIndex];
+            int buildIndex = selectedScene.GetBuildIndex();
+            if (buildIndex > 0)
+            {
+                LoadSceneAndResetAdditiveFlags(buildIndex);
+                LoadUiScenes();
+            }
+            else if (buildIndex == 0)
+            {
+                _adminUi = false;
+                LoadSceneAndResetAdditiveFlags(buildIndex);
+            }
             else
-                Debug.LogWarning($"Scene {sceneIndex} not found in Build Settings.");
+            {
+                Debug.LogWarning($"Scene '{selectedScene.GetSceneName()}' not found in Build Settings.");
+            }
+            
+        }
+
+        private void LoadSceneAndResetAdditiveFlags(int buildIndex)
+        {
+            _isUiLoaded = false;
+            _isAdminUiLoaded = false;
+            _isPauseUiLoaded = false;
+            SceneManager.LoadScene(buildIndex);
+            _currentLevelIndex = _scenes[buildIndex].GetBuildIndex();
         }
 
         public SceneReference GetCurrentSceneReference() => _scenes[_currentLevelIndex];
@@ -123,6 +148,8 @@ namespace Managers
         {
             return _currentLevelIndex == 0;
         }
+        
+        
 
 
     }
