@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BackEnd.Base_Classes;
 using BackEnd.Economy;
 using UnityEngine;
 
@@ -38,6 +39,7 @@ namespace Managers
 
         protected override void Awake()
         {
+            DontDestroyOnLoad(gameObject);
             base.Awake();
             EnemyHealth.Instance.OnEnemyDied += NextLevel;
             GetData();

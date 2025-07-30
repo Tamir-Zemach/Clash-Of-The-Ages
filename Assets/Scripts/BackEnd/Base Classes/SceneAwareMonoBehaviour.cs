@@ -1,25 +1,26 @@
-﻿using UnityEngine;
+﻿using Managers;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public abstract class SceneAwareMonoBehaviour<T> : PersistentMonoBehaviour<T> where T : MonoBehaviour
+namespace BackEnd.Base_Classes
 {
-    protected virtual void OnEnable()
+    public abstract class SceneAwareMonoBehaviour<T> : PersistentMonoBehaviour<T> where T : MonoBehaviour
     {
-        SceneManager.sceneLoaded += HandleSceneLoaded;
-    }
-
-    protected virtual void OnDisable()
-    {
-        SceneManager.sceneLoaded -= HandleSceneLoaded;
-    }
-
-    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (mode == LoadSceneMode.Single)
+        protected virtual void OnEnable()
         {
+            LevelLoader.Instance.OnSceneChanged += HandleSceneLoaded;
+        }
+
+        protected virtual void OnDisable()
+        {
+            LevelLoader.Instance.OnSceneChanged -= HandleSceneLoaded;
+        }
+
+        private void HandleSceneLoaded()
+        { 
             InitializeOnSceneLoad();
         }
-    }
 
-    protected abstract void InitializeOnSceneLoad();
+        protected abstract void InitializeOnSceneLoad();
+    }
 }

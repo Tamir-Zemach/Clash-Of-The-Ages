@@ -1,37 +1,39 @@
-using Assets.Scripts.BackEnd.Utilities;
-using Assets.Scripts.BackEnd.Enems;
 using System.Collections.Generic;
+using Assets.Scripts.BackEnd.Utilities;
+using BackEnd.Base_Classes;
 using BackEnd.Utilities;
+using Managers;
 using UnityEngine;
-using UnityEngine.UI;
 
-
-[RequireComponent(typeof(AudioSource))] 
-public class SoundtrackManager : SceneAwareMonoBehaviour<SoundtrackManager>
+namespace Audio
 {
-    private AudioSource _audioSource;
-    public AudioClip StartMenuSoundtrack;
-    public List<LevelSoundTrackEntry> LevelsSoundtrack;
-
-    protected override void Awake()
+    [RequireComponent(typeof(AudioSource))] 
+    public class SoundtrackManager : SceneAwareMonoBehaviour<SoundtrackManager>
     {
-        base.Awake();
-        _audioSource = GetComponent<AudioSource>();
-        _audioSource.clip = StartMenuSoundtrack;
-        if (StartMenuSoundtrack == null) return;
-        _audioSource.Play();
-    }
+        private AudioSource _audioSource;
+        public AudioClip StartMenuSoundtrack;
+        public List<LevelSoundTrackEntry> LevelsSoundtrack;
 
-    protected override void InitializeOnSceneLoad()
-    {
-        if (LevelLoader.Instance.InStartMenu()) return;
-        LevelLoader.Instance.OnSceneChanged += PlaySoundtrack;
+        protected override void Awake()
+        {
+            base.Awake();
+            _audioSource = GetComponent<AudioSource>();
+            _audioSource.clip = StartMenuSoundtrack;
+            if (StartMenuSoundtrack == null) return;
+            _audioSource.Play();
+        }
+
+        protected override void InitializeOnSceneLoad()
+        {
+            if (LevelLoader.Instance.InStartMenu()) return;
+            LevelLoader.Instance.OnSceneChanged += PlaySoundtrack;
+
+        }
+        private void PlaySoundtrack()
+        {
+            AudioManager.PlayRelevantSoundtrack(_audioSource, LevelsSoundtrack);
+        }
 
     }
-    private void PlaySoundtrack()
-    {
-        AudioManager.PlayRelevantSoundtrack(_audioSource, LevelsSoundtrack);
-    }
-
 }
 

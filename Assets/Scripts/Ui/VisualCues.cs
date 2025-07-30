@@ -4,6 +4,7 @@ using Assets.Scripts.BackEnd.Utilities;
 using BackEnd.Economy;
 using BackEnd.Utilities;
 using DG.Tweening;
+using Managers;
 using Managers.Camera;
 using units.Behavior;
 using UnityEngine;
@@ -11,7 +12,7 @@ using UnityEngine.Events;
 
 namespace Ui
 {
-    public class VisualCues : SceneAwareMonoBehaviour<VisualCues>
+    public class VisualCues : MonoBehaviour
     {
         #region Fields
 
@@ -39,9 +40,9 @@ namespace Ui
 
         #region Initialization
 
-        protected override void OnEnable()
+        protected void OnEnable()
         {
-            base.OnEnable();
+            LevelLoader.Instance.OnSceneChanged += InitializeOnSceneLoad;
             UnitBaseBehaviour.OnSpawned += HandleSpawned;
             PlayerHealth.OnDroppedBelowHalfHealth += IndexForPlayerHealthDrop;
             PlayerHealth.OnHealedAboveHalfHealth += IndexForPlayerHealed;
@@ -49,9 +50,8 @@ namespace Ui
             CameraMovement.OnCameraMoved += RecalculateFrustum;
         }
 
-        protected override void OnDisable()
+        protected void OnDisable()
         {
-            base.OnDisable();
             UnitBaseBehaviour.OnSpawned -= HandleSpawned;
             PlayerHealth.OnDroppedBelowHalfHealth -= IndexForPlayerHealthDrop;
             PlayerHealth.OnHealedAboveHalfHealth -= IndexForPlayerHealed;
@@ -62,7 +62,7 @@ namespace Ui
             
         }
 
-        protected override void InitializeOnSceneLoad()
+        private void InitializeOnSceneLoad()
         {
             if (LevelLoader.Instance.InStartMenu()) return;
             _camera = Camera.main;
@@ -75,9 +75,18 @@ namespace Ui
         }
         private void RecalculateFrustum()
         {
+            if (_camera == null)
+            {
+                _camera = Camera.main;
+                if (_camera == null)
+                {
+                    Debug.LogWarning("Camera.main is not assigned yet.");
+                    return;
+                }
+            }
+
             _cameraPlanes = GeometryUtility.CalculateFrustumPlanes(_camera);
         }
-
         #endregion
 
         #region Enemy Visibility

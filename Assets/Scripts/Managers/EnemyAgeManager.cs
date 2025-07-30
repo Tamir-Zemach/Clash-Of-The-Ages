@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using BackEnd.Base_Classes;
 using BackEnd.Economy;
+using Managers;
 using UnityEngine;
 
 public class EnemyAgeManager : SceneAwareMonoBehaviour<EnemyAgeManager>

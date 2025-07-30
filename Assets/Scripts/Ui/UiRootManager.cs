@@ -3,15 +3,16 @@ using UnityEngine;
 
 namespace Ui
 {
-    public class UIRootManager : SceneAwareMonoBehaviour<UIRootManager>
+    public class UIRootManager : MonoBehaviour
     {
         [SerializeField] private CanvasGroup[] _canvasesToShowOnAwake;
-    
+        [SerializeField] private GameObject[] _gameObjectsToDestroyOnLoad;
 
 
-        protected override void InitializeOnSceneLoad()
+        private void Awake()
         {
             ResetAlphaInAllCanvasGroups();
+            DestroyAllGameObjects();
         }
 
 
@@ -28,6 +29,15 @@ namespace Ui
                 group.blocksRaycasts = false;
             }
         }
+
+        private void DestroyAllGameObjects()
+        {
+            foreach (var gameObj in _gameObjectsToDestroyOnLoad)
+            {
+                Destroy(gameObj);
+            }
+        }
+        
 
 
 

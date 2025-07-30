@@ -1,33 +1,35 @@
 ﻿
 using UnityEngine;
 
-/// <summary>
-/// Abstract base class for creating persistent singleton MonoBehaviours.
-/// Ensures only one instance exists and survives scene loads.
-/// </summary>
-
-public abstract class PersistentMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour 
+namespace BackEnd.Base_Classes
 {
-    public static T Instance;
+    /// <summary>
+    /// Abstract base class for creating persistent singleton MonoBehaviours.
+    /// Ensures only one instance exists and survives scene loads.
+    /// </summary>
 
-    public void InstantiateOneObject()
+    public abstract class PersistentMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour 
     {
-        if (Instance != null && Instance != this)
+        public static T Instance;
+
+        public void InstantiateOneObject()
         {
-            Destroy(gameObject);
-            return;
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this as T;
         }
 
-        Instance = this as T;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    /// <summary>
-    /// Ensures that only one instance of this MonoBehaviour exists across the game lifecycle.
-    /// If a duplicate is found, it is destroyed. Otherwise, this instance is preserved between scene loads.
-    /// </summary>
-    protected virtual void Awake()
-    {
-        InstantiateOneObject();
+        /// <summary>
+        /// Ensures that only one instance of this MonoBehaviour exists across the game lifecycle.
+        /// If a duplicate is found, it is destroyed. Otherwise, this instance is preserved between scene loads.
+        /// </summary>
+        protected virtual void Awake()
+        {
+            InstantiateOneObject();
+        }
     }
 }
