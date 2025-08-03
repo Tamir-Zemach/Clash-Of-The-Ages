@@ -17,11 +17,19 @@ namespace Managers
         [Tooltip("Amount of money the player starts with at the beginning of the game.")]
         [Min(0)]
         [SerializeField] private int _startingMoney;
+        
+        [Tooltip("Amount of Experience the player needs to gain to level up in the beginning of the game.")]
+        [Min(1)]
+        [SerializeField] private int _startingExpToLevelUp;
 
         [Tooltip("Initial health points for the player.")]
         [Min(1)]
         [SerializeField] private int _startingHealth;
 
+        [Header("Level Up Settings")]
+        [Tooltip("Multiplier applied to EXP required for each level up.")]
+        [SerializeField, Range(1f, 3f)] private float _expLevelUpMultiplier = 1.4f;
+        
         [Header("Enemy Health Per Level")]
         [Tooltip("Enemy base health for Level 1.")]
         [Min(1)]
@@ -44,6 +52,7 @@ namespace Managers
             DontDestroyOnLoad(gameObject);
             base.Awake();
             EnemyHealth.Instance.OnEnemyDied += NextLevel;
+            PlayerExp.Instance.OnLevelUp += UpgradePopUp;
             GetData();
             StartGame();
         }
@@ -52,14 +61,6 @@ namespace Managers
             if ((int)AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
             {
                 UpgradePlayerAge();
-            }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                UpgradePopUp();
             }
         }
 
@@ -73,6 +74,9 @@ namespace Managers
             PlayerCurrency.Instance.SetMoney(_startingMoney);
             PlayerHealth.Instance.SetMaxHealth(_startingHealth);
             PlayerHealth.Instance.FullHealth();
+            PlayerExp.Instance.SetExp(0);
+            PlayerExp.Instance.SetExpToLevelUp(_startingExpToLevelUp);
+            ResetEnemyHealth();
         }
 
         public void NextLevel()
@@ -95,6 +99,7 @@ namespace Managers
         {
             switch (levelIndex)
             {
+                case 0: return _level1EnemyHealth;
                 case 1: return _level1EnemyHealth;
                 case 2: return _level2EnemyHealth;
                 case 3: return _level3EnemyHealth;
@@ -123,7 +128,12 @@ namespace Managers
         private void UpgradePopUp()
         {
             UpgradePopup.Instance.ShowPopup();
+            PlayerExp.Instance.SetExp(0);
+            var expToLevelUp = Mathf.Max(1, Mathf.RoundToInt(PlayerExp.Instance.ExpToLevelUp * _expLevelUpMultiplier));
+            PlayerExp.Instance.SetExpToLevelUp(expToLevelUp);
         }
+        
+        
 
 
     }

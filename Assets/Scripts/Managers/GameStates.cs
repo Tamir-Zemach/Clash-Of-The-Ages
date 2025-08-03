@@ -38,6 +38,7 @@ namespace Managers
             GameIsPlaying = false;
             GameOver = true;
             OnGameEnded?.Invoke();
+            print("game ended");
         }
 
         public void ResetGameState()

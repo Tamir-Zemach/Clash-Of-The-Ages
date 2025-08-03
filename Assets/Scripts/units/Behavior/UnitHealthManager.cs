@@ -14,7 +14,6 @@ namespace units.Behavior
         public event Action OnDying;
         private UnitData _unit;
         private UnitBaseBehaviour _unitBaseBehaviour;
-        //private UnitAudioManager unitAudioManager;
         private int _currentHealth;
         private Animator _animator;
         private bool _isDying;
@@ -24,7 +23,6 @@ namespace units.Behavior
         private void Start()
         {
             _unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
-            //unitAudioManager = GetComponent<UnitAudioManager>();
 
             _unit = _unitBaseBehaviour.Unit;
             _currentHealth = _unit.Health;
@@ -33,7 +31,6 @@ namespace units.Behavior
         public void GetHurt(int damage)
         {
             _currentHealth -= damage;
-            //print($"{gameObject.name} has been hurt {damage} damage.");
             OnHealthChanged?.Invoke();
 
             if (_currentHealth > 0 || _isDying) return;
@@ -44,6 +41,7 @@ namespace units.Behavior
         private void Die()
         {
             PlayerCurrency.Instance.AddMoney(_unit.MoneyWhenKilled);
+            PlayerExp.Instance.AddExp(_unit.ExpWhenKilled);
             TrygetAnimator();
             if (_animator != null)
             {

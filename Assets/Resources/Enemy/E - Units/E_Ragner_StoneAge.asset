@@ -20,6 +20,7 @@ MonoBehaviour:
   _prefab: {fileID: 7476198131129608348, guid: 401aa4e1fa2368146b7f64d28bc29846, type: 3}
   DeployDelayTime: 0
   MoneyWhenKilled: 100
+  ExpWhenKilled: 100
   OppositeBaseTag: Player Base
   OppositeUnitTag: Friendly Character
   OppositeUnitMask:

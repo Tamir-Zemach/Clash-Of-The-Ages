@@ -2,37 +2,40 @@ using BackEnd.Economy;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour
+namespace Ui
 {
-    public bool IsFriendly;
-    private Slider slider;
-
-    private void Awake()
+    public class HealthBar : MonoBehaviour
     {
-        slider = GetComponent<Slider>();
-        if (IsFriendly)
+        public bool IsFriendly;
+        private Slider _slider;
+
+        private void Awake()
         {
-            PlayerHealth.OnHealthChanged += SetHealth;
+            _slider = GetComponent<Slider>();
+            if (IsFriendly)
+            {
+                PlayerHealth.OnHealthChanged += SetHealth;
+            }
+            else
+            {
+                EnemyHealth.OnEnemyHealthChanged += SetHealth;
+            }
         }
-        else
+
+        private void Start()
         {
-            EnemyHealth.OnEnemyHealthChanged += SetHealth;
+            SetMaxHealth(IsFriendly ? PlayerHealth.Instance.MaxHealth : EnemyHealth.Instance.MaxHealth);
         }
-    }
 
-    private void Start()
-    {
-        SetMaxHealth(IsFriendly ? PlayerHealth.Instance.MaxHealth : EnemyHealth.Instance.MaxHealth);
-    }
+        private void SetMaxHealth(int maxHealth)
+        {
+            _slider.maxValue = maxHealth;
+            _slider.value = maxHealth;
+        }
 
-    private void SetMaxHealth(int maxHealth)
-    {
-        slider.maxValue = maxHealth;
-        slider.value = maxHealth;
-    }
-
-    private void SetHealth()
-    {
-        slider.value = IsFriendly ? PlayerHealth.Instance.CurrentHealth : EnemyHealth.Instance.CurrentHealth;
+        private void SetHealth()
+        {
+            _slider.value = IsFriendly ? PlayerHealth.Instance.CurrentHealth : EnemyHealth.Instance.CurrentHealth;
+        }
     }
 }

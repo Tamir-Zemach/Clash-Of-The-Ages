@@ -1,4 +1,5 @@
 ﻿using System;
+using BackEnd.Utilities;
 using Managers;
 using UnityEngine;
 
@@ -11,27 +12,20 @@ namespace BackEnd.Economy
         public static event Action OnHealedAboveHalfHealth;
 
         private bool _hasDroppedBelowHalfHealth = false;
-
         private static PlayerHealth _instance;
-
-        // Public property to access the instance
         public static PlayerHealth Instance => _instance ??= new PlayerHealth();
 
-        // Private constructor to prevent external instantiation
         private PlayerHealth() { }
 
         private int _currentHealth = 1;
         private int _maxHealth = 2;
-        public int CurrentHealth => _currentHealth; // Read-only property
-        public int MaxHealth => _maxHealth; // Read-only property
+        public int CurrentHealth => _currentHealth;
+        public int MaxHealth => _maxHealth;
 
         public int AddHealth(int amount)
         {
-            _currentHealth += ValidateAmount(Math.Max(0, amount), "adding");
-            if (_currentHealth > _maxHealth)
-            {
-                _currentHealth = _maxHealth;
-            }
+            _currentHealth += EconomyUtils.ValidateAmount(Math.Max(0, amount), "adding");
+            if (_currentHealth > _maxHealth) _currentHealth = _maxHealth;
             OnHealthChanged?.Invoke();
             EvaluateHealthThresholds();
             return _currentHealth;
@@ -39,15 +33,19 @@ namespace BackEnd.Economy
 
         public int SubtractHealth(int amount)
         {
-            _currentHealth -= ValidateAmount(Math.Max(0, amount), "subtracting");
+            _currentHealth -= EconomyUtils.ValidateAmount(Math.Max(0, amount), "subtracting");
             OnHealthChanged?.Invoke();
             EvaluateHealthThresholds();
-            GameStates.Instance.EndGame();
+            if (_currentHealth <= 0)
+            {
+                GameStates.Instance.EndGame();
+            }
             return _currentHealth;
         }
+
         public int IncreaseMaxHealth(int amount)
         {
-            _maxHealth += ValidateAmount(Math.Max(0, amount), "adding");
+            _maxHealth += EconomyUtils.ValidateAmount(Math.Max(0, amount), "adding");
             OnHealthChanged?.Invoke();
             return _maxHealth;
         }
@@ -66,34 +64,29 @@ namespace BackEnd.Economy
             EvaluateHealthThresholds();
         }
 
-        private int ValidateAmount(int amount, string operation)
-        {
-            if (amount >= 0) return amount;
-            Debug.LogWarning($"{amount} is negative. Please use a positive amount for {operation}.");
-            return 0;
-        }
-
         private void EvaluateHealthThresholds()
         {
-            if (!_hasDroppedBelowHalfHealth && (float)_currentHealth / _maxHealth < 0.5f)
+            if (!_hasDroppedBelowHalfHealth && EconomyUtils.IsBelowHalf(_currentHealth, _maxHealth))
             {
                 _hasDroppedBelowHalfHealth = true;
                 OnDroppedBelowHalfHealth?.Invoke();
             }
 
-            if (!_hasDroppedBelowHalfHealth || !((float)_currentHealth / _maxHealth > 0.5f)) return;
-            _hasDroppedBelowHalfHealth = false;
-            OnHealedAboveHalfHealth?.Invoke();
+            if (_hasDroppedBelowHalfHealth && EconomyUtils.IsAboveHalf(_currentHealth, _maxHealth))
+            {
+                _hasDroppedBelowHalfHealth = false;
+                OnHealedAboveHalfHealth?.Invoke();
+            }
         }
-        
+
         public void DisplyHealthInConsole()
         {
-            Debug.Log($"Current health amount = {_currentHealth}, Max health amount = {_maxHealth}");
+            EconomyUtils.DisplayHealthInConsole(_currentHealth, _maxHealth, "Player Health");
         }
+
         public void ResetHealthFlags()
         {
             _hasDroppedBelowHalfHealth = false;
         }
-
     }
 }

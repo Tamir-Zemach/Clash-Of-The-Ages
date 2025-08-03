@@ -20,6 +20,9 @@ namespace BackEnd.Data__ScriptableOBj_
         [Tooltip("Amount of money rewarded when this enemy unit is destroyed.")]
         [Min(0)]
         public int MoneyWhenKilled;
+        [Tooltip("Amount of Exp rewarded when this enemy unit is destroyed.")]
+        [Min(0)]
+        public int ExpWhenKilled;
 
         [Header("Tag & Layer Configuration")]
         [Tooltip("Tag of the opposing base the unit will move toward.")]

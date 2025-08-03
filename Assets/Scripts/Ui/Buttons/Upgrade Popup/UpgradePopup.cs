@@ -13,6 +13,8 @@ namespace Ui.Buttons.Upgrade_Popup
         
         [SerializeField] private GameObject[] _upgradeSlotsPrefabs;
         [SerializeField] private float _spawnDelay = 0.5f;
+        [SerializeField] private CanvasGroup _raycastBlockerPanel;
+        
 
         private GameObject[] _selectedPrefabs;
         private int _currentIndex;
@@ -32,6 +34,7 @@ namespace Ui.Buttons.Upgrade_Popup
                 _canvasGroup.blocksRaycasts = true;
                 SpawnAllSlots();
                 GameStates.Instance.PauseGame();
+                _raycastBlockerPanel.blocksRaycasts = true;
             });
         }
         public void HidePopup()
@@ -41,6 +44,8 @@ namespace Ui.Buttons.Upgrade_Popup
                 _canvasGroup.interactable = false;
                 _canvasGroup.blocksRaycasts = false;
                 GameStates.Instance.StartGame();
+                ClearAllSlots();
+                _raycastBlockerPanel.blocksRaycasts = false;
             });
         }
 
@@ -70,5 +75,16 @@ namespace Ui.Buttons.Upgrade_Popup
             Instantiate(_selectedPrefabs[_currentIndex], transform);
             _currentIndex++;
         }
+        private void ClearAllSlots()
+        {
+            foreach (Transform child in transform)
+            { 
+                Destroy(child.gameObject);
+            }
+            
+            _selectedPrefabs = null;
+            _currentIndex = 0;
+        }
+        
     }
 }
