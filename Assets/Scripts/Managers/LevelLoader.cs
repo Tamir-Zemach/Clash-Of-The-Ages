@@ -64,8 +64,12 @@ namespace Managers
             SceneManager.LoadScene(_currentLevelIndex);
 
             LoadUiScenes();
+            GameStates.Instance.StartGame();
 
         }
+        
+        
+        
         private static void LoadAdditiveScene(SceneReference scene, ref bool isLoaded)
         {
             if (!isLoaded)
@@ -95,16 +99,6 @@ namespace Managers
         public void AdminUiToggle(bool isAdmin)
         {
             _adminUi = isAdmin;
-        }
-
-        public void ReloadCurrentLevel()
-        {
-            int buildIndex = _scenes[_currentLevelIndex].GetBuildIndex();
-            if (buildIndex >= 0)
-            {
-                SceneManager.LoadScene(buildIndex);
-            }
-
         }
 
         public void LoadSpecificLevel(int sceneIndex)

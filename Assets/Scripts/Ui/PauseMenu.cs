@@ -43,11 +43,13 @@ namespace Ui
 
         public void ShowPauseMenu()
         {
+            
             _tween = UIEffects.FadeCanvasGroup(_canvasGroup, 1, 0.3f, onComplete: () =>
             {
                 _canvasGroup.interactable = true;
                 _canvasGroup.blocksRaycasts = true;
                 _isVisible =  true;
+                GameStates.Instance.PauseGame();
             });
         }
 
@@ -58,6 +60,7 @@ namespace Ui
                 _canvasGroup.interactable = false;
                 _canvasGroup.blocksRaycasts = false;
                 _isVisible =  false;
+                GameStates.Instance.StartGame();
             });
         }
         

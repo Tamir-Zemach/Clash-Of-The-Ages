@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -18,7 +19,8 @@ namespace turrets
         public TurretType TurretType { get; set; }
 
 
-        private Coroutine _flashRoutine;
+        private ManagedCoroutine _flashRoutine;
+        
         public void ShowHighlight(bool show)
         {
             if (_highlightGfx != null)
@@ -28,14 +30,16 @@ namespace turrets
         public void StartFlashing(float timeBetweenFlashes)
         {
             if (_flashRoutine == null)
-                _flashRoutine = StartCoroutine(FlashLoop(timeBetweenFlashes));
+            {
+                _flashRoutine = CoroutineManager.Instance.StartManagedCoroutine(FlashLoop(timeBetweenFlashes));
+            }
         }
 
         public void StopFlashing()
         {
             if (_flashRoutine != null)
             {
-                StopCoroutine(_flashRoutine);
+                _flashRoutine.Stop();
                 _highlightGfx.SetActive(false);
                 _flashRoutine = null;
             }

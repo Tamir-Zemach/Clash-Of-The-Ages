@@ -19,7 +19,7 @@ public class EnemySpecialAttackSpawner : EnemySpawner<EnemySpecialAttackSpawner>
 
     private void Update()
     {
-        if (LevelLoader.Instance.InStartMenu()) return;
+        if (LevelLoader.Instance.InStartMenu() || !GameStates.Instance.GameIsPlaying) return;
         SpawnPrefabsWithRandomTime();
     }
 

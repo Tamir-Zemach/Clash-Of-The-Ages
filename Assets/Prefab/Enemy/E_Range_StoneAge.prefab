@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 6315753124182470090}
   - component: {fileID: 1861016075694576909}
   - component: {fileID: 2282876301244857728}
+  - component: {fileID: 4435635028082825078}
   - component: {fileID: -3161022606713349567}
   m_Layer: 6
   m_Name: E_Range_StoneAge
@@ -278,6 +279,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18181dd613325b7469ecba64285e607d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4435635028082825078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7476198131129608348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40a81cd83fedd542a46bb600a1d0cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!82 &-3161022606713349567

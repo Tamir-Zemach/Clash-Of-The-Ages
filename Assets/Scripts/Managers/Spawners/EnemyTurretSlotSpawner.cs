@@ -45,7 +45,7 @@ public class EnemyTurretSlotSpawner : EnemySpawner<EnemyTurretSlotSpawner>
 
     private void Update()
     {
-        if (LevelLoader.Instance.InStartMenu()) return;
+        if (LevelLoader.Instance.InStartMenu() || !GameStates.Instance.GameIsPlaying) return;
         if (!_isSlotWaitingToBeAdded)  return; 
         CheckIfSpawnable();
     }

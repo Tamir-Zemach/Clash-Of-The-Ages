@@ -1,6 +1,7 @@
 using System;
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Data__ScriptableOBj_;
+using Managers;
 using UnityEngine;
 
 namespace Special_Attacks
@@ -24,6 +25,7 @@ namespace Special_Attacks
         
         private void Update()
         {
+            if (!GameStates.Instance.GameIsPlaying) return;
             SpecialAttackDuration();
         }
         

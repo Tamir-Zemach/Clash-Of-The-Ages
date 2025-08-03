@@ -74,6 +74,7 @@ namespace Managers.Spawners
 
         private void Update()
         {
+            if (!GameStates.Instance.GameIsPlaying) return;
             if (_nextCharacter != null)
                 HandleDelayedDeployment();
         }

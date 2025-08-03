@@ -1,34 +1,74 @@
 using System;
 using System.Linq;
+using BackEnd.Base_Classes;
+using BackEnd.Utilities;
+using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UpgradePopup : MonoBehaviour
+    public class UpgradePopup : PersistentMonoBehaviour<UpgradePopup>
     {
+        
         [SerializeField] private GameObject[] _upgradeSlotsPrefabs;
+        [SerializeField] private float _spawnDelay = 0.5f;
 
-        private void Start()
+        private GameObject[] _selectedPrefabs;
+        private int _currentIndex;
+        private CanvasGroup _canvasGroup;
+
+        protected override void Awake()
         {
-            InstantiateRandomSlots();
+            base.Awake();
+            _canvasGroup = GetComponent<CanvasGroup>();
         }
 
-        private void InstantiateRandomSlots()
+        public void ShowPopup()
+        {
+            UIEffects.FadeCanvasGroup(_canvasGroup, 1, 0.3f, onComplete: () =>
+            {
+                _canvasGroup.interactable = true;
+                _canvasGroup.blocksRaycasts = true;
+                SpawnAllSlots();
+                GameStates.Instance.PauseGame();
+            });
+        }
+        public void HidePopup()
+        {
+            UIEffects.FadeCanvasGroup(_canvasGroup, 0, 0.3f, onComplete: () =>
+            {
+                _canvasGroup.interactable = false;
+                _canvasGroup.blocksRaycasts = false;
+                GameStates.Instance.StartGame();
+            });
+        }
+
+        private void SpawnAllSlots()
         {
             if (_upgradeSlotsPrefabs == null || _upgradeSlotsPrefabs.Length < 3)
                 return;
 
             // Shuffle and take 3 unique prefabs
-            GameObject[] selectedPrefabs = _upgradeSlotsPrefabs
+            _selectedPrefabs = _upgradeSlotsPrefabs
                 .OrderBy(x => Random.value)
                 .Take(3)
                 .ToArray();
 
-            for (int i = 0; i < selectedPrefabs.Length; i++)
+            _currentIndex = 0;
+            InvokeRepeating(nameof(SpawnNextSlot), 0, _spawnDelay);
+        }
+
+        private void SpawnNextSlot()
+        {
+            if (_currentIndex >= _selectedPrefabs.Length)
             {
-                GameObject slot = Instantiate(selectedPrefabs[i], transform);
+                CancelInvoke(nameof(SpawnNextSlot));
+                return;
             }
+
+            Instantiate(_selectedPrefabs[_currentIndex], transform);
+            _currentIndex++;
         }
     }
 }

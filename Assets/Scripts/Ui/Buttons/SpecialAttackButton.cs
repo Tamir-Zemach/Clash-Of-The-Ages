@@ -5,6 +5,7 @@ using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Economy;
 using BackEnd.InterFaces;
 using BackEnd.Utilities;
+using DG.Tweening;
 using Managers;
 using Special_Attacks;
 using UnityEngine;
@@ -29,6 +30,8 @@ namespace Ui.Buttons
         private SpecialAttackData _specialAttack;
 
         private Image _image;
+        
+        private Tween _cooldownTween;
         
         
         
@@ -73,7 +76,7 @@ namespace Ui.Buttons
 
         public void PerformSpecialAttack()
         {
-            if (!CanPreformAttack()) return;
+            if (!CanPerformAttack()) return;
             PlayerCurrency.Instance.SubtractMoney(Cost);
             _specialAttackSpawnPos.IsSpecialAttackAccruing = true;
             SpawnSpecialAttack();
@@ -96,7 +99,7 @@ namespace Ui.Buttons
 
         }
 
-        private bool CanPreformAttack()
+        private bool CanPerformAttack()
         {
             return PlayerCurrency.Instance.HasEnoughMoney(Cost)
                    && !_specialAttackSpawnPos.IsSpecialAttackAccruing
@@ -109,18 +112,53 @@ namespace Ui.Buttons
             _cooldownSlider.value = 0f;
             OnTimerStarted?.Invoke();
 
-            UIEffects.AnimateSliderFill(_cooldownSlider, 1f, _specialAttackTimer, () =>
+            _cooldownTween = UIEffects.AnimateSliderFill(_cooldownSlider, 1f, _specialAttackTimer, () =>
             {
                 UIEffects.ApplyGraphicFeedback(
                     graphic: _image,
-                    shakeGraphic: true, shakeDuration: 0.3f, 
+                    shakeGraphic: true, shakeDuration: 0.3f,
                     changeScale: true, scaleMultiplier: 1.2f, scaleChangeDuration: 0.2f,
-                    onComplete: () => {  OnTimerStoped?.Invoke(); }
+                    onComplete: () => { OnTimerStoped?.Invoke(); }
                 );
-               
             });
         }
-    
+
+        #region GameLifecycle
+            //TODO: make a helper/use the base class "InGameObject
+            private void OnEnable()
+            {
+                GameStates.Instance.OnGamePaused += PauseCooldown;
+                GameStates.Instance.OnGameResumed += ResumeCooldown;
+                GameStates.Instance.OnGameEnded += CancelCooldown;
+                GameStates.Instance.OnGameReset += CancelCooldown;
+            }
+
+            private void OnDisable()
+            {
+                GameStates.Instance.OnGamePaused -= PauseCooldown;
+                GameStates.Instance.OnGameResumed -= ResumeCooldown;
+                GameStates.Instance.OnGameEnded -= CancelCooldown;
+                GameStates.Instance.OnGameReset -= CancelCooldown;
+            }
+
+            private void PauseCooldown()
+            {
+                _cooldownTween?.Pause();
+            }
+
+            private void ResumeCooldown()
+            {
+                _cooldownTween?.Play();
+            }
+
+            private void CancelCooldown()
+            {
+                _cooldownTween?.Kill();
+                _cooldownTween = null;
+                _cooldownSlider.value = 0f;
+            }
+
+        #endregion
     
     }
 }

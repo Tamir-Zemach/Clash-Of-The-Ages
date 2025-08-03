@@ -2,6 +2,7 @@
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.InterFaces;
 using BackEnd.Utilities;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,13 +23,24 @@ namespace Ui.Buttons.Deploy_Button
         
 
 
+        private Tween _countdownTween;
+
         public void ActivateCountdown()
         {
             UIEffects.FadeCanvasGroup(_canvasGroup, 1, 0.02f);
-            UIEffects.AnimateSliderFill(_fillBar, 1f, _deployDelay);
+            _countdownTween = UIEffects.AnimateSliderFill(_fillBar, 1f, _deployDelay);
             HasStarted = true;
         }
-        
+
+        public void PauseCountdown()
+        {
+            _countdownTween?.Pause();
+        }
+
+        public void ResumeCountdown()
+        {
+            _countdownTween?.Play();
+        }
         
         
         public void Initialize(float delay, Sprite sprite = null)

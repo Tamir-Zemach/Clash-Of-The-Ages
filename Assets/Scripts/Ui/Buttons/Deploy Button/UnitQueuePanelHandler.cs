@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Utilities;
 using DG.Tweening;
@@ -11,7 +12,7 @@ using UnityEngine.UI;
 
 namespace Ui.Buttons.Deploy_Button
 {
-    public class UnitQueuePanelHandler : MonoBehaviour
+    public class UnitQueuePanelHandler : InGameObject
     {
         [SerializeField] private UnitQueueItemUI[] _queueItems; // Prefabs only
 
@@ -98,6 +99,37 @@ namespace Ui.Buttons.Deploy_Button
             }
             return null;
         }
+
+        #region GameLifecycle
+
+        protected override void HandlePause()
+        {
+            foreach (var item in _activeQueueItems)
+            {
+                item?.PauseCountdown();
+            }
+        }
+
+        protected override void HandleResume()
+        {
+            foreach (var item in _activeQueueItems)
+            {
+                item?.ResumeCountdown();
+            }
+        }
+
+        protected override void HandleGameEnd()
+        {
+            // Optional: Clear queue or disable UI
+        }
+
+        protected override void HandleGameReset()
+        {
+            // Optional: Reset queue state
+        }
+
+        #endregion
+
     }
 }
 

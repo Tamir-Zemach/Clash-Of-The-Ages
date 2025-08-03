@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
+using BackEnd.Utilities;
+using Managers;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -8,7 +11,7 @@ using Random = UnityEngine.Random;
 namespace units.Behavior
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class UnitBaseBehaviour : MonoBehaviour
+    public class UnitBaseBehaviour : InGameObject
     {
         public delegate void AttackDelegate(GameObject target, int strength);
         public event AttackDelegate OnAttack;
@@ -23,7 +26,7 @@ namespace units.Behavior
         private GameObject _enemyBase;
         private GameObject _currentTarget;
         private Animator _animator;
-        private Coroutine _currentCoroutine;
+        private ManagedCoroutine _attackCoroutine;
         private Collider _col;
         private Renderer _renderer;
 
@@ -56,14 +59,14 @@ namespace units.Behavior
             }
 
         }
-
+        
+        
         private void Update()
         {
-            if (!_isDying)
-            {
-                CheckForEnemyUnit();
-                CheckForFriendlyUnit();
-            }
+            if (_isDying || !GameStates.Instance.GameIsPlaying) return;
+
+            CheckForEnemyUnit();
+            CheckForFriendlyUnit();
         }
 
 
@@ -118,36 +121,39 @@ namespace units.Behavior
 
         private void ResetAttackStateIfNeeded()
         {
-            if (_currentCoroutine != null && !_agent.isStopped)
+            if (_attackCoroutine != null && !_agent.isStopped)
             {
-                StopAllCoroutines();
-                _currentCoroutine = null;
+                _attackCoroutine.Stop();
+                _attackCoroutine = null;
                 _isAttacking = false;
             }
         }
         private void Attack(GameObject target)
         {
             _currentTarget = target;
-            _currentCoroutine = StartCoroutine(AttackAction(Unit.InitialAttackDelay, target));
+            _attackCoroutine = CoroutineManager.Instance.StartManagedCoroutine(AttackAction(Unit.InitialAttackDelay, target));
         }
 
         IEnumerator AttackAction(float initialAttackDelay, GameObject target)
         {
             yield return new WaitForSeconds(initialAttackDelay);
+
             if (_animator == null)
             {
-                var randomStrength = SetRandomStrength();    
+                var randomStrength = SetRandomStrength();
                 OnAttack?.Invoke(target, randomStrength);
             }
+
             _isAttacking = false;
         }
-
         private void Dying()
         {
             _isDying = true;
             _agent.isStopped = true;
             _col.enabled = false;
 
+            _attackCoroutine?.Stop();
+            _attackCoroutine = null;
         }
 
         private int SetRandomStrength()
@@ -157,31 +163,34 @@ namespace units.Behavior
         
         
         
-        private void OnDrawGizmos()
+
+        #region GameLifcyle
+
+        protected override void HandlePause()
         {
-            if (Unit == null) return;
-            Gizmos.color = Unit.boxColor;
-
-            Vector3 origin = transform.position;
-            Vector3 direction = transform.forward;
-
-            // Perform the BoxCast
-            if (Physics.BoxCast(origin,Unit.boxSize , direction, out RaycastHit hitInfo, Quaternion.identity, Unit.Range))
-            {
-                // Draw the hit box
-                Gizmos.DrawWireCube(hitInfo.point, Unit.boxSize);
-            }
-
-            // Draw the initial box
-            Gizmos.DrawWireCube(origin, Unit.boxSize);
-
-            // Draw the movement path
-            Gizmos.DrawLine(origin, origin + direction * Unit.Range);
-
+            _attackCoroutine?.Pause();
+            _agent.isStopped = true;
         }
 
+        protected override void HandleResume()
+        {
+            _attackCoroutine?.Resume();
+            _agent.isStopped = false;
+        }
 
+        protected override void HandleGameEnd()
+        {
+            _attackCoroutine?.Stop();
+            _attackCoroutine = null;
+        }
 
+        protected override void HandleGameReset()
+        {
+            _attackCoroutine?.Stop();
+            _attackCoroutine = null;
+        }
+
+        #endregion
 
     }
 }

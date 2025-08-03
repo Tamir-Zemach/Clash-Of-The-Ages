@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
 using BackEnd.Economy;
+using Ui.Buttons.Upgrade_Popup;
 using UnityEngine;
 
 namespace Managers
@@ -53,15 +55,15 @@ namespace Managers
             }
         }
 
-
-
         private void Update()
         {
-            if (PlayerHealth.Instance.PlayerDied())
+            if (Input.GetKeyDown(KeyCode.J))
             {
-                GameOver();
+                UpgradePopUp();
             }
         }
+
+
         private void GetData()
         {
             _levelUpData = GameDataRepository.Instance.PlayerLevelUpData;
@@ -118,10 +120,9 @@ namespace Managers
             }
         }
 
-        private void GameOver()
+        private void UpgradePopUp()
         {
-            Debug.Log("Game Over");
-            Time.timeScale = 0;
+            UpgradePopup.Instance.ShowPopup();
         }
 
 

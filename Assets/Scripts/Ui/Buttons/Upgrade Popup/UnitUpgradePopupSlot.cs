@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UnitUpgradePopupSlot : PopupSlot
+    public class UnitUpgradePopupSlot : MonoBehaviour
     {
         [Tooltip("Which unit should be upgraded")]
         [SerializeField] private UnitType _unitType;
@@ -25,11 +25,6 @@ namespace Ui.Buttons.Upgrade_Popup
         private UnitData _unit;
         private void Start()
         {
-            Transform parent = transform;
-            while (parent != null) {
-                Debug.Log($"{parent.name}: {parent.GetComponent<LayoutGroup>()}");
-                parent = parent.parent;
-            }
             GetData();
         }
 
@@ -39,29 +34,33 @@ namespace Ui.Buttons.Upgrade_Popup
             _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
         }
         
-        private void ApplyUpgrade(UnitData unit)
+        public void ApplyUpgrade()
         {
             switch (_stat)
             {
                 case StatType.Strength:
-                    unit.MinStrength += _statBonus;
-                    unit.MaxStrength += _statBonus;
+                    _unit.MinStrength += _statBonus;
+                    _unit.MaxStrength += _statBonus;
                     break;
 
                 case StatType.Health:
-                    unit.Health += _statBonus;
+                    _unit.Health += _statBonus;
                     break;
 
                 case StatType.Range:
-                    unit.Range += _statBonus;
+                    _unit.Range += _statBonus;
                     break;
+
                 case StatType.AttackSpeed:
-                    unit.InitialAttackDelay *= 1f - (_attackDelayReductionPercent / 100f);
+                    _unit.InitialAttackDelay *= 1f - (_attackDelayReductionPercent / 100f);
                     break;
+
                 default:
                     Debug.LogWarning("Unknown stat type: " + _stat);
-                    break;
+                    return; // Exit early to avoid hiding popup on unknown stat
             }
+
+            UpgradePopup.Instance.HidePopup();
         }
 #if UNITY_EDITOR
         public static class FieldNames

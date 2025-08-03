@@ -1,4 +1,5 @@
 ﻿using System;
+using Managers;
 using UnityEngine;
 
 namespace BackEnd.Economy
@@ -30,9 +31,6 @@ namespace BackEnd.Economy
             if (_currentHealth > _maxHealth)
             {
                 _currentHealth = _maxHealth;
-                OnHealthChanged?.Invoke();
-                EvaluateHealthThresholds();
-                return _currentHealth;
             }
             OnHealthChanged?.Invoke();
             EvaluateHealthThresholds();
@@ -44,6 +42,7 @@ namespace BackEnd.Economy
             _currentHealth -= ValidateAmount(Math.Max(0, amount), "subtracting");
             OnHealthChanged?.Invoke();
             EvaluateHealthThresholds();
+            GameStates.Instance.EndGame();
             return _currentHealth;
         }
         public int IncreaseMaxHealth(int amount)
@@ -86,12 +85,7 @@ namespace BackEnd.Economy
             _hasDroppedBelowHalfHealth = false;
             OnHealedAboveHalfHealth?.Invoke();
         }
-
-
-        public bool PlayerDied()
-        {
-            return _currentHealth <= 0; 
-        }
+        
         public void DisplyHealthInConsole()
         {
             Debug.Log($"Current health amount = {_currentHealth}, Max health amount = {_maxHealth}");

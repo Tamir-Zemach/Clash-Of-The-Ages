@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 3683291512726514334}
   - component: {fileID: -2876610625163860071}
   - component: {fileID: -690399695543495113}
+  - component: {fileID: 462259269568565476}
   - component: {fileID: 4662853977738279434}
   m_Layer: 6
   m_Name: E_Attacker_StoneAge
@@ -244,6 +245,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18181dd613325b7469ecba64285e607d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &462259269568565476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7476198131129608348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40a81cd83fedd542a46bb600a1d0cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!82 &4662853977738279434
