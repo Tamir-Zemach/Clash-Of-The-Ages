@@ -117,12 +117,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _upgradeSlotsPrefabs:
+  - {fileID: 6262027579768821617, guid: e52d8b740e28c4e449be80d90fc67cad, type: 3}
+  - {fileID: 6262027579768821617, guid: cb748084f06f1e14ebec842c31f4dbf1, type: 3}
   - {fileID: 6262027579768821617, guid: d437a4629a2ff8e44b4d1964e8667ecc, type: 3}
+  - {fileID: 8569149743129302602, guid: 1961900d14c2ba24aa2cd06d8501dca0, type: 3}
+  - {fileID: 8569149743129302602, guid: 5308f2542d8476745914ac58a739c9c7, type: 3}
   - {fileID: 8569149743129302602, guid: 4b9cc23ad31d66842943e2776ff000fa, type: 3}
+  - {fileID: 66633817504790245, guid: aafd4062fc8ea354a89da7f5ec83aa9d, type: 3}
+  - {fileID: 66633817504790245, guid: 30c7dbb0b3ee8e04a8d121945f8ee877, type: 3}
   - {fileID: 66633817504790245, guid: 3301b5f4aa2eedf4995b93b18919c318, type: 3}
-  - {fileID: 6262027579768821617, guid: cb5c1a39cfe32ec4686c2ae15ee83a56, type: 3}
-  - {fileID: 6262027579768821617, guid: 11ae176ce8e267d40850c1d586655849, type: 3}
   _spawnDelay: 0.5
+  _raycastBlockerPanel: {fileID: 0}
 --- !u!225 &3010316207016853527
 CanvasGroup:
   m_ObjectHideFlags: 0

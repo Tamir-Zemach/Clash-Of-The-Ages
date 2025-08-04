@@ -1,4 +1,5 @@
 using BackEnd.Economy;
+using BackEnd.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,7 +29,7 @@ namespace Ui
 
         private void SetExp()
         {
-            _slider.value = PlayerExp.Instance.CurrentExp;
+            UIEffects.AnimateSliderFill(_slider, PlayerExp.Instance.CurrentExp, 0.5f);
         }
     }
 }

@@ -56,7 +56,6 @@ namespace BackEnd.Economy
 
         public int SetMaxHealth(int amount)
         {
-            Debug.Log("set enemy max health");
             _maxHealth = amount;
             OnEnemyHealthChanged?.Invoke();
             return _maxHealth;

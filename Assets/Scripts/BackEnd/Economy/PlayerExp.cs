@@ -56,7 +56,7 @@ namespace BackEnd.Economy
             OnExpChanged?.Invoke();
         }
 
-        private void LevelUp()
+        public void LevelUp()
         {
             _level++;
             OnLevelUp?.Invoke();

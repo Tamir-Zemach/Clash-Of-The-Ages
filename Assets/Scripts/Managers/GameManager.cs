@@ -125,7 +125,7 @@ namespace Managers
             }
         }
 
-        private void UpgradePopUp()
+        public void UpgradePopUp()
         {
             UpgradePopup.Instance.ShowPopup();
             PlayerExp.Instance.SetExp(0);

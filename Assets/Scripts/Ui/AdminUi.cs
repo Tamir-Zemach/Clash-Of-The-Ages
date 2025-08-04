@@ -147,6 +147,11 @@ namespace Ui
             DisplayUnitCounter();
         }
 
+        public void LevelUp()
+        {
+           PlayerExp.Instance.LevelUp();
+        }
+
         public void DisplayFriendlyUnitParameters()
         {
             var info = "";
