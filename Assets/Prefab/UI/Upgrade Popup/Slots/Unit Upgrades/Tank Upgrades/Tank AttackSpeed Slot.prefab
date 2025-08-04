@@ -10,24 +10,36 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 904271810235389937, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: m_Name
-      value: Tank Health Slot
+      value: Tank AttackSpeed Slot
       objectReference: {fileID: 0}
     - target: {fileID: 1811779614465051172, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: _stat
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1811779614465051172, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: _unitType
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1811779614465051172, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
-      propertyPath: _statBonus
-      value: 50
+      propertyPath: _attackDelayReductionPercent
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3536314145875068856, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 8ec7a29b5679d9e4690e327141c94e37, type: 3}
+      objectReference: {fileID: 21300000, guid: 29df0710ef0f0f04493d8f4648da53a3, type: 3}
+    - target: {fileID: 6849065297138656746, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      propertyPath: _stat
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6849065297138656746, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      propertyPath: _unitType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6849065297138656746, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      propertyPath: _attackDelayReductionPercent
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

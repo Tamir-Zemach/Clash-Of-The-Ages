@@ -126,6 +126,9 @@ MonoBehaviour:
   - {fileID: 66633817504790245, guid: aafd4062fc8ea354a89da7f5ec83aa9d, type: 3}
   - {fileID: 66633817504790245, guid: 30c7dbb0b3ee8e04a8d121945f8ee877, type: 3}
   - {fileID: 66633817504790245, guid: 3301b5f4aa2eedf4995b93b18919c318, type: 3}
+  - {fileID: 4611793100444974474, guid: b06b49881e93f9343aeca1da56bd573d, type: 3}
+  - {fileID: 4611793100444974474, guid: 889b8e63833886844bca6970043d289a, type: 3}
+  - {fileID: 4611793100444974474, guid: 7069a77203db62d49af763d55f66cdba, type: 3}
   _spawnDelay: 0.5
   _raycastBlockerPanel: {fileID: 0}
 --- !u!225 &3010316207016853527

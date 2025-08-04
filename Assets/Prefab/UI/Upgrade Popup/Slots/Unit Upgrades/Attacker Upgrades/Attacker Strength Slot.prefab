@@ -10,7 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 904271810235389937, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: m_Name
-      value: Attacker Strength Upgrade Variant
+      value: Attacker Strength Slot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6849065297138656746, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      propertyPath: _stat
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6849065297138656746, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      propertyPath: _attackDelayReductionPercent
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: m_Pivot.x

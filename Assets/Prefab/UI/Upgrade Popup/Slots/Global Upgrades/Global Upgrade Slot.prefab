@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 7529915342754289938}
   - component: {fileID: 87184173755475715}
   - component: {fileID: 767859278722061978}
+  - component: {fileID: 1866844494973043103}
   - component: {fileID: -1254622873784971633}
-  - component: {fileID: 1811779614465051172}
   - component: {fileID: 3937559096206534236}
   m_Layer: 5
-  m_Name: Unit Upgrade Slot
+  m_Name: Global Upgrade Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,8 +94,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1811779614465051172}
-        m_TargetAssemblyTypeName: Ui.Buttons.Upgrade_Popup.UnitUpgradePopupSlot,
+      - m_Target: {fileID: 1866844494973043103}
+        m_TargetAssemblyTypeName: Ui.Buttons.Upgrade_Popup.GlobalUpgradePopupSlot,
           Assembly-CSharp
         m_MethodName: ApplyUpgrade
         m_Mode: 1
@@ -107,6 +107,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1866844494973043103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904271810235389937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01dcfcb454048dfb148a4de7b1cd9ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 0
+  _statBonus: 300
 --- !u!114 &-1254622873784971633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,22 +135,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpHeight: 30
   _jumpDuration: 0.3
---- !u!114 &1811779614465051172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904271810235389937}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec7993a105379bf4da7304db0c8d9e97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _unitType: 0
-  _stat: 0
-  _statBonus: 5
-  _attackDelayReductionPercent: 0
 --- !u!114 &3937559096206534236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,7 +442,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 586b7fdf39027f146ae646759ccff287, type: 3}
+  m_Sprite: {fileID: 21300000, guid: df6d5f5280ef5af4d9892a52380e243b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
