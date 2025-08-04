@@ -1,6 +1,7 @@
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Data_Getters;
 using BackEnd.Economy;
+using BackEnd.Utilities;
 using Ui.Buttons.Deploy_Button;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -39,7 +40,11 @@ namespace Ui.Buttons.Upgrade_Popup
                     Debug.LogWarning("Unknown upgrade type: " + _type);
                     break;
             }
-            UpgradePopup.Instance.HidePopup();
+            UpgradePopup.Instance.BlockRaycasts(false);
+            UIEffects.ShrinkAndDestroy(transform, 1.2f, 0, () =>
+            {
+                UpgradePopup.Instance.HidePopup();
+            });
         }
 
 

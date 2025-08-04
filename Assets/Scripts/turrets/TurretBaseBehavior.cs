@@ -1,31 +1,32 @@
 using System;
 using System.Collections;
-using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Data__ScriptableOBj_;
+using BackEnd.Base_Classes;
+using BackEnd.Utilities;
+using Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace turrets
 {
-    public class TurretBaseBehavior : MonoBehaviour
+    public class TurretBaseBehavior : InGameObject
     {
-
         public event Action OnAttack;
-
-        //"Origin point from which the BoxCast is performed
-        private Transform _detectionOrigin;
 
         [Tooltip("Transform from where bullets will be instantiated.")]
         [SerializeField] private Transform _bulletSpawnPos;
 
-        [FormerlySerializedAs("_bulletPrefab")] [Tooltip("Projectile prefab to spawn when attacking.")]
+        [FormerlySerializedAs("_bulletPrefab")]
+        [Tooltip("Projectile prefab to spawn when attacking.")]
         public GameObject BulletPrefab;
 
+        private Transform _detectionOrigin;
         private Vector3 _origin;
         private Vector3 _direction;
         private Quaternion _rotation;
         private bool _isAttacking;
-        private Coroutine _currentCoroutine;
+        private ManagedCoroutine _attackCoroutine;
+
         public TurretData Turret { get; private set; }
 
         public Vector3 Origin => _origin;
@@ -38,7 +39,8 @@ namespace turrets
 
             var baseObject = GameObject.FindGameObjectWithTag(Turret.FriendlyBase);
             var enemyBaseObject = GameObject.FindGameObjectWithTag(Turret.OppositeBase);
-            if (baseObject != null)
+
+            if (baseObject != null && enemyBaseObject != null)
             {
                 _detectionOrigin = baseObject.transform;
                 _origin = _detectionOrigin.position;
@@ -47,13 +49,13 @@ namespace turrets
             }
             else
             {
-                Debug.LogWarning("TurretBaseBehavior: Could not find object with tag " + Turret.FriendlyBase);
+                Debug.LogWarning($"TurretBaseBehavior: Could not find base objects with tags {Turret.FriendlyBase} or {Turret.OppositeBase}");
             }
         }
 
-
         private void Update()
         {
+            if (!GameStates.Instance.GameIsPlaying) return;
             CheckForEnemies();
         }
 
@@ -62,7 +64,7 @@ namespace turrets
             if (Physics.BoxCast(_origin, Turret.BoxSize, _direction, out var hitInfo,
                     _detectionOrigin.rotation, Turret.Range, Turret.OppositeUnitLayer))
             {
-                gameObject.transform.LookAt(hitInfo.transform);
+                transform.LookAt(hitInfo.transform);
                 if (!_isAttacking)
                 {
                     Attack();
@@ -71,13 +73,13 @@ namespace turrets
             else
             {
                 ResetAttackStateIfNeeded();
-            }  
+            }
         }
 
         private void Attack()
         {
             _isAttacking = true;
-            _currentCoroutine = StartCoroutine(AttackLoop(Turret.InitialAttackDelay));
+            _attackCoroutine = CoroutineManager.Instance.StartManagedCoroutine(AttackLoop(Turret.InitialAttackDelay));
         }
 
         private IEnumerator AttackLoop(float initialAttackDelay)
@@ -88,13 +90,40 @@ namespace turrets
             _isAttacking = false;
         }
 
-
         private void ResetAttackStateIfNeeded()
         {
-            if (_currentCoroutine == null) return;
-            StopAllCoroutines();
-            _currentCoroutine = null;
+            if (_attackCoroutine != null)
+            {
+                _attackCoroutine.Stop();
+                _attackCoroutine = null;
+            }
+
             _isAttacking = false;
         }
+        
+
+        #region GameLifecycle
+
+        protected override void HandlePause()
+        {
+            _attackCoroutine?.Pause();
+        }
+
+        protected override void HandleResume()
+        {
+            _attackCoroutine?.Resume();
+        }
+
+        protected override void HandleGameEnd()
+        {
+            ResetAttackStateIfNeeded();
+        }
+
+        protected override void HandleGameReset()
+        {
+            ResetAttackStateIfNeeded();
+        }
+
+        #endregion
     }
 }

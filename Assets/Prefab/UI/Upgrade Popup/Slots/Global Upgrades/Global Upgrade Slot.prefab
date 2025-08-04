@@ -135,6 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpHeight: 30
   _jumpDuration: 0.3
+  _shakeDuration: 0.3
 --- !u!114 &3937559096206534236
 MonoBehaviour:
   m_ObjectHideFlags: 0

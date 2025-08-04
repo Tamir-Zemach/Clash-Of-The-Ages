@@ -17,7 +17,7 @@ namespace Ui.Buttons.Upgrade_Popup
         private GameObject[] _selectedPrefabs;
         private int _currentIndex;
         private CanvasGroup _canvasGroup;
-        private Action _onSlotsSpawned;
+        public Action OnSlotsSpawned;
 
         protected override void Awake()
         {
@@ -32,10 +32,7 @@ namespace Ui.Buttons.Upgrade_Popup
                 GameStates.Instance.PauseGame();
                 SpawnAllSlots(() =>
                 {
-                    _canvasGroup.interactable = true;
-                    _canvasGroup.blocksRaycasts = true;
-
-                    _raycastBlockerPanel.blocksRaycasts = true;
+                    BlockRaycasts(true);
                 });
             });
         }
@@ -44,10 +41,8 @@ namespace Ui.Buttons.Upgrade_Popup
         {
             UIEffects.FadeCanvasGroup(_canvasGroup, 0, 0.3f, onComplete: () =>
             {
-                _canvasGroup.interactable = false;
-                _canvasGroup.blocksRaycasts = false;
+                BlockRaycasts(false);
                 ClearAllSlots();
-                _raycastBlockerPanel.blocksRaycasts = false;
                 GameStates.Instance.StartGame();
             });
         }
@@ -63,7 +58,7 @@ namespace Ui.Buttons.Upgrade_Popup
                 .ToArray();
 
             _currentIndex = 0;
-            _onSlotsSpawned = onComplete;
+            OnSlotsSpawned = onComplete;
             InvokeRepeating(nameof(SpawnNextSlot), 0, _spawnDelay);
         }
 
@@ -72,7 +67,7 @@ namespace Ui.Buttons.Upgrade_Popup
             if (_currentIndex >= _selectedPrefabs.Length && _selectedPrefabs != null)
             {
                 CancelInvoke(nameof(SpawnNextSlot));
-                _onSlotsSpawned?.Invoke(); 
+                OnSlotsSpawned?.Invoke(); 
                 return;
             }
 
@@ -90,5 +85,13 @@ namespace Ui.Buttons.Upgrade_Popup
             _selectedPrefabs = null;
             _currentIndex = 0;
         }
+
+        public void BlockRaycasts(bool state)
+        {
+            _raycastBlockerPanel.blocksRaycasts = state;
+            _canvasGroup.interactable = state;
+            _canvasGroup.blocksRaycasts = state;
+        }
+        
     }
 }

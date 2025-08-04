@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 904271810235389937, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_Name
-      value: Max Health Slot Variant
+      value: Max Health Slot
       objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_Pivot.x
@@ -22,19 +22,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_SizeDelta.x

@@ -61,11 +61,10 @@ namespace Managers
                 Debug.Log("No more levels to load.");
                 return;
             }
-            SceneManager.LoadScene(_currentLevelIndex);
-
-            LoadUiScenes();
+            
+            LoadSceneAndResetAdditiveFlags(_currentLevelIndex);
+            LoadUiScenes(); 
             GameStates.Instance.StartGame();
-
         }
         
         

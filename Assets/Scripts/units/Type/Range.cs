@@ -44,14 +44,14 @@ namespace units.Type
 
         private void Attack(GameObject target, int strength)
         {
+            if (target == null) return;
             _strength =  strength;
             var instance = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
+            if (instance == null) return;
             var bulletScript = instance.GetComponent<RangeBullet>();
+            if (bulletScript == null) return;
+            bulletScript.Initialize(target.transform, _strength);
 
-            if (bulletScript != null)
-            {
-                bulletScript.Initialize(target.transform, _strength);
-            }
         }
 
     }

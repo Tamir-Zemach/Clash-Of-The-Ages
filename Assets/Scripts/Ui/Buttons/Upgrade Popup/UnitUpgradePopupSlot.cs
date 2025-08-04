@@ -1,6 +1,7 @@
 using Assets.Scripts.BackEnd.Enems;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
+using BackEnd.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,8 +60,14 @@ namespace Ui.Buttons.Upgrade_Popup
                     Debug.LogWarning("Unknown stat type: " + _stat);
                     return; // Exit early to avoid hiding popup on unknown stat
             }
+            
+            UpgradePopup.Instance.BlockRaycasts(false);
 
-            UpgradePopup.Instance.HidePopup();
+            UIEffects.ShrinkAndDestroy(transform, 1.2f, 0, () =>
+            {
+                UpgradePopup.Instance.HidePopup();
+            });
+            
         }
 #if UNITY_EDITOR
         public static class FieldNames
