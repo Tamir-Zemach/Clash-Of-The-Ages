@@ -1,20 +1,17 @@
 ﻿using System;
+using BackEnd.Base_Classes;
 using BackEnd.Utilities;
 using UnityEngine;
 
 namespace BackEnd.Economy
 {
-    internal class EnemyHealth
+    internal class EnemyHealth : OneInstanceClass<EnemyHealth>
     {
         public static event Action OnEnemyHealthChanged;
         public event Action OnEnemyDied;
         public static event Action OnDroppedBelowHalfHealth;
 
         private bool _hasDroppedBelowHalfHealth = false;
-        private static EnemyHealth _instance;
-        public static EnemyHealth Instance => _instance ??= new EnemyHealth();
-
-        private EnemyHealth() { }
 
         private int _currentHealth = 1;
         private int _maxHealth = 2;

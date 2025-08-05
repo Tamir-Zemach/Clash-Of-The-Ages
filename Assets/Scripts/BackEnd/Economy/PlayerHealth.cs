@@ -1,21 +1,18 @@
 ﻿using System;
+using BackEnd.Base_Classes;
 using BackEnd.Utilities;
 using Managers;
 using UnityEngine;
 
 namespace BackEnd.Economy
 {
-    internal class PlayerHealth
+    internal class PlayerHealth : OneInstanceClass<PlayerHealth>
     {
         public static event Action OnHealthChanged;
         public static event Action OnDroppedBelowHalfHealth;
         public static event Action OnHealedAboveHalfHealth;
 
         private bool _hasDroppedBelowHalfHealth = false;
-        private static PlayerHealth _instance;
-        public static PlayerHealth Instance => _instance ??= new PlayerHealth();
-
-        private PlayerHealth() { }
 
         private int _currentHealth = 1;
         private int _maxHealth = 2;

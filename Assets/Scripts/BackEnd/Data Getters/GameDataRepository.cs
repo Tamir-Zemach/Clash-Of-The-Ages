@@ -1,6 +1,6 @@
 ﻿
 using Assets.Scripts.Data;
-using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Enums;
 using Assets.Scripts.InterFaces;
 using System;
 using System.Collections.Generic;

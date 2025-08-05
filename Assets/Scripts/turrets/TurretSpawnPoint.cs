@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Enums;
 using BackEnd.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;

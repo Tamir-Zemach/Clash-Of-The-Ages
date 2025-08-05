@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static BackEnd.Utilities.SpriteEntries;

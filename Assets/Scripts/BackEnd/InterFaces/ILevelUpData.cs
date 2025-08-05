@@ -1,6 +1,6 @@
 ﻿
 
-using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Enums;
 
 namespace Assets.Scripts.InterFaces
 {

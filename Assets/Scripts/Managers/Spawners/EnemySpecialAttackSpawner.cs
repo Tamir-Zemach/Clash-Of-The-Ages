@@ -1,6 +1,6 @@
 using Assets.Scripts.BackEnd.BaseClasses;
 using Assets.Scripts.Data;
-using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Enums;
 using BackEnd.Data__ScriptableOBj_;
 using Managers;
 using Special_Attacks;

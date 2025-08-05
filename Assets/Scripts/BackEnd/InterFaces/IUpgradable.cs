@@ -1,6 +1,6 @@
 ﻿
 
-using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Enums;
 using UnityEngine;
 
 namespace Assets.Scripts.InterFaces

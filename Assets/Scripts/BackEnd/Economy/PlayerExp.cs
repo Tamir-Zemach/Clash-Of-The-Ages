@@ -1,19 +1,15 @@
 using System;
+using BackEnd.Base_Classes;
 using BackEnd.Utilities;
 using UnityEngine;
 
 namespace BackEnd.Economy
 {
-    public class PlayerExp
+    public class PlayerExp : OneInstanceClass<PlayerExp>
     {
         public static event Action OnExpChanged;
         public static event Action OnExpToLevelUpChanged;
         public event Action OnLevelUp;
-
-        private static PlayerExp _instance;
-        public static PlayerExp Instance => _instance ??= new PlayerExp();
-
-        private PlayerExp() { }
 
         private int _currentExp = 0;
         private int _expToLevelUp = 100;

@@ -1,6 +1,6 @@
 ﻿
 
-namespace Assets.Scripts.BackEnd.Enems
+namespace BackEnd.Enums
 {
     public enum SfxType
     {

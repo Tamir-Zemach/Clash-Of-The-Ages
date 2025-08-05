@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using BackEnd.Base_Classes;
+using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Utilities;
 using Managers;
 using UnityEngine;
@@ -10,7 +11,6 @@ namespace Ui.Buttons.Upgrade_Popup
 {
     public class UpgradePopup : PersistentMonoBehaviour<UpgradePopup>
     {
-        [SerializeField] private GameObject[] _upgradeSlotsPrefabs;
         [SerializeField] private float _spawnDelay = 0.5f;
         [SerializeField] private CanvasGroup _raycastBlockerPanel;
 
@@ -49,10 +49,12 @@ namespace Ui.Buttons.Upgrade_Popup
 
         private void SpawnAllSlots(Action onComplete = null)
         {
-            if (_upgradeSlotsPrefabs == null || _upgradeSlotsPrefabs.Length < 3)
+            var eligiblePrefabs = UpgradePopupConfiguration.Instance.GetEligiblePrefabs();
+
+            if (eligiblePrefabs == null || eligiblePrefabs.Count < 3)
                 return;
 
-            _selectedPrefabs = _upgradeSlotsPrefabs
+            _selectedPrefabs = eligiblePrefabs
                 .OrderBy(x => Random.value)
                 .Take(3)
                 .ToArray();
@@ -61,7 +63,6 @@ namespace Ui.Buttons.Upgrade_Popup
             OnSlotsSpawned = onComplete;
             InvokeRepeating(nameof(SpawnNextSlot), 0, _spawnDelay);
         }
-
         private void SpawnNextSlot()
         {
             if (_currentIndex >= _selectedPrefabs.Length && _selectedPrefabs != null)

@@ -1,19 +1,15 @@
 ﻿using System;
+using BackEnd.Base_Classes;
 using BackEnd.Utilities;
 using UnityEngine;
 
 namespace BackEnd.Economy
 {
-    public class PlayerCurrency
+    public class PlayerCurrency : OneInstanceClass<PlayerCurrency>
     {
         public static event Action OnMoneyChanged;
         public static event Action OnDoesntHaveEnoughMoney;
-
-        private static PlayerCurrency instance;
-        public static PlayerCurrency Instance => instance ??= new PlayerCurrency();
-
-        private PlayerCurrency() { }
-
+        
         private int _money = 0;
         public int Money => _money;
 

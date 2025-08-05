@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.BackEnd.Enems;
+using BackEnd.Enums;
 using Assets.Scripts.BackEnd.Utilities;
 using Assets.Scripts.InterFaces;
 using BackEnd.Utilities;
@@ -21,7 +21,7 @@ namespace BackEnd.Base_Classes
         public AgeStageType AgeStage
         {
             get => _ageStage;
-            protected set => _ageStage = value;
+            set => _ageStage = value;
         }
 
         [FormerlySerializedAs("type")]
@@ -45,7 +45,7 @@ namespace BackEnd.Base_Classes
         public GameObject Prefab
         {
             get => _prefab;
-            protected set => _prefab = value;
+            set => _prefab = value;
         }
 
 

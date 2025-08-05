@@ -81,10 +81,6 @@ namespace Managers
 
         public void NextLevel()
         {
-            if (LevelLoader.Instance.LevelIndex != 0)
-            {
-                UpgradePlayerAge();
-            }
             LevelLoader.Instance.LoadNextLevel();
             ResetEnemyHealth();
         }

@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.BackEnd.Enems;
+﻿using BackEnd.Enums;
 using UnityEngine;
 using UnityEngine.Serialization;
 
