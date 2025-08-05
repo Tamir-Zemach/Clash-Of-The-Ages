@@ -1,30 +1,31 @@
-﻿
-using Assets.Scripts.BackEnd.Enems;
+﻿using Assets.Scripts.BackEnd.Enems;
 using Assets.Scripts.units;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 
-
-public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
+namespace Managers
 {
-
-    public AgeStageType CurrentPlayerAge { get; private set; } = AgeStageType.StoneAge;
-    public AgeStageType CurrentEnemyAge { get; private set; } = AgeStageType.StoneAge;
-
-    public void AdvanceAge(bool isFriendly)
+    public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
     {
-        if (isFriendly) CurrentPlayerAge++;
-        else CurrentEnemyAge++;
+
+        public AgeStageType CurrentPlayerAge { get; private set; } = AgeStageType.StoneAge;
+        public AgeStageType CurrentEnemyAge { get; private set; } = AgeStageType.StoneAge;
+
+        public void AdvanceAge(bool isFriendly)
+        {
+            if (isFriendly) CurrentPlayerAge++;
+            else CurrentEnemyAge++;
+        }
+
+        //TODO: Enemy AgeUpgrade
+        public void UpdateUnitReward(UnitData unit, UnitLevelUpData levelUpData)
+        {
+            unit.MoneyWhenKilled += levelUpData._moneyWhenKilled;
+
+        }
+
+
+
     }
-
-    //TODO: Enemy AgeUpgrade
-    public void UpdateUnitReward(UnitData unit, UnitLevelUpData levelUpData)
-    {
-        unit.MoneyWhenKilled += levelUpData._moneyWhenKilled;
-
-    }
-
-
-
 }
 
