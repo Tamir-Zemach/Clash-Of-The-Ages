@@ -76,7 +76,6 @@ namespace BackEnd.Base_Classes
                 _shakeTween.Kill();
                 _shakeTween = null;
                 _rectTransform.localPosition = _baseLocalPos;
-                Debug.Log("Resetting to baseLocalPos: " + _baseLocalPos);
             }
         }
     }

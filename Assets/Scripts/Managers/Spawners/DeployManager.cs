@@ -113,6 +113,7 @@ namespace Managers.Spawners
 
                 OnQueueChanged?.Invoke();
                 OnUnitReadyToDeploy?.Invoke(_nextCharacter);
+                print("OnUnitReadyToDeploy");
             }
             else
             {
