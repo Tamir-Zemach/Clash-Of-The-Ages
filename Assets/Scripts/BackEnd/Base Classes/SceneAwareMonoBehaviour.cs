@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace BackEnd.Base_Classes
 {
-    public abstract class SceneAwareMonoBehaviour<T> : PersistentMonoBehaviour<T> where T : MonoBehaviour
+    public abstract class SceneAwareMonoBehaviour<T> : OneInstanceMonoBehaviour<T> where T : MonoBehaviour
     {
         protected virtual void OnEnable()
         {

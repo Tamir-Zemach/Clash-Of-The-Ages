@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BackEnd.Utilities
 {
-    public class CoroutineManager : PersistentMonoBehaviour<CoroutineManager>
+    public class CoroutineManager : OneInstanceMonoBehaviour<CoroutineManager>
     {
         private readonly List<ManagedCoroutine> _coroutines = new List<ManagedCoroutine>();
 

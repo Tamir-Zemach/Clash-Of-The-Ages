@@ -5,7 +5,7 @@ using BackEnd.Data__ScriptableOBj_;
 
 namespace Managers
 {
-    public class AgeUpgrade : PersistentMonoBehaviour<AgeUpgrade>
+    public class AgeUpgrade : OneInstanceMonoBehaviour<AgeUpgrade>
     {
 
         public AgeStageType CurrentPlayerAge { get; private set; } = AgeStageType.StoneAge;

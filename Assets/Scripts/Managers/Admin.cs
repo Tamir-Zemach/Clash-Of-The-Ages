@@ -3,7 +3,7 @@ using BackEnd.Base_Classes;
 using BackEnd.Economy;
 using UnityEngine;
 
-public class Admin : PersistentMonoBehaviour<Admin>
+public class Admin : OneInstanceMonoBehaviour<Admin>
 {
 
     public int _moneyToAdd;

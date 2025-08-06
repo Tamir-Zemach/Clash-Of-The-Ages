@@ -5,7 +5,7 @@ using BackEnd.Base_Classes;
 
 namespace Managers
 {
-    public class GameStates : PersistentMonoBehaviour<GameStates>
+    public class GameStates : OneInstanceClass<GameStates>
     {
         public event Action OnGamePaused;
         public event Action OnGameResumed;
@@ -14,12 +14,6 @@ namespace Managers
         
         public bool GameIsPlaying { get; private set; }
         public bool GameOver { get; private set; }
-
-        protected override void Awake()
-        {
-            base.Awake();
-            ResetGameState();
-        }
 
         public void PauseGame()
         {
@@ -38,7 +32,7 @@ namespace Managers
             GameIsPlaying = false;
             GameOver = true;
             OnGameEnded?.Invoke();
-            print("game ended");
+            
         }
 
         public void ResetGameState()

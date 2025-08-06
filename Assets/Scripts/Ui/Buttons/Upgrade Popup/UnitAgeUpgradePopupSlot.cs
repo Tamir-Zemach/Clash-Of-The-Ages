@@ -9,6 +9,9 @@ namespace Ui.Buttons.Upgrade_Popup
 {
     public class UnitAgeUpgradePopupSlot : MonoBehaviour
     {
+        public delegate void AgeUpgradeDelegate(UnitType unitType, Sprite sprite);
+        public static event AgeUpgradeDelegate OnUnitAgeUpgrade;
+        
         [Tooltip("Which unit should be upgraded")]
         [SerializeField] private UnitType _unitType;
 
@@ -17,6 +20,9 @@ namespace Ui.Buttons.Upgrade_Popup
         
         [Tooltip("Prefab that get instantiated after the upgrade")]
         [SerializeField] private GameObject _upgradedUnitPrefab;
+        
+        [Tooltip("Sprite that get changed in the deploy button after the upgrade")]
+        [SerializeField] private Sprite _upgradedButtonSprite;
         
         [FormerlySerializedAs("_range")]
         [Header("Stat to upgrade")]
@@ -73,6 +79,7 @@ namespace Ui.Buttons.Upgrade_Popup
             UIEffects.ShrinkAndDestroy(transform, 1.2f, 0, () =>
             {
                 UpgradePopup.Instance.HidePopup();
+                OnUnitAgeUpgrade?.Invoke(_unitType, _upgradedButtonSprite);
             });
             
         }

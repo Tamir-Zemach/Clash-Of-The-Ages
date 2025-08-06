@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Managers
 {
-    public sealed class LevelLoader : PersistentMonoBehaviour<LevelLoader>
+    public sealed class LevelLoader : OneInstanceMonoBehaviour<LevelLoader>
     {
         public event Action OnSceneChanged;
 
@@ -100,6 +100,12 @@ namespace Managers
             _adminUi = isAdmin;
         }
 
+        public void LoadMainMenu()
+        {
+            _adminUi = false;
+            LoadSceneAndResetAdditiveFlags(0);
+            GameStates.Instance.ResetGameState();
+        }
         public void LoadSpecificLevel(int sceneIndex)
         {
             if (sceneIndex < 0 || sceneIndex >= _scenes.Count)
@@ -117,8 +123,7 @@ namespace Managers
             }
             else if (buildIndex == 0)
             {
-                _adminUi = false;
-                LoadSceneAndResetAdditiveFlags(buildIndex);
+                Debug.LogWarning($"use the function - LoadMainMenu()");
             }
             else
             {
@@ -135,8 +140,7 @@ namespace Managers
             SceneManager.LoadScene(buildIndex);
             _currentLevelIndex = _scenes[buildIndex].GetBuildIndex();
         }
-
-        public SceneReference GetCurrentSceneReference() => _scenes[_currentLevelIndex];
+        
         public bool InStartMenu()
         {
             return _currentLevelIndex == 0;

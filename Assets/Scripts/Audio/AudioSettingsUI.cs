@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Audio
 {
-    public class AudioSettingsUI : PersistentMonoBehaviour<AudioSettingsUI>
+    public class AudioSettingsUI : OneInstanceMonoBehaviour<AudioSettingsUI>
     {
         private AudioSource _audioSource;
 

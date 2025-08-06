@@ -1,15 +1,15 @@
 using System;
 using System.Linq;
 using BackEnd.Base_Classes;
-using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Utilities;
+using DG.Tweening;
 using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UpgradePopup : PersistentMonoBehaviour<UpgradePopup>
+    public class UpgradePopup : OneInstanceMonoBehaviour<UpgradePopup>
     {
         [SerializeField] private float _spawnDelay = 0.5f;
         [SerializeField] private CanvasGroup _raycastBlockerPanel;
@@ -17,7 +17,7 @@ namespace Ui.Buttons.Upgrade_Popup
         private GameObject[] _selectedPrefabs;
         private int _currentIndex;
         private CanvasGroup _canvasGroup;
-        public Action OnSlotsSpawned;
+        public event Action OnSlotsSpawned;
 
         protected override void Awake()
         {
@@ -30,10 +30,7 @@ namespace Ui.Buttons.Upgrade_Popup
             UIEffects.FadeCanvasGroup(_canvasGroup, 1, 0.3f, onComplete: () =>
             {
                 GameStates.Instance.PauseGame();
-                SpawnAllSlots(() =>
-                {
-                    BlockRaycasts(true);
-                });
+                SpawnAllSlots();
             });
         }
 
@@ -47,7 +44,7 @@ namespace Ui.Buttons.Upgrade_Popup
             });
         }
 
-        private void SpawnAllSlots(Action onComplete = null)
+        private void SpawnAllSlots()
         {
             var eligiblePrefabs = UpgradePopupConfiguration.Instance.GetEligiblePrefabs();
 
@@ -60,7 +57,7 @@ namespace Ui.Buttons.Upgrade_Popup
                 .ToArray();
 
             _currentIndex = 0;
-            OnSlotsSpawned = onComplete;
+            
             InvokeRepeating(nameof(SpawnNextSlot), 0, _spawnDelay);
         }
         private void SpawnNextSlot()
@@ -68,7 +65,8 @@ namespace Ui.Buttons.Upgrade_Popup
             if (_currentIndex >= _selectedPrefabs.Length && _selectedPrefabs != null)
             {
                 CancelInvoke(nameof(SpawnNextSlot));
-                OnSlotsSpawned?.Invoke(); 
+                OnSlotsSpawned?.Invoke();
+                BlockRaycasts(true);
                 return;
             }
 

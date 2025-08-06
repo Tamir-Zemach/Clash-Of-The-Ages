@@ -47,20 +47,35 @@ namespace Managers
 
         private List<LevelUpDataGroup> _levelUpData;
 
+        private static bool _subscribedOnce = false;
+
         protected override void Awake()
         {
             DontDestroyOnLoad(gameObject);
             base.Awake();
-            EnemyHealth.Instance.OnEnemyDied += NextLevel;
-            PlayerExp.Instance.OnLevelUp += UpgradePopUp;
+
+            if (!_subscribedOnce)
+            {
+                EnemyHealth.Instance.OnEnemyDied += NextLevel;
+                PlayerExp.Instance.OnLevelUp += UpgradePopUp;
+                GameStates.Instance.OnGameReset += ResetGame;
+                _subscribedOnce = true;
+            }
+
             GetData();
             StartGame();
         }
+
+        private void ResetGame()
+        {
+            PlayerExp.Instance.ResetExp();
+        }
+
         protected override void InitializeOnSceneLoad()
         {
             if ((int)AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
             {
-                UpgradePlayerAge();
+                //UpgradePlayerAge();
             }
         }
 
@@ -123,6 +138,7 @@ namespace Managers
 
         public void UpgradePopUp()
         {
+            print("check");
             UpgradePopup.Instance.ShowPopup();
             PlayerExp.Instance.SetExp(0);
             var expToLevelUp = Mathf.Max(1, Mathf.RoundToInt(PlayerExp.Instance.ExpToLevelUp * _expLevelUpMultiplier));

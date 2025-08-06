@@ -9,7 +9,7 @@ using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using UnityEngine;
 
-public class GameDataRepository : PersistentMonoBehaviour<GameDataRepository>
+public class GameDataRepository : OneInstanceMonoBehaviour<GameDataRepository>
 {
     public event Action OnInitialized;
 

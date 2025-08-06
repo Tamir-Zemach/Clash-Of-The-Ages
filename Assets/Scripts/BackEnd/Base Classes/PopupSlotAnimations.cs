@@ -25,20 +25,30 @@ namespace BackEnd.Base_Classes
             UpgradePopup.Instance.OnSlotsSpawned += SlotsSpawned;
         }
 
-        private void SlotsSpawned()
+        private void OnDestroy()
         {
-            _baseLocalPos = _rectTransform.localPosition;
+            UpgradePopup.Instance.OnSlotsSpawned -= SlotsSpawned;
         }
 
+        private void SlotsSpawned()
+        {
+            if (_rectTransform == null)
+            { 
+                _rectTransform = GetComponent<RectTransform>();
+            }
+                
+
+            _baseLocalPos = _rectTransform.localPosition;
+        }
         private void Start()
         {
-            _rectTransform = GetComponent<RectTransform>();
             _image = GetComponent<Image>();
+            _rectTransform = GetComponent<RectTransform>();
 
-            Canvas.ForceUpdateCanvases(); // Ensure layout is settled
+            Canvas.ForceUpdateCanvases();
+            
             DOVirtual.DelayedCall(Delay, () =>
             {
-                _baseLocalPos = _rectTransform.localPosition;
                 DoTweenJump();
             });
         }

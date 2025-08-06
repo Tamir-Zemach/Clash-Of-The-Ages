@@ -15,7 +15,7 @@ namespace Ui
         
         public void BackToStartMenu()
         {
-            LevelLoader.Instance.LoadSpecificLevel(0);
+            LevelLoader.Instance.LoadMainMenu();
         }
         
         

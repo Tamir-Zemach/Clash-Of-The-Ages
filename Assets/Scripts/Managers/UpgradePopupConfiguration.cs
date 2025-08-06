@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
 using Ui.Buttons.Upgrade_Popup;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Managers
 {
-    public class UpgradePopupConfiguration : PersistentMonoBehaviour<UpgradePopupConfiguration>
+    public class UpgradePopupConfiguration : OneInstanceMonoBehaviour<UpgradePopupConfiguration>
     {
         [Header("Shared Spawn Chances")]
         [Range(0f, 1f)] [SerializeField] private float _unitSpawnChance = 1f;
@@ -17,21 +19,23 @@ namespace Managers
         [SerializeField] private List<GameObject> _unitPrefabs;
         [SerializeField] private List<GameObject> _globalPrefabs;
         [SerializeField] private List<GameObject> _ageUpgradePrefabs;
-
-        public List<GameObject> GetEligiblePrefabs(bool debug = false)
+        
+        public List<GameObject> GetEligiblePrefabs(bool unitDebug = false,
+                                                   bool globalDebug = false,
+                                                   bool ageUpgradeDebug = false)
         {
             var eligible = new List<GameObject>();
 
-            eligible.AddRange(_unitPrefabs.Where(p => PassedChance(_unitSpawnChance, p, debug)));
-            eligible.AddRange(_globalPrefabs.Where(p => PassedChance(_globalSpawnChance, p, debug)));
-            eligible.AddRange(_ageUpgradePrefabs.Where(p => IsAgeUpgradeEligible(p, _ageUpgradeSpawnChance, debug)));
+            eligible.AddRange(_unitPrefabs.Where(p => PassedChance(_unitSpawnChance, p, unitDebug)));
+            eligible.AddRange(_globalPrefabs.Where(p => PassedChance(_globalSpawnChance, p, globalDebug)));
+            eligible.AddRange(_ageUpgradePrefabs.Where(p => IsAgeUpgradeEligible(p, _ageUpgradeSpawnChance, ageUpgradeDebug)));
 
             return eligible;
         }
 
         private bool PassedChance(float chance, GameObject prefab, bool debug)
         {
-            bool passed = UnityEngine.Random.value <= chance;
+            bool passed = Random.value <= chance;
             if (debug) Debug.Log($"Prefab {prefab.name} chance: {chance}, passed: {passed}");
             return passed;
         }
@@ -53,7 +57,10 @@ namespace Managers
             }
 
             return PassedChance(chance, prefab, debug);
+            
         }
+
+
     }
     
 }

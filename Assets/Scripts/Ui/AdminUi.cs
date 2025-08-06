@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Ui
 {
-    public class AdminUI : PersistentMonoBehaviour<AdminUI>
+    public class AdminUI : OneInstanceMonoBehaviour<AdminUI>
     {
         [Header("Panels")]
         public GameObject AdminPanel;

@@ -8,6 +8,7 @@ using BackEnd.InterFaces;
 using BackEnd.Utilities;
 using Managers;
 using Managers.Spawners;
+using Ui.Buttons.Upgrade_Popup;
 using UnityEngine;
 using UnityEngine.UI;
 using static BackEnd.Utilities.SpriteKeys;
@@ -32,9 +33,19 @@ namespace Ui.Buttons.Deploy_Button
             _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
             _image = GetComponent<Image>();
             UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprite;
+
+            UnitAgeUpgradePopupSlot.OnUnitAgeUpgrade += UpdateSpriteFromSlot;
         }
+
         
-        
+        //this is the name for now 
+        private void UpdateSpriteFromSlot(UnitType unitType, Sprite sprite)
+        {
+            if (unitType == _unitType)
+            {
+                _image.sprite = sprite;
+            }
+        }
 
 
         private void UpdateSprite(List<SpriteEntries.SpriteEntry<UnitType>> spriteMap)

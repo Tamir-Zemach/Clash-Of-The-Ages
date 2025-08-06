@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 
 namespace Ui
 {
-    public class HoverCostDisplay : PersistentMonoBehaviour<HoverCostDisplay>
+    public class HoverCostDisplay : OneInstanceMonoBehaviour<HoverCostDisplay>
     {
         public GameObject CostDisplay;
         public Vector2 Offset = new Vector2(15f, -15f); 
