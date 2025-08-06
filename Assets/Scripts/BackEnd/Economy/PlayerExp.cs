@@ -56,7 +56,6 @@ namespace BackEnd.Economy
         {
             _level++;
             OnLevelUp?.Invoke();
-            Debug.Log($"🎉 Level Up! New level: {_level}");
         }
 
         public void DisplayExpInConsole()

@@ -30,6 +30,8 @@ namespace Special_Attacks
 
         private ManagedCoroutine _spawnRoutine;
 
+        private bool _isDestroyed = false;
+        
         private void Awake()
         {
             StartSpawning();
@@ -40,15 +42,26 @@ namespace Special_Attacks
             _spawnRoutine = CoroutineManager.Instance.StartManagedCoroutine(SpawnCycle());
         }
 
+
+        private void OnDestroy()
+        {
+            _isDestroyed = true;
+            StopSpawning();
+        }
+
         private Vector3 RandomSpawnPoint()
         {
-            var areaMin = _specialAttackArea.bounds.min;
-            var areaMax = _specialAttackArea.bounds.max;
+            if (_isDestroyed || _specialAttackArea == null || !_specialAttackArea.enabled)
+            {
+                Debug.LogWarning($"{name}: Invalid spawn area — using fallback position.");
+                return transform != null ? transform.position : Vector3.zero;
+            }
 
+            var bounds = _specialAttackArea.bounds;
             return new Vector3(
-                Random.Range(areaMin.x, areaMax.x),
-                Random.Range(areaMin.y, areaMax.y),
-                Random.Range(areaMin.z, areaMax.z)
+                Random.Range(bounds.min.x, bounds.max.x),
+                Random.Range(bounds.min.y, bounds.max.y),
+                Random.Range(bounds.min.z, bounds.max.z)
             );
         }
 
@@ -59,7 +72,7 @@ namespace Special_Attacks
 
         private IEnumerator SpawnCycle()
         {
-            while (true)
+            while (!_isDestroyed)
             {
                 yield return new WaitForSeconds(RandomSpawnTime(_minSpawnTime, _maxSpawnTime));
                 SpawnMeteorAtRandomPos();
@@ -68,7 +81,17 @@ namespace Special_Attacks
 
         private void SpawnMeteorAtRandomPos()
         {
-            var meteorReference = Instantiate(_meteorPrefab, RandomSpawnPoint(), Quaternion.identity);
+            if (_meteorPrefab == null)
+            {
+                Debug.LogWarning($"{name}: Meteor prefab is missing.");
+                return;
+            }
+
+            var spawnPos = RandomSpawnPoint();
+
+            var meteorReference = Instantiate(_meteorPrefab, spawnPos, Quaternion.identity);
+            if (meteorReference == null) return;
+
             OnMeteorSpawned?.Invoke();
 
             var meteorScript = meteorReference.GetComponent<Meteor>();

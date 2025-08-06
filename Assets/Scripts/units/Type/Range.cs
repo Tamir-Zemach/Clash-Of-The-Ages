@@ -29,29 +29,32 @@ namespace units.Type
 
         public void FireProjectile(GameObject target, int strength)
         {
-            if (target == null) return;
+            if (target == null || _bulletPrefab == null || _bulletSpawnPoint == null) return;
 
             var instance = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
-            var bulletScript = instance.GetComponent<RangeBullet>();
+            if (instance == null) return;
 
+            var bulletScript = instance.GetComponent<RangeBullet>();
             if (bulletScript != null)
             {
                 bulletScript.Initialize(target.transform, strength);
             }
 
-            target = null; // clear after shot
+            target = null;
         }
 
         private void Attack(GameObject target, int strength)
         {
-            if (target == null) return;
-            _strength =  strength;
+            _strength = strength;
+            if (target == null || _bulletPrefab == null || _bulletSpawnPoint == null) return;
+            
             var instance = Instantiate(_bulletPrefab, _bulletSpawnPoint.position, _bulletSpawnPoint.rotation);
             if (instance == null) return;
+
             var bulletScript = instance.GetComponent<RangeBullet>();
             if (bulletScript == null) return;
-            bulletScript.Initialize(target.transform, _strength);
 
+            bulletScript.Initialize(target.transform, _strength);
         }
 
     }
