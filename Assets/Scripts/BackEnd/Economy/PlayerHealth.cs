@@ -11,6 +11,7 @@ namespace BackEnd.Economy
         public static event Action OnHealthChanged;
         public static event Action OnDroppedBelowHalfHealth;
         public static event Action OnHealedAboveHalfHealth;
+        public event Action OnDying;
 
         private bool _hasDroppedBelowHalfHealth = false;
 
@@ -35,7 +36,7 @@ namespace BackEnd.Economy
             EvaluateHealthThresholds();
             if (_currentHealth <= 0)
             {
-                GameStates.Instance.EndGame();
+                OnDying?.Invoke();
             }
             return _currentHealth;
         }

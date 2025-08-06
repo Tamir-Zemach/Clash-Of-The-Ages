@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/UI/Pause UI.unity
     guid: 59c4f8959d74ce045aaef4eb11129595
+  - enabled: 1
+    path: Assets/Scenes/UI/Game Over Ui.unity
+    guid: 728f27d735f7ffe4aa3f15491d46970f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

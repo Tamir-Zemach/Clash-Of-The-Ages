@@ -23,6 +23,9 @@ namespace Managers
         
         [SerializeField]
         private SceneReference _pauseUiScene;
+        
+        [SerializeField]
+        private SceneReference _gameOverUiScene;
 
 
         private bool _isUiLoaded = false;
@@ -104,7 +107,16 @@ namespace Managers
         {
             _adminUi = false;
             LoadSceneAndResetAdditiveFlags(0);
-            GameStates.Instance.ResetGameState();
+        }
+
+        public void LoadGameOver()
+        {
+            _adminUi = false;
+            _isUiLoaded = false;
+            _isAdminUiLoaded = false;
+            _isPauseUiLoaded = false;
+            SceneManager.LoadScene(_gameOverUiScene.GetBuildIndex());
+            _currentLevelIndex = _gameOverUiScene.GetBuildIndex();
         }
         public void LoadSpecificLevel(int sceneIndex)
         {
@@ -143,7 +155,7 @@ namespace Managers
         
         public bool InStartMenu()
         {
-            return _currentLevelIndex == 0;
+            return _currentLevelIndex == 0 || _currentLevelIndex == _gameOverUiScene.GetBuildIndex();
         }
         
         

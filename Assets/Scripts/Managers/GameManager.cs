@@ -57,6 +57,7 @@ namespace Managers
             if (!_subscribedOnce)
             {
                 EnemyHealth.Instance.OnEnemyDied += NextLevel;
+                PlayerHealth.Instance.OnDying += GameOver;
                 PlayerExp.Instance.OnLevelUp += UpgradePopUp;
                 GameStates.Instance.OnGameReset += ResetGame;
                 _subscribedOnce = true;
@@ -64,6 +65,12 @@ namespace Managers
 
             GetData();
             StartGame();
+        }
+
+        private void GameOver()
+        {
+            LevelLoader.Instance.LoadGameOver();
+            GameStates.Instance.EndGame();
         }
 
         private void ResetGame()
@@ -138,7 +145,6 @@ namespace Managers
 
         public void UpgradePopUp()
         {
-            print("check");
             UpgradePopup.Instance.ShowPopup();
             PlayerExp.Instance.SetExp(0);
             var expToLevelUp = Mathf.Max(1, Mathf.RoundToInt(PlayerExp.Instance.ExpToLevelUp * _expLevelUpMultiplier));
