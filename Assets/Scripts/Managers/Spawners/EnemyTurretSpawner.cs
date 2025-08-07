@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.BackEnd.BaseClasses;
+using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using turrets;
 using UnityEngine;
@@ -23,14 +23,14 @@ namespace Managers.Spawners
         protected override void Awake()
         {
             base.Awake();
-            RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
+            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
         }
 
         protected override void InitializeOnSceneLoad()
         {
             if (LevelLoader.Instance.InStartMenu()) return;
             _enemyTurrets = GameDataRepository.Instance.EnemyTurrets;
-            RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
+            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
             EnemyTurretSlotSpawner.Instance.OnTurretSlotActivated += StartTimer;
             ResetTimer();
         }
@@ -97,7 +97,7 @@ namespace Managers.Spawners
 
         private void ResetTimer()
         {
-            RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
+            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
             Timer = 0;
         }
 

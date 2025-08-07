@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Assets.Scripts.BackEnd.BaseClasses;
+using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using units.Behavior;
 using UnityEngine;
@@ -24,7 +24,7 @@ namespace Managers.Spawners
         protected override void Awake()
         {
             base.Awake();
-            RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
+            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
         }
         protected override void InitializeOnSceneLoad()
         {
@@ -65,7 +65,7 @@ namespace Managers.Spawners
             {
                 SpawnRandomEnemyPrefab();
                 Timer = 0;
-                RandomSpawnTimer = Random.Range(_minSpawnTime, _maxSpawnTime);
+                RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
             }
         }
 

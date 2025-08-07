@@ -61,9 +61,9 @@ namespace BackEnd.Utilities
         public static Sequence ApplyGraphicFeedback(
             Graphic graphic,
             bool changeColor = true, Color colorToChangeTo = default, float colorChangeDuration = 0.3f,
-            bool changeScale = true, float scaleMultiplier = 1.1f, float scaleChangeDuration = 0.3f, // 👈 added
+            bool changeScale = true, float scaleMultiplier = 1.1f, float scaleChangeDuration = 0.3f, 
             bool shakeGraphic = false, float shakeDuration = 0.3f,
-            bool changeAlpha = false, float alpha = 0, float alphaChangeDuration = 0.3f, // 👈 added
+            bool changeAlpha = false, float alpha = 0, float alphaChangeDuration = 0.3f, 
             Action onComplete = null)
         {
             if (!TryInitGraphic(graphic, out var transform, out var originalColor, out var originalScale))
