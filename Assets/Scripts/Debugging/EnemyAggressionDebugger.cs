@@ -13,6 +13,8 @@ namespace Debugging
     {
         [Tooltip("Reference to the EnemyConfiguration component to monitor.")]
         [SerializeField] private EnemyConfiguration _enemyConfig;
+        
+        [SerializeField] private bool _debug;
 
         private void OnEnable()
         {
@@ -30,6 +32,7 @@ namespace Debugging
 
         private void LogHalfHealthAggression()
         {
+            if (!_debug) return;
             Debug.Log("<color=orange>[Aggression Triggered]</color> Enemy dropped below half health.");
         }
 
@@ -37,18 +40,20 @@ namespace Debugging
         {
             int current = EnemyHealth.Instance.CurrentHealth;
             int max = EnemyHealth.Instance.MaxHealth;
+            if (!_debug) return;
             Debug.Log($"[Health Update] Current: {current}, Max: {max}");
         }
 
         private void LogReset()
         {
+            if (!_debug) return;
             Debug.Log("<color=cyan>[Aggression Reset]</color> Enemy died. Spawn timers restored.");
         }
 
         private void Update()
         {
             if (_enemyConfig == null) return;
-
+            if (!_debug) return;
             // Optional: live display of current spawn timers
             Debug.Log($"[Spawn Timers] Unit: {EnemyUnitSpawner.Instance.MinSpawnTime:F2}-{EnemyUnitSpawner.Instance.MaxSpawnTime:F2}, " +
                       $"Turret: {EnemyTurretSpawner.Instance.MinSpawnTime:F2}-{EnemyTurretSpawner.Instance.MaxSpawnTime:F2}, " +

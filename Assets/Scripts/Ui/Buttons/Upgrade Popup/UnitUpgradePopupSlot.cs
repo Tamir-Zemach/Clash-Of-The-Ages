@@ -60,18 +60,22 @@ namespace Ui.Buttons.Upgrade_Popup
                     Debug.LogWarning("Unknown stat type: " + _stat);
                     return; // Exit early to avoid hiding popup on unknown stat
             }
-            
+
+            FinalizeUpgrade();
+        }
+
+        private void FinalizeUpgrade()
+        {
+            UpgradeDataStorage.Instance.RegisterUnitStatUpgrade(_unitType, _stat);
             UpgradePopup.Instance.BlockRaycasts(false);
 
             UIEffects.ShrinkAndDestroy(transform, 1.2f, 0, () =>
             {
                 UpgradePopup.Instance.HidePopup();
             });
-            
         }
-        
-        
-        
+
+
 #if UNITY_EDITOR
         public static class FieldNames
         {

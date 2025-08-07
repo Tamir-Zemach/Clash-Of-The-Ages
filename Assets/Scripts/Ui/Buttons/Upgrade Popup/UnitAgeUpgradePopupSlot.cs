@@ -74,6 +74,12 @@ namespace Ui.Buttons.Upgrade_Popup
             //---AgeStage---
             _unitData.AgeStage = _ageStage;
             
+            FinalizeUpgrade();
+        }
+
+        private void FinalizeUpgrade()
+        {
+            UpgradeDataStorage.Instance.RegisterAgeUpgrade(_unitType, _ageStage);
             UpgradePopup.Instance.BlockRaycasts(false);
 
             UIEffects.ShrinkAndDestroy(transform, 1.2f, 0, () =>
@@ -81,9 +87,6 @@ namespace Ui.Buttons.Upgrade_Popup
                 UpgradePopup.Instance.HidePopup();
                 OnUnitAgeUpgrade?.Invoke(_unitType, _upgradedButtonSprite);
             });
-            
         }
-        
-        
     }
 }

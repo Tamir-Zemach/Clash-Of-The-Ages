@@ -40,6 +40,13 @@ namespace Ui.Buttons.Upgrade_Popup
                     Debug.LogWarning("Unknown upgrade type: " + _type);
                     break;
             }
+
+            FinalizeUpgrade();
+        }
+
+        private void FinalizeUpgrade()
+        {
+            UpgradeDataStorage.Instance.RegisterGlobalUpgrade(_type);
             UpgradePopup.Instance.BlockRaycasts(false);
             UIEffects.ShrinkAndDestroy(transform, 1.2f, 0, () =>
             {

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using BackEnd.Base_Classes;
 using BackEnd.Utilities;
+using Configuration;
 using DG.Tweening;
 using Managers;
 using UnityEngine;
@@ -70,7 +71,11 @@ namespace Ui.Buttons.Upgrade_Popup
                 return;
             }
 
-            Instantiate(_selectedPrefabs[_currentIndex], transform);
+            var prefab = _selectedPrefabs[_currentIndex];
+            Instantiate(prefab, transform);
+            
+            UpgradePopupConfiguration.Instance.RegisterInstantiation(prefab);
+
             _currentIndex++;
         }
 

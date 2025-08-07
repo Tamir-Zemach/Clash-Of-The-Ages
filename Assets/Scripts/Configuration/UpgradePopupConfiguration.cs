@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
@@ -6,7 +5,7 @@ using Ui.Buttons.Upgrade_Popup;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Managers
+namespace Configuration
 {
     public class UpgradePopupConfiguration : OneInstanceMonoBehaviour<UpgradePopupConfiguration>
     {
@@ -16,51 +15,69 @@ namespace Managers
         [Range(0f, 1f)] [SerializeField] private float _ageUpgradeSpawnChance = 1f;
 
         [Header("Slot Prefabs")]
+        [SerializeField] private int _maxInstancesPerUnitPrefab = 3;
         [SerializeField] private List<GameObject> _unitPrefabs;
+
+        [SerializeField] private int _maxInstancesPerGlobalPrefab = 2;
         [SerializeField] private List<GameObject> _globalPrefabs;
+
         [SerializeField] private List<GameObject> _ageUpgradePrefabs;
-        
-        public List<GameObject> GetEligiblePrefabs(bool unitDebug = false,
-                                                   bool globalDebug = false,
-                                                   bool ageUpgradeDebug = false)
+
+        private readonly Dictionary<GameObject, int> _instantiationCounts = new();
+
+        // Public accessors for debugger or other systems
+        public List<GameObject> UnitPrefabs => _unitPrefabs;
+        public List<GameObject> GlobalPrefabs => _globalPrefabs;
+        public List<GameObject> AgeUpgradePrefabs => _ageUpgradePrefabs;
+        public IReadOnlyDictionary<GameObject, int> InstantiationCounts => _instantiationCounts;
+
+        public List<GameObject> GetEligiblePrefabs()
         {
             var eligible = new List<GameObject>();
 
-            eligible.AddRange(_unitPrefabs.Where(p => PassedChance(_unitSpawnChance, p, unitDebug)));
-            eligible.AddRange(_globalPrefabs.Where(p => PassedChance(_globalSpawnChance, p, globalDebug)));
-            eligible.AddRange(_ageUpgradePrefabs.Where(p => IsAgeUpgradeEligible(p, _ageUpgradeSpawnChance, ageUpgradeDebug)));
+            eligible.AddRange(_unitPrefabs.Where(p =>
+                PassedChance(_unitSpawnChance) &&
+                GetRemainingQuota(p, _maxInstancesPerUnitPrefab) > 0));
+
+            eligible.AddRange(_globalPrefabs.Where(p =>
+                PassedChance(_globalSpawnChance) &&
+                GetRemainingQuota(p, _maxInstancesPerGlobalPrefab) > 0));
+
+            eligible.AddRange(_ageUpgradePrefabs.Where(p =>
+                IsAgeUpgradeEligible(p, _ageUpgradeSpawnChance)));
 
             return eligible;
         }
 
-        private bool PassedChance(float chance, GameObject prefab, bool debug)
+        private int GetRemainingQuota(GameObject prefab, int maxAllowed)
         {
-            bool passed = Random.value <= chance;
-            if (debug) Debug.Log($"Prefab {prefab.name} chance: {chance}, passed: {passed}");
-            return passed;
+            return maxAllowed - (_instantiationCounts.TryGetValue(prefab, out var count) ? count : 0);
         }
 
-        private bool IsAgeUpgradeEligible(GameObject prefab, float chance, bool debug)
+        private bool PassedChance(float chance)
+        {
+            return Random.value <= chance;
+        }
+
+        private bool IsAgeUpgradeEligible(GameObject prefab, float chance)
         {
             var upgradeSlot = prefab.GetComponent<UnitAgeUpgradePopupSlot>();
             if (upgradeSlot == null)
-            {
-                if (debug) Debug.LogWarning($"Missing UnitAgeUpgradePopupSlot on {prefab.name}");
                 return false;
-            }
 
             var unitData = GameDataRepository.Instance.FriendlyUnits.GetData(upgradeSlot.Type);
             if (unitData.AgeStage >= upgradeSlot.AgeStage)
-            {
-                if (debug) Debug.Log($"Unit {upgradeSlot.Type} already at age {unitData.AgeStage}, skipping.");
                 return false;
-            }
 
-            return PassedChance(chance, prefab, debug);
-            
+            return PassedChance(chance);
         }
 
-
+        public void RegisterInstantiation(GameObject prefab)
+        {
+            if (_instantiationCounts.ContainsKey(prefab))
+                _instantiationCounts[prefab]++;
+            else
+                _instantiationCounts[prefab] = 1;
+        }
     }
-    
 }

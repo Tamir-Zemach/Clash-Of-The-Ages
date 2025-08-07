@@ -31,6 +31,7 @@ namespace Configuration
         private int _lastHealth;
         private float _damageAccumulated;
         private ManagedCoroutine _damageMonitorRoutine;
+        private bool _triggeredAggression;
 
 
         private readonly Dictionary<MonoBehaviour, (float min, float max)> _originalSpawnTimes = new();
@@ -93,10 +94,12 @@ namespace Configuration
         
         private void TriggerAggression()
         {
+            if (_triggeredAggression) return;
             ApplyAggressionToSpawner(EnemyUnitSpawner.Instance);
             ApplyAggressionToSpawner(EnemyTurretSpawner.Instance);
             ApplyAggressionToSpawner(EnemyTurretSlotSpawner.Instance);
             ApplyAggressionToSpawner(EnemySpecialAttackSpawner.Instance);
+            _triggeredAggression = true;
         }
 
         /// <summary>
@@ -130,8 +133,7 @@ namespace Configuration
             // Stop any running damage monitor coroutine
             _damageMonitorRoutine?.Stop();
             _damageMonitorRoutine = null;
-
-            _originalSpawnTimes.Clear();
+            _triggeredAggression = false;
         }
     }
 }

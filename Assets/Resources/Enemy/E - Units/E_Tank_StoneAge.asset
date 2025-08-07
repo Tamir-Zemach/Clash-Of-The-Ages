@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Bits: 264
   FriendlyUnitTag: Enemy Character
   Speed: 2
-  Health: 175
+  Health: 200
   MinStrength: 30
   MaxStrength: 40
   InitialAttackDelay: 1.4

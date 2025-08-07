@@ -23,13 +23,14 @@ MonoBehaviour:
   _prefab: {fileID: 2906663908437237772, guid: 60f55190c838fbf478d03148d24220f9, type: 3}
   DeployDelayTime: 1.5
   MoneyWhenKilled: 0
+  ExpWhenKilled: 0
   OppositeBaseTag: Enemy Base
   OppositeUnitTag: Enemy Character
   OppositeUnitMask:
     serializedVersion: 2
     m_Bits: 576
   FriendlyUnitTag: Friendly Character
-  Speed: 2
+  Speed: 2.5
   Health: 100
   MinStrength: 15
   MaxStrength: 30

@@ -30,7 +30,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 264
   FriendlyUnitTag: Enemy Character
-  Speed: 2
+  Speed: 3
   Health: 100
   MinStrength: 25
   MaxStrength: 35
