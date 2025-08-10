@@ -1,68 +1,70 @@
 using System.Collections;
-using units.Behavior;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitHealthBar : MonoBehaviour
+namespace units.Behavior
 {
-    [SerializeField] float _fadeOutDuration = 1;
-    [SerializeField] float _initialdelayForfadeOut = 2;
-
-    private Slider slider;
-    private UnitHealthManager healthManager;
-    private CanvasGroup CanvasGroup;
-
-    private void Awake()
+    public class UnitHealthBar : MonoBehaviour
     {
-        slider = GetComponent<Slider>();
-        healthManager = GetComponentInParent<UnitHealthManager>();
-        CanvasGroup = GetComponentInParent<CanvasGroup>();
-        CanvasGroup.alpha = 0f;
-    }
+        [SerializeField] float _fadeOutDuration = 1;
+        [SerializeField] float _initialdelayForfadeOut = 2;
 
-    private void Start()
-    {
-        SetMaxHealth(healthManager.CurrentHealth);
-        healthManager.OnHealthChanged += SetHealth;
-    }
-    void LateUpdate()
-    {
-        transform.forward = Camera.main.transform.forward;
-    }
+        private Slider slider;
+        private UnitHealthManager healthManager;
+        private CanvasGroup CanvasGroup;
 
-
-    private void SetMaxHealth(int maxHealth)
-    {
-        slider.maxValue = maxHealth;
-        slider.value = maxHealth;
-    }
-
-    private void SetHealth()
-    {
-        slider.value = healthManager.CurrentHealth;
-        DisplayHealthBar();
-        FadeOutHealthBar();
-    }
-
-    private void DisplayHealthBar() => CanvasGroup.alpha = 1f;
-
-    private void FadeOutHealthBar()
-    {
-        StopAllCoroutines();
-        StartCoroutine(FadeOutCoroutine(_fadeOutDuration, _initialdelayForfadeOut));
-    }
-
-    private IEnumerator FadeOutCoroutine(float duration, float initialdelay)
-    {    
-        yield return new WaitForSeconds(initialdelay);
-
-        float elapsed = 0f;
-        while (elapsed < duration)
+        private void Awake()
         {
-            CanvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
+            slider = GetComponent<Slider>();
+            healthManager = GetComponentInParent<UnitHealthManager>();
+            CanvasGroup = GetComponentInParent<CanvasGroup>();
+            CanvasGroup.alpha = 0f;
         }
-    }
 
+        private void Start()
+        {
+            SetMaxHealth(healthManager.CurrentHealth);
+            healthManager.OnHealthChanged += SetHealth;
+        }
+        void LateUpdate()
+        {
+            transform.forward = Camera.main.transform.forward;
+        }
+
+
+        private void SetMaxHealth(int maxHealth)
+        {
+            slider.maxValue = maxHealth;
+            slider.value = maxHealth;
+        }
+
+        private void SetHealth()
+        {
+            slider.value = healthManager.CurrentHealth;
+            DisplayHealthBar();
+            FadeOutHealthBar();
+        }
+
+        private void DisplayHealthBar() => CanvasGroup.alpha = 1f;
+
+        private void FadeOutHealthBar()
+        {
+            StopAllCoroutines();
+            StartCoroutine(FadeOutCoroutine(_fadeOutDuration, _initialdelayForfadeOut));
+        }
+
+        private IEnumerator FadeOutCoroutine(float duration, float initialdelay)
+        {    
+            yield return new WaitForSeconds(initialdelay);
+
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                CanvasGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+    }
 }

@@ -1,6 +1,6 @@
 ﻿
 
-namespace Assets.Scripts.InterFaces
+namespace BackEnd.InterFaces
 {
     public interface IDamageable
     {

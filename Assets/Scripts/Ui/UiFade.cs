@@ -2,6 +2,7 @@ using BackEnd.Utilities;
 using UnityEngine;
 using UnityEngine.Serialization;
 using DG.Tweening;
+using Managers;
 
 namespace Ui
 {

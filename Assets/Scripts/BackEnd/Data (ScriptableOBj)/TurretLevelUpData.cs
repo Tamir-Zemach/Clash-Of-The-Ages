@@ -1,8 +1,8 @@
-﻿using BackEnd.Enums;
-using Assets.Scripts.InterFaces;
+﻿using BackEnd.Base_Classes;
+using BackEnd.Enums;
 using UnityEngine;
 
-namespace Assets.Scripts.Data
+namespace BackEnd.Data__ScriptableOBj_
 {
     [CreateAssetMenu(fileName = "TurretLevelUpData", menuName = "TurretLevelUpData", order = 6)]
     public class TurretLevelUpData : LevelUpDataBase

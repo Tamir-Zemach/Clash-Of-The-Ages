@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BackEnd.Data_Getters;
 using BackEnd.Enums;
-using Assets.Scripts.BackEnd.Utilities;
-using Assets.Scripts.InterFaces;
+using BackEnd.InterFaces;
 using BackEnd.Utilities;
 using Managers;
 using UnityEngine;

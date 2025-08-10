@@ -1,5 +1,6 @@
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
+using BackEnd.Data_Getters;
 using BackEnd.Enums;
 using Special_Attacks;
 using UnityEngine;

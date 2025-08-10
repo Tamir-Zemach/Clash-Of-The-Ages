@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public class TagSelectorAttribute : PropertyAttribute
+namespace BackEnd.Project_inspector_Addons
 {
-    public string Tooltip { get; }
-
-    public TagSelectorAttribute(string tooltip = "")
+    public class TagSelectorAttribute : PropertyAttribute
     {
-        Tooltip = tooltip;
+        public string Tooltip { get; }
+
+        public TagSelectorAttribute(string tooltip = "")
+        {
+            Tooltip = tooltip;
+        }
     }
 }

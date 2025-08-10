@@ -1,10 +1,13 @@
 using UnityEngine;
 
-public class Billboard : MonoBehaviour
+namespace Animations
 {
-    void LateUpdate()
+    public class Billboard : MonoBehaviour
     {
-        // Make the object face the camera
-        transform.forward = Camera.main.transform.forward;
+        void LateUpdate()
+        {
+            // Make the object face the camera
+            transform.forward = Camera.main.transform.forward;
+        }
     }
 }

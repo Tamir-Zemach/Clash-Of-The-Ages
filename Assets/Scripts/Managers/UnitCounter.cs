@@ -1,33 +1,36 @@
 using units.Behavior;
 using UnityEngine;
 
-public class UnitCounter : MonoBehaviour
+namespace Managers
 {
-    private UnitBaseBehaviour unitBaseBehaviour;
-
-    public static int FriendlyCount { get; private set; }
-    public static int EnemyCount { get; private set; }
-
-    private void Awake()
+    public class UnitCounter : MonoBehaviour
     {
-        unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
-    }
-    private void Start()
-    {
-        if (unitBaseBehaviour.Unit.IsFriendly)
-            FriendlyCount++;
-        else
-            EnemyCount++;
-    }
+        private UnitBaseBehaviour unitBaseBehaviour;
 
-    private void OnDestroy()
-    {
-        if (unitBaseBehaviour != null && unitBaseBehaviour.Unit != null)
+        public static int FriendlyCount { get; private set; }
+        public static int EnemyCount { get; private set; }
+
+        private void Awake()
+        {
+            unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
+        }
+        private void Start()
         {
             if (unitBaseBehaviour.Unit.IsFriendly)
-                FriendlyCount--;
+                FriendlyCount++;
             else
-                EnemyCount--;
+                EnemyCount++;
+        }
+
+        private void OnDestroy()
+        {
+            if (unitBaseBehaviour != null && unitBaseBehaviour.Unit != null)
+            {
+                if (unitBaseBehaviour.Unit.IsFriendly)
+                    FriendlyCount--;
+                else
+                    EnemyCount--;
+            }
         }
     }
 }

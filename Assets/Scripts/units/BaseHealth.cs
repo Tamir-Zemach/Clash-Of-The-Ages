@@ -1,25 +1,27 @@
-using UnityEngine;
-using Assets.Scripts.InterFaces;
-using System;
 using BackEnd.Economy;
+using BackEnd.InterFaces;
+using UnityEngine;
 
-public class BaseHealth : MonoBehaviour, IDamageable
+namespace units
 {
-    public bool isFriendly;
-
-
-    public void GetHurt(int damage)
+    public class BaseHealth : MonoBehaviour, IDamageable
     {
-        if (isFriendly)
+        public bool isFriendly;
+
+
+        public void GetHurt(int damage)
         {
-            PlayerHealth.Instance.SubtractHealth(damage);
-            return;
-        }
-        else
-        {
-            EnemyHealth.Instance.SubtractHealth(damage);
+            if (isFriendly)
+            {
+                PlayerHealth.Instance.SubtractHealth(damage);
+                return;
+            }
+            else
+            {
+                EnemyHealth.Instance.SubtractHealth(damage);
+            }
+
         }
 
     }
-
 }

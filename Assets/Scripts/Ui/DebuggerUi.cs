@@ -1,5 +1,9 @@
 using System;
 using BackEnd.Base_Classes;
+using BackEnd.Data_Getters;
+using BackEnd.Economy;
+using Managers;
+using Managers.Spawners;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -14,16 +18,35 @@ namespace Ui
         public TMP_Text FriendlyUnitText;
         public TMP_Text EnemyUnitText;
         public TMP_Text UnitCounterText;
+        
+        [Header("Enemy Aggression Info")]
+        public TextMeshProUGUI HalfHealthText;
+        public TextMeshProUGUI ResetHealthText;
+        public TextMeshProUGUI SpawnersText;
+        private void OnEnable()
+        {
+            EnemyHealth.OnDroppedBelowHalfHealth += LogHalfHealthAggression;
+            EnemyHealth.Instance.OnEnemyDied += LogReset;
+        }
+
+        private void OnDisable()
+        {
+            EnemyHealth.OnDroppedBelowHalfHealth -= LogHalfHealthAggression;
+            EnemyHealth.Instance.OnEnemyDied -= LogReset;
+        }
+        
+
         protected override void Awake()
         {
             base.Awake();
             DebuggerPanel.SetActive(false);
         }
-
         private void Update()
         {
+            LogSpawners();
             DisplayParams();
         }
+        
 
         public void ShowPanel(GameObject panel)
         {
@@ -36,8 +59,8 @@ namespace Ui
             DisplayFriendlyUnitParameters();
             DisplayUnitCounter();
         }
-        
-        public void DisplayFriendlyUnitParameters()
+
+        private void DisplayFriendlyUnitParameters()
         {
             var info = "";
             foreach (var unit in GameDataRepository.Instance.FriendlyUnits)
@@ -49,7 +72,7 @@ namespace Ui
             FriendlyUnitText.text = info;
         }
 
-        public void DisplayEnemyUnitParameters()
+        private void DisplayEnemyUnitParameters()
         {
             var info = "";
             foreach (var unit in GameDataRepository.Instance.EnemyUnits)
@@ -61,10 +84,29 @@ namespace Ui
             EnemyUnitText.text = info;
         }
 
-        public void DisplayUnitCounter()
+        private void DisplayUnitCounter()
         {
             UnitCounterText.text = $"Friendly Units: {UnitCounter.FriendlyCount}\n" +
                                    $"Enemy Units: {UnitCounter.EnemyCount}";
+        }
+        
+        private void LogHalfHealthAggression()
+        {
+            HalfHealthText.text = "<color=orange>[Aggression Triggered]</color> Enemy dropped below half health.";
+        }
+        
+
+        private void LogReset()
+        {
+            ResetHealthText.text = "<color=cyan>[Aggression Reset]</color> Enemy died. Spawn timers restored.";
+        }
+
+        private void LogSpawners()
+        {
+            SpawnersText.text = $"[Spawn Timers] Unit: {EnemyUnitSpawner.Instance.MinSpawnTime:F2}-{EnemyUnitSpawner.Instance.MaxSpawnTime:F2}, " +
+                                $"Turret: {EnemyTurretSpawner.Instance.MinSpawnTime:F2}-{EnemyTurretSpawner.Instance.MaxSpawnTime:F2}, " +
+                                $"Slot: {EnemyTurretSlotSpawner.Instance.MinSpawnTime:F2}-{EnemyTurretSlotSpawner.Instance.MaxSpawnTime:F2}, " +
+                                $"Special: {EnemySpecialAttackSpawner.Instance.MinSpawnTime:F2}-{EnemySpecialAttackSpawner.Instance.MaxSpawnTime:F2}";
         }
 
         

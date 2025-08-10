@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Ui
+namespace Ui.Text_Display
 {
     public class MaxUnitsTextUiDisplay : MonoBehaviour
     {

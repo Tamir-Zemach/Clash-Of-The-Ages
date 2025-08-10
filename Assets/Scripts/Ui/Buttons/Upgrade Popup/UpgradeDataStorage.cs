@@ -4,6 +4,7 @@ using System.Linq;
 using BackEnd.Base_Classes;
 using BackEnd.Enums;
 using Configuration;
+using Managers;
 using UnityEngine;
 
 namespace Ui.Buttons.Upgrade_Popup
@@ -17,7 +18,11 @@ namespace Ui.Buttons.Upgrade_Popup
         private readonly Dictionary<UnitType, Dictionary<StatType, int>> _unitStatUpgrades = new();
         private readonly Dictionary<UpgradeType, int> _globalUpgrades = new();
         private readonly Dictionary<UnitType, AgeStageType> _ageUpgrades = new();
-
+        public UpgradeDataStorage()
+        {
+            GameStates.Instance.OnGameReset += ResetAllUpgradeData;
+        }
+        
         public void RegisterUnitStatUpgrade(UnitType unitType, StatType statType)
         {
             if (!_unitStatUpgrades.ContainsKey(unitType))
@@ -65,5 +70,13 @@ namespace Ui.Buttons.Upgrade_Popup
         {
             return _ageUpgrades.ContainsKey(unitType);
         }
+        
+        private void ResetAllUpgradeData()
+        {
+            _unitStatUpgrades.Clear();
+            _globalUpgrades.Clear();
+            _ageUpgrades.Clear();
+        }
+        
     }
 }

@@ -1,8 +1,8 @@
-﻿using BackEnd.Enums;
-using Assets.Scripts.InterFaces;
+﻿using BackEnd.Base_Classes;
+using BackEnd.Enums;
 using UnityEngine;
 
-namespace Assets.Scripts.Data
+namespace BackEnd.Data__ScriptableOBj_
 {
     [CreateAssetMenu(fileName = "SpecialAttackLevelUpData", menuName = "SpecialAttackLevelUpData", order = 5)]
     public class SpecialAttackLevelUpData : LevelUpDataBase

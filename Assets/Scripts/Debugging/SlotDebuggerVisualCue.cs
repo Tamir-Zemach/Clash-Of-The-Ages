@@ -1,5 +1,6 @@
 using System;
 using BackEnd.Utilities;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,9 @@ namespace Debugging
         private TextMeshProUGUI _text;
         public Color ImageColorFeedback;
         public Color TextColorFeedback;
+        private Tween _imageTween;
+        private Tween _textTween;
+        private bool _isImageRed;
 
         private void Awake()
         {
@@ -22,13 +26,22 @@ namespace Debugging
 
         public void SlotFlash()
         {
-            UIEffects.ApplyGraphicFeedback(_image, changeColor: true, ImageColorFeedback, changeScale: true, shakeGraphic: true);
-            UIEffects.ApplyGraphicFeedback(_text, changeColor: true, TextColorFeedback,changeScale: true, shakeGraphic: true);
+            if (_isImageRed) return;
+            _imageTween = UIEffects.ApplyGraphicFeedback(_image, changeColor: true, ImageColorFeedback, changeScale: true, shakeGraphic: true);
+            _textTween = UIEffects.ApplyGraphicFeedback(_text, changeColor: true, TextColorFeedback,changeScale: true, shakeGraphic: true);
         }
 
         public void MarkSlotInRed()
         {
-            _image.color = Color.red;
+            _isImageRed = true;
+            _imageTween?.Kill();
+            _textTween?.Kill();
+
+            if (_image != null)
+                _image.color = Color.red;
+
+            if (_text != null)
+                _text.color = Color.red;
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-public interface ISpriteEntry<TType>
+namespace BackEnd.InterFaces
 {
-    TType GetKey();
-    Sprite GetSprite();
+    public interface ISpriteEntry<TType>
+    {
+        TType GetKey();
+        Sprite GetSprite();
+    }
 }

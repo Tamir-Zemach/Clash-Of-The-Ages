@@ -1,11 +1,8 @@
-using System;
 using BackEnd.Data__ScriptableOBj_;
 using units.Behavior;
 using UnityEngine;
 
-
-
-namespace units.Behavior
+namespace Debugging
 {
     [RequireComponent(typeof(UnitBaseBehaviour))]
     public class UnitDebugger : MonoBehaviour

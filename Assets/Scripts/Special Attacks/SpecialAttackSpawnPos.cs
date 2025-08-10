@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class SpecialAttackSpawnPos : MonoBehaviour
+namespace Special_Attacks
 {
-    public bool IsSpecialAttackAccruing = false;
+    public class SpecialAttackSpawnPos : MonoBehaviour
+    {
+        public bool IsSpecialAttackAccruing = false;
+    }
 }

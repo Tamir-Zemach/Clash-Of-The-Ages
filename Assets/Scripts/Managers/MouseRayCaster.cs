@@ -1,82 +1,83 @@
 ﻿using System;
 using System.Collections;
 using BackEnd.Base_Classes;
-using Managers;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
-public class MouseRayCaster : SceneAwareMonoBehaviour<MouseRayCaster>
+namespace Managers
 {
-    [SerializeField] private LayerMask raycastLayers;
-    [SerializeField] private float raycastDistance = 100f;
-
-    private GameObject currentHover;
-    private Camera rayCamera;
-
-    protected override void Awake()
+    public class MouseRayCaster : SceneAwareMonoBehaviour<MouseRayCaster>
     {
-        base.Awake();
-    }
+        [SerializeField] private LayerMask raycastLayers;
+        [SerializeField] private float raycastDistance = 100f;
 
-    protected override void InitializeOnSceneLoad()
-    {
-        if (LevelLoader.Instance.InStartMenu()) return;
-        rayCamera = rayCamera != null ? rayCamera : Camera.main;
-    }
+        private GameObject currentHover;
+        private UnityEngine.Camera rayCamera;
 
-    private void Update()
-    {
-        if (LevelLoader.Instance.InStartMenu()) return;
-        HandleHover();
-    }
-
-    private void HandleHover()
-    {
-        GameObject hitObject = GetHitObject();
-        if (hitObject != currentHover)
+        protected override void Awake()
         {
-            currentHover = hitObject;
+            base.Awake();
         }
-    }
 
-    public GameObject GetHitObject() => GetHit()?.collider.gameObject;
-
-    public RaycastHit? GetHit()
-    {
-        if (rayCamera == null) return null;
-        Ray ray = rayCamera.ScreenPointToRay(Input.mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
-
-        return Physics.Raycast(ray, out RaycastHit hit, raycastDistance, raycastLayers) ? hit : null;
-    }
-
-    public IEnumerator WaitForMouseClick(Action<RaycastHit> onValidHit = null, Action onMissedClick = null)
-    {
-        yield return new WaitForSeconds(0.1f); // buffer before click
-
-        bool waitingForClick = true;
-
-        while (waitingForClick)
+        protected override void InitializeOnSceneLoad()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (LevelLoader.Instance.InStartMenu()) return;
+            rayCamera = rayCamera != null ? rayCamera : UnityEngine.Camera.main;
+        }
+
+        private void Update()
+        {
+            if (LevelLoader.Instance.InStartMenu()) return;
+            HandleHover();
+        }
+
+        private void HandleHover()
+        {
+            GameObject hitObject = GetHitObject();
+            if (hitObject != currentHover)
             {
-                var hit = GetHit();
-
-                if (hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    onValidHit?.Invoke(hit.Value);
-                    yield break;
-                }
-
-                if (!hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    onMissedClick?.Invoke();
-                    yield break;
-                }
+                currentHover = hitObject;
             }
+        }
 
-            yield return null;
+        public GameObject GetHitObject() => GetHit()?.collider.gameObject;
+
+        public RaycastHit? GetHit()
+        {
+            if (rayCamera == null) return null;
+            Ray ray = rayCamera.ScreenPointToRay(Input.mousePosition);
+            Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
+
+            return Physics.Raycast(ray, out RaycastHit hit, raycastDistance, raycastLayers) ? hit : null;
+        }
+
+        public IEnumerator WaitForMouseClick(Action<RaycastHit> onValidHit = null, Action onMissedClick = null)
+        {
+            yield return new WaitForSeconds(0.1f); // buffer before click
+
+            bool waitingForClick = true;
+
+            while (waitingForClick)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    var hit = GetHit();
+
+                    if (hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
+                    {
+                        onValidHit?.Invoke(hit.Value);
+                        yield break;
+                    }
+
+                    if (!hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
+                    {
+                        onMissedClick?.Invoke();
+                        yield break;
+                    }
+                }
+
+                yield return null;
+            }
         }
     }
 }

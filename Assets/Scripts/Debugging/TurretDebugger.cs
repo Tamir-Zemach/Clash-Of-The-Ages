@@ -1,7 +1,9 @@
 using BackEnd.Data__ScriptableOBj_;
+using BackEnd.Data_Getters;
+using turrets;
 using UnityEngine;
 
-namespace turrets
+namespace Debugging
 {
     [RequireComponent(typeof(TurretBaseBehavior))]
 

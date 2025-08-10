@@ -11,16 +11,19 @@ using Random = UnityEngine.Random;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UpgradePopup : OneInstanceMonoBehaviour<UpgradePopup>
+    public class UpgradePopup : InGameObjectOneInstance<UpgradePopup>
     {
+        public event Action OnSlotsSpawned;
+        public event Action OnGettingEligibleList;
+        
         [SerializeField] private float _spawnDelay = 0.5f;
         [SerializeField] private CanvasGroup _raycastBlockerPanel;
 
         private GameObject[] _selectedPrefabs;
         private int _currentIndex;
         private CanvasGroup _canvasGroup;
-        public event Action OnSlotsSpawned;
-        public event Action OnGettingEligibleList;
+        private bool _isSpawningPaused;
+ 
 
         public IReadOnlyList<GameObject> CurrentEligiblePrefabs => _selectedPrefabs;
         protected override void Awake()
@@ -93,13 +96,54 @@ namespace Ui.Buttons.Upgrade_Popup
             _selectedPrefabs = null;
             _currentIndex = 0;
         }
-
+        
         public void BlockRaycasts(bool state)
         {
             _raycastBlockerPanel.blocksRaycasts = state;
             _canvasGroup.interactable = state;
             _canvasGroup.blocksRaycasts = state;
         }
+
+        #region Unity Lifecycle
+        protected override void HandlePause()
+        {
+            if (IsInvoking(nameof(SpawnNextSlot)))
+            {
+                CancelInvoke(nameof(SpawnNextSlot));
+                _isSpawningPaused = true;
+            }
+        }
+
+        protected override void HandleResume()
+        {
+            if (_isSpawningPaused)
+            {
+                _isSpawningPaused = false;
+                InvokeRepeating(nameof(SpawnNextSlot), 0, _spawnDelay);
+            }
+        }
+
+        protected override void HandleGameEnd()
+        {
+            CancelInvoke(nameof(SpawnNextSlot));
+            _isSpawningPaused = false;
+            HidePopup();
+            ClearAllSlots();
+        }
+
+        protected override void HandleGameReset()
+        {
+            CancelInvoke(nameof(SpawnNextSlot));
+            _isSpawningPaused = false;
+            HidePopup();
+            ClearAllSlots();
+        }
+        
+
+        #endregion
+
+        
+
         
     }
 }

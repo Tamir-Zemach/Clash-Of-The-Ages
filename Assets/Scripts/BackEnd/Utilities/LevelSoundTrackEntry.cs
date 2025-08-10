@@ -1,8 +1,7 @@
 ﻿using BackEnd.Enums;
-using System;
 using UnityEngine;
 
-namespace Assets.Scripts.BackEnd.Utilities
+namespace BackEnd.Utilities
 {
     [System.Serializable]
     public class LevelSoundTrackEntry

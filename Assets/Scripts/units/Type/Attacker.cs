@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.InterFaces;
-using BackEnd.Data__ScriptableOBj_;
+﻿using BackEnd.Data__ScriptableOBj_;
+using BackEnd.InterFaces;
 using units.Behavior;
 using UnityEngine;
 

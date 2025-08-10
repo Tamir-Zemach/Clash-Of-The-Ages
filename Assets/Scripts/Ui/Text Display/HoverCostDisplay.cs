@@ -1,14 +1,10 @@
-using System;
 using BackEnd.Base_Classes;
-using BackEnd.Data_Getters;
-using BackEnd.InterFaces;
 using BackEnd.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
-namespace Ui
+namespace Ui.Text_Display
 {
     public class HoverCostDisplay : OneInstanceMonoBehaviour<HoverCostDisplay>
     {

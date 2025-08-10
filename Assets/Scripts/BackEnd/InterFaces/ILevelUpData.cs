@@ -2,7 +2,7 @@
 
 using BackEnd.Enums;
 
-namespace Assets.Scripts.InterFaces
+namespace BackEnd.InterFaces
 {
     public interface ILevelUpData
     {

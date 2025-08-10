@@ -1,9 +1,7 @@
-﻿
-
-using BackEnd.Enums;
+﻿using BackEnd.Enums;
 using UnityEngine;
 
-namespace Assets.Scripts.InterFaces
+namespace BackEnd.InterFaces
 {
     public interface IUpgradable<TType>
     {

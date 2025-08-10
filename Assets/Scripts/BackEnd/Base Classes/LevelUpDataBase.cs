@@ -1,9 +1,11 @@
 ﻿using BackEnd.Enums;
-using Assets.Scripts.InterFaces;
-using System.Collections.Generic;
+using BackEnd.InterFaces;
 using UnityEngine;
 
-public abstract class LevelUpDataBase : ScriptableObject, ILevelUpData
+namespace BackEnd.Base_Classes
 {
-    [field: SerializeField] public AgeStageType AgeStage { get; private set; }
+    public abstract class LevelUpDataBase : ScriptableObject, ILevelUpData
+    {
+        [field: SerializeField] public AgeStageType AgeStage { get; private set; }
+    }
 }
