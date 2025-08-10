@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UnitUpgradePopupSlot : MonoBehaviour
+    public class UnitUpgradePopupSlot : UpgradeSlotBase
     {
         [Tooltip("Which unit should be upgraded")]
         [SerializeField] private UnitType _unitType;
@@ -24,6 +24,9 @@ namespace Ui.Buttons.Upgrade_Popup
         [SerializeField] private float _attackDelayReductionPercent;
 
         private UnitData _unit;
+
+        public UnitType UnitType => _unitType;
+        public StatType Stat => _stat;
         private void Start()
         {
             GetData();
@@ -77,7 +80,7 @@ namespace Ui.Buttons.Upgrade_Popup
 
 
 #if UNITY_EDITOR
-        public static class FieldNames
+        public new static class FieldNames
         {
             public const string UnitType = nameof(_unitType);
             public const string StatType = nameof(_stat);

@@ -9,16 +9,22 @@ namespace Ui
     public class StartMenu : MonoBehaviour
     {
         public Toggle AdminUi;
+        public Toggle DebuggerUi;
         public void StartGame()
         {
             LevelLoader.Instance.LoadNextLevel();
         }
-        
 
         public void AdminUiToggle()
         {
             LevelLoader.Instance.AdminUiToggle(AdminUi.isOn);
         }
+        
+        public void DebuggerUiToggle()
+        {
+            LevelLoader.Instance.DebuggerUiToggle(DebuggerUi.isOn);
+        }
+        
         
         public void OnSFXVolumeChanged(Slider sfxSlider)
         {

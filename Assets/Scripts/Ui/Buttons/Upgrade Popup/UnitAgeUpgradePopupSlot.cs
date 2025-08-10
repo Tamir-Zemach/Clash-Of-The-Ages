@@ -1,4 +1,5 @@
 using System;
+using BackEnd.Base_Classes;
 using BackEnd.Enums;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Utilities;
@@ -7,7 +8,7 @@ using UnityEngine.Serialization;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UnitAgeUpgradePopupSlot : MonoBehaviour
+    public class UnitAgeUpgradePopupSlot : UpgradeSlotBase
     {
         public delegate void AgeUpgradeDelegate(UnitType unitType, Sprite sprite);
         public static event AgeUpgradeDelegate OnUnitAgeUpgrade;

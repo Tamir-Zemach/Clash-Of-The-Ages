@@ -1,3 +1,4 @@
+using BackEnd.Base_Classes;
 using BackEnd.Enums;
 using BackEnd.Data_Getters;
 using BackEnd.Economy;
@@ -8,7 +9,7 @@ using UnityEngine.Serialization;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class GlobalUpgradePopupSlot: MonoBehaviour
+    public class GlobalUpgradePopupSlot: UpgradeSlotBase
     {
         [FormerlySerializedAs("Type")]
         [Tooltip("Specifies the type of upgrade to apply.")]
@@ -17,7 +18,8 @@ namespace Ui.Buttons.Upgrade_Popup
         [Header("Upgrade stats Settings")]
         [Tooltip("Bonus amount added to the stat with each upgrade.")]
         [SerializeField] private int _statBonus;
-        
+
+        public UpgradeType UpgradeType => _type;
 
         public void ApplyUpgrade()
         {

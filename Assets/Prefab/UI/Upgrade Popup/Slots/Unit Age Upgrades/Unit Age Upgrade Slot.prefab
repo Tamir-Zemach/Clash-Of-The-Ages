@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fb777b08ad149e8b39b00974633559a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _iconImage: {fileID: 3967324476333326139}
   _unitType: 0
   _ageStage: 2
   _upgradedUnitPrefab: {fileID: 6578747469787437173, guid: 6f963e5c457471b4987c1be18080fe8e, type: 3}

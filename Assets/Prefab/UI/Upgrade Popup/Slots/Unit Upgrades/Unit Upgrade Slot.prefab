@@ -121,6 +121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpHeight: 30
   _jumpDuration: 0.3
+  _shakeDuration: 0.3
 --- !u!114 &3937559096206534236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec7993a105379bf4da7304db0c8d9e97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _iconImage: {fileID: 3536314145875068856}
   _unitType: 0
   _stat: 0
   _statBonus: 5

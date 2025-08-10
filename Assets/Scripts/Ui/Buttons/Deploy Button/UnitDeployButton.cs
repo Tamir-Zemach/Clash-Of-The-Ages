@@ -32,7 +32,7 @@ namespace Ui.Buttons.Deploy_Button
         {
             _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
             _image = GetComponent<Image>();
-            UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprite;
+            //UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprite;
 
             UnitAgeUpgradePopupSlot.OnUnitAgeUpgrade += UpdateSpriteFromSlot;
         }

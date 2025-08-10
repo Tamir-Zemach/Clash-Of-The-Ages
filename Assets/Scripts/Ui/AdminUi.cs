@@ -23,11 +23,7 @@ namespace Ui
 
         [Header("Game Speed")]
         public Slider gameSpeedSlider;
-
-        [Header("Unit Info Displays")]
-        public TMP_Text friendlyUnitText;
-        public TMP_Text enemyUnitText;
-        public TMP_Text unitCounterText;
+        
 
         [Header("Level Loader")]
         public TMP_Dropdown levelDropdown;
@@ -66,7 +62,6 @@ namespace Ui
             {
                 ShowPanel(AdminPanel);
             }
-            DisplayParams();
         }
         public void ShowPanel(GameObject panel)
         {
@@ -139,48 +134,14 @@ namespace Ui
             }
 
         }
-
-        private void DisplayParams()
-        {
-            DisplayEnemyUnitParameters();
-            DisplayFriendlyUnitParameters();
-            DisplayUnitCounter();
-        }
+        
 
         public void LevelUp()
         {
            PlayerExp.Instance.LevelUp();
         }
 
-        public void DisplayFriendlyUnitParameters()
-        {
-            var info = "";
-            foreach (var unit in GameDataRepository.Instance.FriendlyUnits)
-            {
-                info += $"{unit.name}\n" +
-                        $"Health: {unit.Health}, Speed: {unit.Speed}, Strength: {unit.MinStrength} - {unit.MaxStrength}\n" +
-                        $"Attack Speed: {unit.InitialAttackDelay}, Range: {unit.Range}\n\n";
-            }
-            friendlyUnitText.text = info;
-        }
 
-        public void DisplayEnemyUnitParameters()
-        {
-            var info = "";
-            foreach (var unit in GameDataRepository.Instance.EnemyUnits)
-            {
-                info += $"{unit.name}\n" +
-                        $"Reward: {unit.MoneyWhenKilled}, Health: {unit.Health}, Speed: {unit.Speed}, Strength: {unit.MinStrength} - {unit.MaxStrength}\n" +
-                        $"Attack Speed: {unit.InitialAttackDelay}, Range: {unit.Range}\n\n";
-            }
-            enemyUnitText.text = info;
-        }
-
-        public void DisplayUnitCounter()
-        {
-            unitCounterText.text = $"Friendly Units: {UnitCounter.FriendlyCount}\n" +
-                                   $"Enemy Units: {UnitCounter.EnemyCount}";
-        }
 
     }
 }

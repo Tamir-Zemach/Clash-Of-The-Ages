@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
 using BackEnd.Utilities;
@@ -19,7 +20,9 @@ namespace Ui.Buttons.Upgrade_Popup
         private int _currentIndex;
         private CanvasGroup _canvasGroup;
         public event Action OnSlotsSpawned;
+        public event Action OnGettingEligibleList;
 
+        public IReadOnlyList<GameObject> CurrentEligiblePrefabs => _selectedPrefabs;
         protected override void Awake()
         {
             base.Awake();
@@ -48,14 +51,17 @@ namespace Ui.Buttons.Upgrade_Popup
         private void SpawnAllSlots()
         {
             var eligiblePrefabs = UpgradePopupConfiguration.Instance.GetEligiblePrefabs();
-
-            if (eligiblePrefabs == null || eligiblePrefabs.Count < 3)
+            if (eligiblePrefabs == null)
+            {
+                print("eligiblePrefabs is null");
                 return;
+            }
 
             _selectedPrefabs = eligiblePrefabs
                 .OrderBy(x => Random.value)
                 .Take(3)
                 .ToArray();
+            OnGettingEligibleList?.Invoke();
 
             _currentIndex = 0;
             
@@ -74,8 +80,6 @@ namespace Ui.Buttons.Upgrade_Popup
             var prefab = _selectedPrefabs[_currentIndex];
             Instantiate(prefab, transform);
             
-            UpgradePopupConfiguration.Instance.RegisterInstantiation(prefab);
-
             _currentIndex++;
         }
 

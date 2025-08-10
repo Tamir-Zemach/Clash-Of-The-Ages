@@ -1,3 +1,4 @@
+using BackEnd.Base_Classes;
 using BackEnd.Enums;
 using Ui.Buttons;
 using Ui.Buttons.Upgrade_Buttons;
@@ -6,8 +7,7 @@ using UnityEditor;
 
 
 namespace BackEnd.Project_inspector_Addons.Editor
-{
-    [CustomEditor(typeof(UnitUpgradePopupSlot))]
+{[CustomEditor(typeof(UnitUpgradePopupSlot))]
     public class UnitUpgradePopupSlotEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -18,10 +18,11 @@ namespace BackEnd.Project_inspector_Addons.Editor
             var statTypeProp = serializedObject.FindProperty(UnitUpgradePopupSlot.FieldNames.StatType);
             var statBonusProp = serializedObject.FindProperty(UnitUpgradePopupSlot.FieldNames.StatBonus);
             var attackDelayReductionProp = serializedObject.FindProperty(UnitUpgradeButton.FieldNames.AttackDelayReductionPercent);
+            var iconImageProp = serializedObject.FindProperty(UpgradeSlotBase.FieldNames.Image);
 
             EditorGUILayout.PropertyField(unitTypeProp);
             EditorGUILayout.PropertyField(statTypeProp);
-            // Show the attack speed field only if statType == AttackSpeed
+
             if ((StatType)statTypeProp.enumValueIndex == StatType.AttackSpeed)
             {
                 EditorGUILayout.PropertyField(attackDelayReductionProp);
@@ -31,6 +32,7 @@ namespace BackEnd.Project_inspector_Addons.Editor
                 EditorGUILayout.PropertyField(statBonusProp);
             }
 
+            EditorGUILayout.PropertyField(iconImageProp);
 
             serializedObject.ApplyModifiedProperties();
         }
