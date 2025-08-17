@@ -22,7 +22,7 @@ namespace BackEnd.Economy
 
         public int AddHealth(int amount)
         {
-            _currentHealth += EconomyUtils.ValidateAmount(Math.Max(0, amount), "adding");
+            _currentHealth += EconomyUtils.ValidateAmount(Math.Max(0, amount));
             if (_currentHealth > _maxHealth) _currentHealth = _maxHealth;
             OnHealthChanged?.Invoke();
             EvaluateHealthThresholds();
@@ -31,7 +31,7 @@ namespace BackEnd.Economy
 
         public int SubtractHealth(int amount)
         {
-            _currentHealth -= EconomyUtils.ValidateAmount(Math.Max(0, amount), "subtracting");
+            _currentHealth -= EconomyUtils.ValidateAmount(Math.Max(0, amount));
             OnHealthChanged?.Invoke();
             EvaluateHealthThresholds();
             if (_currentHealth <= 0)
@@ -43,7 +43,7 @@ namespace BackEnd.Economy
 
         public int IncreaseMaxHealth(int amount)
         {
-            _maxHealth += EconomyUtils.ValidateAmount(Math.Max(0, amount), "adding");
+            _maxHealth += EconomyUtils.ValidateAmount(Math.Max(0, amount));
             OnHealthChanged?.Invoke();
             return _maxHealth;
         }

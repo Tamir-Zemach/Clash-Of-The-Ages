@@ -4,8 +4,10 @@ using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Utilities;
 using Managers;
+using Ui.Buttons.Deploy_Button;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace units.Behavior
@@ -17,6 +19,7 @@ namespace units.Behavior
         public event AttackDelegate OnAttack;
 
         public event Action OnInitialized;
+        public event Action OnDying;
 
         public delegate void Spawned(Renderer renderer);
         public static event Spawned OnSpawned;
@@ -40,27 +43,48 @@ namespace units.Behavior
 
         public GameObject GetAttackTarget() => _currentTarget;
 
-        public void Initialize(UnitData unitData)
+        private void Awake()
         {
-            Unit = unitData;
-            _agent = GetComponent<NavMeshAgent>();
-            _healthManager = GetComponent<UnitHealthManager>();
-            _healthManager.OnDying += Dying;
-            _enemyBase = GameObject.FindGameObjectWithTag(Unit.OppositeBaseTag);
-            _agent.destination = _enemyBase.transform.position;
-            _agent.speed = Unit.Speed;
             _col = GetComponent<Collider>();
             _animator = GetComponentInChildren<Animator>();
             _renderer = GetComponentInChildren<Renderer>();
+            _agent = GetComponent<NavMeshAgent>();
+            _healthManager = GetComponent<UnitHealthManager>();
+            _healthManager.OnDying += Dying;
+        }
+        
+
+        public void Initialize(UnitData unitData, Transform destination = null)
+        {
+            Unit = unitData;
+            
+            SetDestination(destination);
+            _agent.speed = Unit.Speed;
+            
             OnInitialized?.Invoke();
+            
             if (!Unit.IsFriendly)
             {
                 OnSpawned?.Invoke(_renderer);
             }
 
         }
-        
-        
+
+        private void SetDestination(Transform destination)
+        {
+            if (destination == null)
+            {
+                _enemyBase = GameObject.FindGameObjectWithTag(Unit.OppositeBaseTag);
+                _agent.destination = _enemyBase.transform.position;
+            }
+            else
+            {
+                _agent.destination = destination.position;
+            }
+            
+        }
+
+
         private void Update()
         {
             if (_isDying || !GameStates.Instance.GameIsPlaying) return;
@@ -72,7 +96,7 @@ namespace units.Behavior
 
         private void CheckForEnemyUnit()
         {
-            _agent.isStopped = false; // Default state
+            _agent.isStopped = false; 
 
             if (Physics.BoxCast(transform.position,
                     Unit.boxSize,
@@ -154,6 +178,7 @@ namespace units.Behavior
 
             _attackCoroutine?.Stop();
             _attackCoroutine = null;
+            OnDying?.Invoke();
         }
 
         private int SetRandomStrength()
@@ -188,6 +213,12 @@ namespace units.Behavior
         {
             _attackCoroutine?.Stop();
             _attackCoroutine = null;
+        }
+        
+        private void OnDestroy()
+        {
+            
+            _healthManager.OnDying -= Dying;
         }
 
         #endregion

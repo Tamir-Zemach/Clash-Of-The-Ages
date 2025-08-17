@@ -27,7 +27,7 @@ namespace Ui
 
             if (_shouldShow)
             {
-                MouseRayCaster.Instance.WaitForMouseClick(
+                MouseRayCaster.Instance.StartClickRoutine(
                     onValidHit: null,
                     onMissedClick: HandleClickFadeOut
                 );

@@ -46,14 +46,14 @@ namespace Ui.Buttons.Turret_Button
             Action<TurretSpawnPoint> logic,
             Func<bool> currencyCheck)
         {
-            if (!currencyCheck()) return;   
+            if (!currencyCheck()) return;
 
             var condition = _conditions[type];
             SetVisualFeedback(condition, feedback);
 
             CleanupCanvasGroup();
 
-            StartCoroutine(MouseRayCaster.Instance.WaitForMouseClick(
+            MouseRayCaster.Instance.StartClickRoutine(
                 onValidHit: hit =>
                 {
                     if (hit.collider.TryGetComponent<TurretSpawnPoint>(out var slot) && condition(slot))
@@ -62,8 +62,8 @@ namespace Ui.Buttons.Turret_Button
                     }
                     ResetVisualFeedBack();
                 },
-                onMissedClick: ResetVisualFeedBack)
-                );
+                onMissedClick: ResetVisualFeedBack
+            );
         }
 
 

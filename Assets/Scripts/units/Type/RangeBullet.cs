@@ -1,5 +1,6 @@
 using BackEnd.InterFaces;
 using BackEnd.Project_inspector_Addons;
+using Bases;
 using units.Behavior;
 using UnityEngine;
 
@@ -98,7 +99,8 @@ namespace units.Type
         private void GiveDamage(GameObject target)
         {
             (target.GetComponent<UnitHealthManager>() as IDamageable
-             ?? target.GetComponent<BaseHealth>() as IDamageable)
+             ?? target.GetComponent<FriendlyBaseHealth>() as IDamageable
+             ?? target.GetComponent<EnemyBaseHealth>() as IDamageable)
                 ?.GetHurt(_strength);
         }
 

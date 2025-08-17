@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using BackEnd.Base_Classes;
+using Managers;
 using UnityEngine;
 
 namespace BackEnd.Utilities
@@ -15,6 +17,23 @@ namespace BackEnd.Utilities
             _coroutines.Add(managed);
             managed.Start();
             return managed;
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            GameStates.Instance.OnGamePaused += PauseAll;
+            GameStates.Instance.OnGameResumed += ResumeAll;
+            GameStates.Instance.OnGameEnded += StopAll;
+            GameStates.Instance.OnGameReset += StopAll;
+        }
+
+        private void OnDestroy()
+        {
+            GameStates.Instance.OnGamePaused -= PauseAll;
+            GameStates.Instance.OnGameResumed -= ResumeAll;
+            GameStates.Instance.OnGameEnded -= StopAll;
+            GameStates.Instance.OnGameReset -= StopAll;
         }
 
         public void PauseAll()

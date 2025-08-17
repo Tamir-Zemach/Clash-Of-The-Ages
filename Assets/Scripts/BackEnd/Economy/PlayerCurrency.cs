@@ -15,21 +15,21 @@ namespace BackEnd.Economy
 
         public int AddMoney(int amount)
         {
-            _money += EconomyUtils.ValidateAmount(Math.Max(0, amount), "adding");
+            _money += EconomyUtils.ValidateAmount(Math.Max(0, amount));
             OnMoneyChanged?.Invoke();
             return _money;
         }
 
         public int SetMoney(int amount)
         {
-            _money = EconomyUtils.ValidateAmount(Math.Max(0, amount), "setting");
+            _money = EconomyUtils.ValidateAmount(Math.Max(0, amount));
             OnMoneyChanged?.Invoke();
             return _money;
         }
 
         public int SubtractMoney(int amount)
         {
-            _money -= EconomyUtils.ValidateAmount(Math.Max(0, amount), "subtracting");
+            _money -= EconomyUtils.ValidateAmount(Math.Max(0, amount));
             if (_money < 0) _money = 0;
             OnMoneyChanged?.Invoke();
             return _money;

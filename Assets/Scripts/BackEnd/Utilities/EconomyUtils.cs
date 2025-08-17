@@ -4,10 +4,9 @@ namespace BackEnd.Utilities
 {
     public static class EconomyUtils
     {
-        public static int ValidateAmount(int amount, string operation)
+        public static int ValidateAmount(int amount)
         {
             if (amount >= 0) return amount;
-            Debug.LogWarning($"{amount} is negative. Please use a positive amount for {operation}.");
             return 0;
         }
 

@@ -33,7 +33,6 @@ namespace Ui.Buttons.Deploy_Button
         {
             _unit = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
             _image = GetComponent<Image>();
-            //UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprite;
 
             UnitAgeUpgradePopupSlot.OnUnitAgeUpgrade += UpdateSpriteFromSlot;
         }
@@ -48,22 +47,7 @@ namespace Ui.Buttons.Deploy_Button
             }
         }
 
-
-        private void UpdateSprite(List<SpriteEntries.SpriteEntry<UnitType>> spriteMap)
-        {
-            foreach (var s in spriteMap)
-            {
-                if (s.GetKey() == _unitType)
-                {
-                    var newSprite = s.GetSprite();
-                    if (_image != null && newSprite != null)
-                    {
-                        _image.sprite = newSprite;
-                    }
-                    break; 
-                }
-            }
-        }
+        
 
         public void DeployUnit()
         {
@@ -75,6 +59,7 @@ namespace Ui.Buttons.Deploy_Button
 
             if (CanDeployUnit())
             {
+                
                 PlayerCurrency.Instance.SubtractMoney(Cost);
 
                 if (GameManager.Instance != null && DeployManager.Instance != null)

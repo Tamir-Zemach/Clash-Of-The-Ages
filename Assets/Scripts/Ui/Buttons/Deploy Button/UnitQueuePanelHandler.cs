@@ -26,14 +26,14 @@ namespace Ui.Buttons.Deploy_Button
         {
             DeployManager.OnUnitQueued += CreateQueueSlot;
             DeployManager.OnUnitReadyToDeploy += ActivateCountdown;
-            DeployManager.OnUnitDeployed += HandleUnitDeploymentEnd;
+            //DeployManager.OnUnitDeployed += HandleUnitDeploymentEnd;
             UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprites;
         }
         private void OnDestroy()
         {
             DeployManager.OnUnitQueued -= CreateQueueSlot;
             DeployManager.OnUnitReadyToDeploy -= ActivateCountdown;
-            DeployManager.OnUnitDeployed -= HandleUnitDeploymentEnd;
+            //DeployManager.OnUnitDeployed -= HandleUnitDeploymentEnd;
             UiAgeUpgrade.Instance.OnUiRefreshDeployUnits -= UpdateSprites;
         }
 

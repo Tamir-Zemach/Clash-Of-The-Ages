@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Project_inspector_Addons;
+using Bases;
+using Ui.Buttons.Deploy_Button;
 using units.Behavior;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,9 +19,11 @@ namespace Managers.Spawners
         public static event Action<UnitData, int> OnUnitQueued;
         public static event Action<UnitData> OnUnitReadyToDeploy;
         public static event Action OnUnitDeployed;
+        public static event Action<Lane, UnitBaseBehaviour> OnUnitDeployedOnLane;
         public static event Action OnMaxCapacity;
 
         public readonly Queue<UnitData> UnitQueue = new Queue<UnitData>();
+        public readonly Queue<Lane> UnitLane = new Queue<Lane>();
         private bool _isDeploying;
 
 
@@ -31,9 +36,12 @@ namespace Managers.Spawners
 
         public int MaxUnits;
         
-        private SpawnArea _spawnArea;
-        private Transform _unitSpawnPoint;
-        private UnitData _nextCharacter;
+        private readonly List<SpawnArea> _spawnAreas =  new List<SpawnArea>();
+        private Transform _oneLaneSpawnPoint;
+        
+        private UnitData _nextUnit;
+        private Lane _nextLane;
+        
         private GameObject _unitReference;
         private int _currentUnitsInQueue;
         private float _timer;
@@ -41,7 +49,7 @@ namespace Managers.Spawners
 
         private void ResetQueueState()
         {
-            _nextCharacter = null;
+            _nextUnit = null;
             _isDeploying = false;
             _timer = 0;
             UnitQueue.Clear();
@@ -50,34 +58,33 @@ namespace Managers.Spawners
         {
             if (LevelLoader.Instance.InStartMenu()) return;
             ResetQueueState();
-            
-            var areaGo = GameObject.FindGameObjectWithTag(_spawnAreaTag);
-            if (areaGo == null)
+            if (EnemyBasesManager.Instance.MultipleBases())
             {
-                Debug.LogWarning($"[DeployManager] No GameObject with tag '{_spawnAreaTag}' found in scene.");
-                return;
+                GetSpawnAreas();
             }
-
-            _spawnArea = areaGo.GetComponent<SpawnArea>();
-            if (_spawnArea == null)
+            else
             {
-                Debug.LogWarning($"[DeployManager] GameObject tagged '{_spawnAreaTag}' is missing SpawnArea component.");
-                return;
+                _oneLaneSpawnPoint = FindAnyObjectByType<Lane>().PlayerUnitSpawnPosition;  
             }
+        }
 
-            _unitSpawnPoint = _spawnArea.GetComponentInParent<Transform>();
-            if (_unitSpawnPoint == null)
-            {
-                Debug.LogWarning("[DeployManager] Failed to locate parent transform for spawn point.");
-            }
-
+        private void GetSpawnAreas()
+        {
+            var lanes = FindObjectsByType<Lane>(FindObjectsSortMode.None);
+            _spawnAreas.Clear();
+            _spawnAreas.AddRange(
+                FindObjectsByType<SpawnArea>(FindObjectsSortMode.None)
+                    .Where(area => area.IsFriendly)
+            );
         }
 
         private void Update()
         {
             if (!GameStates.Instance.GameIsPlaying) return;
-            if (_nextCharacter != null)
+            if (_nextUnit != null)
+            {
                 HandleDelayedDeployment();
+            }
         }
 
 
@@ -86,10 +93,15 @@ namespace Managers.Spawners
         /// Adds the specified unit to the deployment queue.
         /// If no deployment is currently in progress, starts deploying immediately.
         /// </summary>
-        public void AddUnitToDeploymentQueue(UnitData unit)
+        public void AddUnitToDeploymentQueue(UnitData unit, Lane lane = null)
         {
-
             UnitQueue.Enqueue(unit);
+            if (lane != null)
+            {
+                UnitLane.Enqueue(lane); 
+            }
+            
+            
             OnUnitQueued?.Invoke(unit, UnitQueue.Count - 1);
             OnQueueChanged?.Invoke();
             _currentUnitsInQueue++;
@@ -104,20 +116,25 @@ namespace Managers.Spawners
         /// Retrieves the next unit from the queue and marks deployment as in progress.
         /// If the queue is empty, resets deployment state.
         /// </summary>
+        
 
         private void ProcessNextUnitInQueue()
         {
             if (UnitQueue.Count > 0)
             {
-                _nextCharacter = UnitQueue.Dequeue();
+                _nextUnit = UnitQueue.Dequeue();
+
+                _nextLane = UnitLane.Count > 0 ? UnitLane.Dequeue() : null;
+
                 _isDeploying = true;
 
                 OnQueueChanged?.Invoke();
-                OnUnitReadyToDeploy?.Invoke(_nextCharacter);
+                OnUnitReadyToDeploy?.Invoke(_nextUnit);
             }
             else
             {
-                _nextCharacter = null;
+                _nextUnit = null;
+                _nextLane  = null;
                 _isDeploying = false;
             }
         }
@@ -134,13 +151,7 @@ namespace Managers.Spawners
         {
             _timer += Time.deltaTime;
             if (!CanDeploy()) return;
-            _unitReference = Instantiate(_nextCharacter.Prefab, _unitSpawnPoint.position, _unitSpawnPoint.rotation);
-
-            if (_unitReference.TryGetComponent(out UnitBaseBehaviour behaviour))
-            {
-                behaviour.Initialize(_nextCharacter);
-            }
-
+            InstantiateAndInitializeUnit();
             OnUnitDeployed?.Invoke();
             _currentUnitsInQueue--;
             
@@ -149,9 +160,41 @@ namespace Managers.Spawners
             ProcessNextUnitInQueue();
         }
 
+        private void InstantiateAndInitializeUnit()
+        {
+            if (_nextLane.PlayerUnitSpawnPosition == null)
+            {
+                _unitReference = Instantiate(_nextUnit.Prefab, _oneLaneSpawnPoint.position, _oneLaneSpawnPoint.rotation);
+                if (_unitReference.TryGetComponent(out UnitBaseBehaviour behaviour))
+                {
+                    behaviour.Initialize(_nextUnit);
+                    OnUnitDeployedOnLane?.Invoke(_nextLane, behaviour);
+                }
+            }
+            else
+            {
+                _unitReference = Instantiate(_nextUnit.Prefab, _nextLane.PlayerUnitSpawnPosition.position, _nextLane.PlayerUnitSpawnPosition.rotation); 
+                if (_unitReference.TryGetComponent(out UnitBaseBehaviour behaviour))
+                {
+                    behaviour.Initialize(_nextUnit, _nextLane.EnemyBase);
+                    OnUnitDeployedOnLane?.Invoke(_nextLane, behaviour);
+                }
+            }
+        }
+
         private bool CanDeploy()
         {
-            return _timer >= _nextCharacter.DeployDelayTime && !_spawnArea._hasUnitInside;
+            if (_nextLane.PlayerSpawnArea == null)
+            {
+                return false;
+            }
+
+            if (_nextLane.PlayerSpawnArea.HasUnitInside)
+            {
+                return false;
+            }
+
+            return _timer >= _nextUnit.DeployDelayTime;
         }
 
         public bool MaxUnitCapacity()
@@ -167,6 +210,7 @@ namespace Managers.Spawners
             }
             
         }
+        
         
     }
 }

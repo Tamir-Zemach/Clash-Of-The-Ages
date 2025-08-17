@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 6752897845671281921}
   - component: {fileID: 2431545248350273645}
   - component: {fileID: 6521548851971387580}
-  - component: {fileID: 494206182496049977}
+  - component: {fileID: 6386400588844881582}
   m_Layer: 9
   m_Name: Enemy Base
   m_TagString: Enemy Base
@@ -218,8 +218,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.37995517, y: 1.8355213, z: 15.360001}
-  m_LocalScale: {x: 2.6710427, y: 2.6710427, z: 2.6710427}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3043497835235002378}
   - {fileID: 5879389622894007154}
@@ -263,7 +263,7 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!114 &494206182496049977
+--- !u!114 &6386400588844881582
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -272,10 +272,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6215831643936251099}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47e868be5d16dad43b4a3ebcfb6be1db, type: 3}
+  m_Script: {fileID: 11500000, guid: 865575607b7b4e93b5432f2ab03ca2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFriendly: 0
 --- !u!1 &6754337339059939580
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using BackEnd.Base_Classes;
+using BackEnd.Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,18 +12,15 @@ namespace Managers
         [SerializeField] private LayerMask raycastLayers;
         [SerializeField] private float raycastDistance = 100f;
 
-        private GameObject currentHover;
-        private UnityEngine.Camera rayCamera;
-
-        protected override void Awake()
-        {
-            base.Awake();
-        }
+        private GameObject _currentHover;
+        private UnityEngine.Camera _rayCamera;
+        private ManagedCoroutine _activeClickRoutine;
+        
 
         protected override void InitializeOnSceneLoad()
         {
             if (LevelLoader.Instance.InStartMenu()) return;
-            rayCamera = rayCamera != null ? rayCamera : UnityEngine.Camera.main;
+            _rayCamera = _rayCamera != null ? _rayCamera : UnityEngine.Camera.main;
         }
 
         private void Update()
@@ -34,9 +32,9 @@ namespace Managers
         private void HandleHover()
         {
             GameObject hitObject = GetHitObject();
-            if (hitObject != currentHover)
+            if (hitObject != _currentHover)
             {
-                currentHover = hitObject;
+                _currentHover = hitObject;
             }
         }
 
@@ -44,20 +42,30 @@ namespace Managers
 
         public RaycastHit? GetHit()
         {
-            if (rayCamera == null) return null;
-            Ray ray = rayCamera.ScreenPointToRay(Input.mousePosition);
+            if (_rayCamera == null) return null;
+            Ray ray = _rayCamera.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
 
             return Physics.Raycast(ray, out RaycastHit hit, raycastDistance, raycastLayers) ? hit : null;
         }
 
-        public IEnumerator WaitForMouseClick(Action<RaycastHit> onValidHit = null, Action onMissedClick = null)
+        public void StartClickRoutine(Action<RaycastHit> onValidHit = null, Action onMissedClick = null)
+        {
+            // Cancel any existing managed coroutine
+            if (_activeClickRoutine != null)
+            {
+                _activeClickRoutine.Stop();
+                _activeClickRoutine = null;
+            }
+
+            _activeClickRoutine = new ManagedCoroutine(WaitForMouseClickInternal(onValidHit, onMissedClick), this);
+            _activeClickRoutine.Start();
+        }
+        private IEnumerator WaitForMouseClickInternal(Action<RaycastHit> onValidHit = null, Action onMissedClick = null)
         {
             yield return new WaitForSeconds(0.1f); // buffer before click
 
-            bool waitingForClick = true;
-
-            while (waitingForClick)
+            while (true)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -66,17 +74,26 @@ namespace Managers
                     if (hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
                     {
                         onValidHit?.Invoke(hit.Value);
-                        yield break;
+                        break;
                     }
 
                     if (!hit.HasValue && !EventSystem.current.IsPointerOverGameObject())
                     {
                         onMissedClick?.Invoke();
-                        yield break;
+                        break;
                     }
                 }
 
                 yield return null;
+            }
+        }
+        
+        public void CancelClickRoutine()
+        {
+            if (_activeClickRoutine != null)
+            {
+                _activeClickRoutine.Stop();
+                _activeClickRoutine = null;
             }
         }
     }

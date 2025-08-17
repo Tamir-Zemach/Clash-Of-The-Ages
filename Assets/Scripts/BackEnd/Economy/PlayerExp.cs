@@ -21,7 +21,7 @@ namespace BackEnd.Economy
 
         public int AddExp(int amount)
         {
-            _currentExp += EconomyUtils.ValidateAmount(Math.Max(0, amount), "adding EXP");
+            _currentExp += EconomyUtils.ValidateAmount(Math.Max(0, amount));
             OnExpChanged?.Invoke();
 
             while (_currentExp >= _expToLevelUp)
@@ -35,20 +35,20 @@ namespace BackEnd.Economy
 
         public int SetExp(int amount)
         {
-            _currentExp = EconomyUtils.ValidateAmount(Math.Max(0, amount), "setting EXP");
+            _currentExp = EconomyUtils.ValidateAmount(Math.Max(0, amount));
             OnExpChanged?.Invoke();
             return _currentExp;
         }
 
         public void SetExpToLevelUp(int amount)
         {
-            _expToLevelUp = EconomyUtils.ValidateAmount(Math.Max(1, amount), "setting EXP threshold");
+            _expToLevelUp = EconomyUtils.ValidateAmount(Math.Max(1, amount));
             OnExpToLevelUpChanged?.Invoke();
         }
 
         public void SetLevel(int newLevel)
         {
-            _level = EconomyUtils.ValidateAmount(Math.Max(1, newLevel), "setting level");
+            _level = EconomyUtils.ValidateAmount(Math.Max(1, newLevel));
             OnExpChanged?.Invoke();
         }
 

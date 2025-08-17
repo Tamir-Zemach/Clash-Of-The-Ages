@@ -1,12 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The area that needs to be cleard in order for deployment 
+/// </summary>
 public class SpawnArea : MonoBehaviour
 {
+    
     [Tooltip("The layer of the Friendly Units")]
     [SerializeField] private LayerMask _friendlyUnitLayer;
     private BoxCollider _boxCollider;
-    public bool _hasUnitInside {  get; private set; }
+    public bool HasUnitInside {  get; private set; }
+    
+    [field: SerializeField] public bool IsFriendly{  get; private set; } 
 
     private void Awake()
     {
@@ -15,8 +21,9 @@ public class SpawnArea : MonoBehaviour
 
     private void Update()
     {
-        _hasUnitInside = Physics.CheckBox(transform.TransformPoint(_boxCollider.center), _boxCollider.size , _boxCollider.transform.rotation, _friendlyUnitLayer);
+        HasUnitInside = Physics.CheckBox(transform.TransformPoint(_boxCollider.center), _boxCollider.size , _boxCollider.transform.rotation, _friendlyUnitLayer);
     }
+    
 
 
 }
