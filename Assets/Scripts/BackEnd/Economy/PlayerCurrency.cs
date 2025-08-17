@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BackEnd.Economy
 {
-    public class PlayerCurrency : OneInstanceClass<PlayerCurrency>
+    public class PlayerCurrency : Singleton<PlayerCurrency>
     {
         public static event Action OnMoneyChanged;
         public static event Action OnDoesntHaveEnoughMoney;

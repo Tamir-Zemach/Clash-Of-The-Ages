@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace BackEnd.Data_Getters
 {
-    public class GameDataRepository : OneInstanceMonoBehaviour<GameDataRepository>
+    public class GameDataRepository : SingletonMonoBehaviour<GameDataRepository>
     {
         public event Action OnInitialized;
 

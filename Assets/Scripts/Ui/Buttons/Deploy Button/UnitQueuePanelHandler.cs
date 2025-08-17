@@ -24,15 +24,15 @@ namespace Ui.Buttons.Deploy_Button
 
         private void Awake()
         {
-            DeployManager.OnUnitQueued += CreateQueueSlot;
-            DeployManager.OnUnitReadyToDeploy += ActivateCountdown;
-            //DeployManager.OnUnitDeployed += HandleUnitDeploymentEnd;
+            UnitDeploymentQueue.Instance.OnUnitQueued += CreateQueueSlot;
+            UnitDeploymentQueue.Instance.OnUnitReadyToDeploy += ActivateCountdown;
+            DeployManager.OnUnitDeployed += HandleUnitDeploymentEnd;
             UiAgeUpgrade.Instance.OnUiRefreshDeployUnits += UpdateSprites;
         }
         private void OnDestroy()
         {
-            DeployManager.OnUnitQueued -= CreateQueueSlot;
-            DeployManager.OnUnitReadyToDeploy -= ActivateCountdown;
+            UnitDeploymentQueue.Instance.OnUnitQueued -= CreateQueueSlot;
+            UnitDeploymentQueue.Instance.OnUnitReadyToDeploy -= ActivateCountdown;
             //DeployManager.OnUnitDeployed -= HandleUnitDeploymentEnd;
             UiAgeUpgrade.Instance.OnUiRefreshDeployUnits -= UpdateSprites;
         }

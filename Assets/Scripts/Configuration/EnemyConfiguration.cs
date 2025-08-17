@@ -13,7 +13,7 @@ namespace Configuration
     /// Controls enemy aggression behavior based on health thresholds and damage spikes.
     /// Adjusts spawn rates of enemy units, turrets, and special attacks dynamically.
     /// </summary>
-    public class EnemyConfiguration : OneInstanceMonoBehaviour<EnemyConfiguration>
+    public class EnemyConfiguration : SingletonMonoBehaviour<EnemyConfiguration>
     {
         [Header("Aggression Settings")]
 

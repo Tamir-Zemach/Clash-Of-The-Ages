@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BackEnd.Base_Classes
 {
-    public abstract class InGameObjectOneInstance<T> : OneInstanceMonoBehaviour<T> where T : MonoBehaviour
+    public abstract class InGameObjectSingleton<T> : SingletonMonoBehaviour<T> where T : MonoBehaviour
     {
         protected virtual void OnEnable()
         {

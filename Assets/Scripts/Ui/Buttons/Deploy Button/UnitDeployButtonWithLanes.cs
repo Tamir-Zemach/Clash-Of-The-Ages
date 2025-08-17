@@ -71,7 +71,7 @@ namespace Ui.Buttons.Deploy_Button
                             PlayerCurrency.Instance.SubtractMoney(Cost);
                             if (GameManager.Instance != null && DeployManager.Instance != null)
                             {
-                                DeployManager.Instance.AddUnitToDeploymentQueue(_unit, _selectedLane);
+                                DeployManager.Instance.QueueUnitForDeployment(_unit, _selectedLane);
                             }
                         }
                     });
@@ -82,7 +82,7 @@ namespace Ui.Buttons.Deploy_Button
 
                     if (GameManager.Instance != null && DeployManager.Instance != null)
                     {
-                        DeployManager.Instance.AddUnitToDeploymentQueue(_unit);
+                        DeployManager.Instance.QueueUnitForDeployment(_unit);
                     } 
                 }
             }

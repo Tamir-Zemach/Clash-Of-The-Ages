@@ -10,7 +10,7 @@ using UnityEngine.Serialization;
 
 namespace Ui
 {
-    public class DebuggerUi : OneInstanceMonoBehaviour<DebuggerUi>
+    public class DebuggerUi : SingletonMonoBehaviour<DebuggerUi>
     {
         public GameObject DebuggerPanel;
 

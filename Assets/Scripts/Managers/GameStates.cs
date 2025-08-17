@@ -5,7 +5,7 @@ using BackEnd.Base_Classes;
 
 namespace Managers
 {
-    public class GameStates : OneInstanceClass<GameStates>
+    public class GameStates : Singleton<GameStates>
     {
         public event Action OnGamePaused;
         public event Action OnGameResumed;

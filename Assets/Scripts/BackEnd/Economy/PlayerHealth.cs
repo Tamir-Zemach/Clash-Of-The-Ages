@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BackEnd.Economy
 {
-    internal class PlayerHealth : OneInstanceClass<PlayerHealth>
+    internal class PlayerHealth : Singleton<PlayerHealth>
     {
         public static event Action OnHealthChanged;
         public static event Action OnDroppedBelowHalfHealth;

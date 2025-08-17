@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 namespace Ui.Text_Display
 {
-    public class HoverCostDisplay : OneInstanceMonoBehaviour<HoverCostDisplay>
+    public class HoverCostDisplay : SingletonMonoBehaviour<HoverCostDisplay>
     {
         public GameObject CostDisplay;
         public Vector2 Offset = new Vector2(15f, -15f); 

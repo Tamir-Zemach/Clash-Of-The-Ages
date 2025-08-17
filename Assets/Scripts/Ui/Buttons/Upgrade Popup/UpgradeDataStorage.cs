@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UpgradeDataStorage : OneInstanceClass<UpgradeDataStorage>
+    public class UpgradeDataStorage : Singleton<UpgradeDataStorage>
     {
         public event Action<UnitType, StatType> OnUnitUpgradeRegistered;
         public event Action<UpgradeType> OnGlobalUpgradeRegistered;

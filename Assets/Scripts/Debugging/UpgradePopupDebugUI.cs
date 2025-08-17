@@ -11,7 +11,7 @@ using Ui.Buttons.Upgrade_Popup;
 
 namespace Debugging
 {
-    public class UpgradePopupDebugUI : InGameObjectOneInstance<UpgradePopupDebugUI>
+    public class UpgradePopupDebugUI : InGameObjectSingleton<UpgradePopupDebugUI>
     {
         [Header("UI References")]
         [SerializeField] private GameObject _entryPrefab;

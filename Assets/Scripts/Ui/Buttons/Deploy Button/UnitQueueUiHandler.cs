@@ -27,7 +27,7 @@ namespace Ui.Buttons.Deploy_Button
         private void Awake()
         {
             _queueCountText = GetComponentInChildren<TextMeshProUGUI>();
-            DeployManager.OnQueueChanged += UpdateQueueIndex;
+            UnitDeploymentQueue.Instance.OnQueueChanged += UpdateQueueIndex;
         }
         private void Start()
         {
@@ -35,7 +35,7 @@ namespace Ui.Buttons.Deploy_Button
         }
         private void OnDestroy()
         {
-            DeployManager.OnQueueChanged -= UpdateQueueIndex;
+            UnitDeploymentQueue.Instance.OnQueueChanged -= UpdateQueueIndex;
         }
         public void SetAssignedUnit(UnitData unit)
         {
@@ -49,22 +49,22 @@ namespace Ui.Buttons.Deploy_Button
             {
                 return;
             }
-
+//TODO:Check this script
             // Filter queue to only include characters matching _assignedCharacter
-            _queueArray = DeployManager.Instance.UnitQueue.Where(c => c == _assignedUnit).ToArray();
+           // _queueArray = UnitDeploymentQueue.Instance.UnitQueue.Where(c => c == _assignedUnit).ToArray();
 
             _queueCountText.text = _queueArray.Length > 0 ? $"+ {_queueArray.Length}" : "";
         }
 
         private bool NullChecksForSafety()
         {
-            if (_assignedUnit == null ||
-                DeployManager.Instance == null || DeployManager.Instance.UnitQueue == null)
-            {
-                _queueCountText.text = "Error: Queue not initialized";
+            //if (_assignedUnit == null ||
+            //    DeployManager.Instance == null || UnitDeploymentQueue.Instance.UnitQueue == null)
+           // {
+          //      _queueCountText.text = "Error: Queue not initialized";
                 return true;
-            }
-            else { return false; }
+          //  }
+         //   else { return false; }
         }
 
 

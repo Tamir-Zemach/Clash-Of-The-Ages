@@ -24,7 +24,7 @@ namespace Ui.Buttons.Deploy_Button
 
         private void Awake()
         {
-            DeployManager.OnUnitReadyToDeploy += ActivateCountdown;
+            UnitDeploymentQueue.Instance.OnUnitReadyToDeploy += ActivateCountdown;
             _unitDeployButton = GetComponent<UnitDeployButton>();
             _unitType = _unitDeployButton.Type;
             _unitData = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
@@ -34,7 +34,7 @@ namespace Ui.Buttons.Deploy_Button
 
         private void OnDestroy()
         {
-            DeployManager.OnUnitReadyToDeploy -= ActivateCountdown;
+            UnitDeploymentQueue.Instance.OnUnitReadyToDeploy -= ActivateCountdown;
         }
 
         private void ActivateCountdown(UnitData unitData)

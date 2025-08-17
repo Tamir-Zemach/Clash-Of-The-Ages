@@ -64,7 +64,7 @@ namespace Ui.Buttons.Deploy_Button
 
                 if (GameManager.Instance != null && DeployManager.Instance != null)
                 {
-                    DeployManager.Instance.AddUnitToDeploymentQueue(_unit);
+                    DeployManager.Instance.QueueUnitForDeployment(_unit);
                 }
             }
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BackEnd.Economy
 {
-    public class PlayerExp : OneInstanceClass<PlayerExp>
+    public class PlayerExp : Singleton<PlayerExp>
     {
         public static event Action OnExpChanged;
         public static event Action OnExpToLevelUpChanged;

@@ -27,7 +27,7 @@ namespace Ui.Text_Display
             {
                 return;
             }
-            MaxUnItsText.text = $"Max Units: {DeployManager.Instance.MaxUnits}";
+            MaxUnItsText.text = $"Max Units: {DeployManager.Instance.MaxDeployableUnits}";
         }
 
         private static void MaxUnitsFlashInRed()

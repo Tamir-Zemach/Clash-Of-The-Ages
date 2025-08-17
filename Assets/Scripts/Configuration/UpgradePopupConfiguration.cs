@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace Configuration
 {
-    public class UpgradePopupConfiguration : OneInstanceMonoBehaviour<UpgradePopupConfiguration>
+    public class UpgradePopupConfiguration : SingletonMonoBehaviour<UpgradePopupConfiguration>
     {
         public event Action<GameObject> OnUpgradeRegistered;
         public event Action<GameObject> OnPrefabEligibilityChecked;

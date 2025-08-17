@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace BackEnd.Utilities
 {
-    public class CoroutineManager : OneInstanceMonoBehaviour<CoroutineManager>
+    public class CoroutineManager : SingletonMonoBehaviour<CoroutineManager>
     {
         private readonly List<ManagedCoroutine> _coroutines = new List<ManagedCoroutine>();
 

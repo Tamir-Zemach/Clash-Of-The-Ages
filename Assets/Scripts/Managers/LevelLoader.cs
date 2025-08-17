@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 namespace Managers
 {
-    public sealed class LevelLoader : OneInstanceMonoBehaviour<LevelLoader>
+    public sealed class LevelLoader : SingletonMonoBehaviour<LevelLoader>
     {
         public event Action OnSceneChanged;
 

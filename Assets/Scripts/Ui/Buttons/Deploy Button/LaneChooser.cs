@@ -6,13 +6,13 @@ using UnityEngine;
 namespace Ui.Buttons.Deploy_Button
 {
     
-    public class LaneChooser : OneInstanceMonoBehaviour<LaneChooser>
+    public class LaneChooser : SingletonMonoBehaviour<LaneChooser>
     {
         public bool choseLane;
 
         public void ChooseLane(UnitData unit, Vector3 spawnPos)
         {
-            DeployManager.Instance.AddUnitToDeploymentQueue(unit);
+            DeployManager.Instance.QueueUnitForDeployment(unit);
         }
 
         

@@ -8,7 +8,7 @@ namespace BackEnd.Base_Classes
     /// Ensures only one instance exists and survives scene loads.
     /// </summary>
 
-    public abstract class OneInstanceMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour 
+    public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour 
     {
         public static T Instance;
 

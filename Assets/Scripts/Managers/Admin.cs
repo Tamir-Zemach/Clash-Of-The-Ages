@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Managers
 {
-    public class Admin : OneInstanceMonoBehaviour<Admin>
+    public class Admin : SingletonMonoBehaviour<Admin>
     {
 
         public int _moneyToAdd;

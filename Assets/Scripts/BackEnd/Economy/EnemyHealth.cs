@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BackEnd.Economy
 {
-    internal class EnemyHealth : OneInstanceClass<EnemyHealth>
+    internal class EnemyHealth : Singleton<EnemyHealth>
     {
         public static event Action OnEnemyHealthChanged;
         public event Action OnEnemyDied;

@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace Ui.Buttons.Upgrade_Popup
 {
-    public class UpgradePopup : InGameObjectOneInstance<UpgradePopup>
+    public class UpgradePopup : InGameObjectSingleton<UpgradePopup>
     {
         public event Action OnSlotsSpawned;
         public event Action OnGettingEligibleList;
