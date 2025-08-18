@@ -6,36 +6,40 @@ using BackEnd.Data_Getters;
 using BackEnd.Economy;
 using BackEnd.InterFaces;
 using BackEnd.Utilities;
+using Bases;
 using DG.Tweening;
 using Managers;
 using Special_Attacks;
+using Ui.Buttons.Deploy_Button;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Ui.Buttons
 {
-    public class SpecialAttackButton : ButtonWithCost, IImageSwitchable<SpecialAttackType>
+    public class MeteorRainButton : ButtonWithCost, IImageSwitchable<SpecialAttackType>
     {
         
         public UnityEvent OnTimerStarted;
         public UnityEvent OnTimerStoped;
-        [field: SerializeField] public SpecialAttackType Type {  get; private set; }
+
+        public SpecialAttackType Type { get; } = SpecialAttackType.DestroyPath;
 
         [SerializeField] private float _specialAttackTimer;
         
         private Slider _cooldownSlider;
 
-        private SpecialAttackSpawnPos _specialAttackSpawnPos;
-
-        private SpecialAttackData _specialAttack;
+        private SpecialAttackData _meteorRain;
 
         private Image _image;
         
         private Tween _cooldownTween;
         
-        
-        
+        private Lane _defaultLane;
+
+        private bool _meteorRainAccruing;
+
+
         private void Start()
         {
             GetData();
@@ -44,21 +48,26 @@ namespace Ui.Buttons
 
         private void GetData()
         {
-            _specialAttack = GameDataRepository.Instance.FriendlySpecialAttacks.GetData(Type);
+            _meteorRain = GameDataRepository.Instance.FriendlySpecialAttacks.GetData(Type);
             _cooldownSlider = GetComponentInChildren<Slider>();
             _image = GetComponent<Image>();
-            LevelLoader.Instance.OnSceneChanged += GetSpawnPos;
-            UiAgeUpgrade.Instance.OnUiRefreshSpecialAttack += UpdateSprite;
-            GetSpawnPos();
             ResetTimer();
+            if (EnemyBasesManager.Instance.MultipleBases()) return;
+            
+            _defaultLane = FindAnyObjectByType<Lane>();
         }
 
-        private void GetSpawnPos()
+        private void MeteorRainInEnded()
         {
-            _specialAttackSpawnPos = FindAnyObjectByType<SpecialAttackSpawnPos>(); 
+            _meteorRainAccruing = false;
         }
 
-        
+        private void MeteorRainInProgress()
+        {
+            _meteorRainAccruing = true;
+        }
+
+
         private void UpdateSprite(List<SpriteEntries.SpriteEntry<SpecialAttackType>> spriteMap)
         {
             foreach (var s in spriteMap)
@@ -78,20 +87,56 @@ namespace Ui.Buttons
         public void PerformSpecialAttack()
         {
             if (!CanPerformAttack()) return;
+            if (EnemyBasesManager.Instance.MultipleBases())
+            {
+                LaneChooser.ChooseLane(
+                    onLaneChosen: lane =>
+                    {
+                        if (_meteorRainAccruing) return;
+                        ExecuteSpecialAttackOnLane(lane);
+                    },
+                    onCancel: () =>
+                    {
+                        Debug.Log("Lane selection canceled or invalid.");
+                    });
+            }
+            else
+            {
+                ExecuteSpecialAttackOnLane();
+            }
+
+        }
+
+        private void ExecuteSpecialAttackOnLane(Lane lane = null)
+        {
             PlayerCurrency.Instance.SubtractMoney(Cost);
-            _specialAttackSpawnPos.IsSpecialAttackAccruing = true;
-            SpawnSpecialAttack();
+            if (lane != null)
+            {
+                lane.MeteorRainSpawnPosition.ApplySpecialAttack();
+            }
+            else
+            {
+                _defaultLane.MeteorRainSpawnPosition.ApplySpecialAttack();
+            }
+            SpawnSpecialAttack(lane);
             ResetTimer();
         }
 
-        private void SpawnSpecialAttack()
+        private void SpawnSpecialAttack(Lane lane = null)
         {
-            var specialAttack = Instantiate(_specialAttack.Prefab, _specialAttackSpawnPos.transform.position, _specialAttackSpawnPos.transform.rotation);
+            var selectedLane = lane != null ? lane : _defaultLane;
+            
+            var meteorRainTransform = selectedLane.MeteorRainSpawnPosition.gameObject.transform;
+            
+            var laneTransform = selectedLane.gameObject.transform;
+            
+            var specialAttack = Instantiate(_meteorRain.Prefab, meteorRainTransform.position,  laneTransform.localRotation);
+            
             var behaviour = specialAttack.GetComponent<SpecialAttackBaseBehavior>();
 
             if (behaviour != null)
             {
-                behaviour.Initialize(_specialAttack, _specialAttackSpawnPos);
+                behaviour.Initialize(_meteorRain, selectedLane.MeteorRainSpawnPosition);
             }
             else
             {
@@ -103,10 +148,12 @@ namespace Ui.Buttons
         private bool CanPerformAttack()
         {
             return PlayerCurrency.Instance.HasEnoughMoney(Cost)
-                   && !_specialAttackSpawnPos.IsSpecialAttackAccruing
+                   && !_meteorRainAccruing
                    && _cooldownSlider.value >= 1f;
         }
-        
+
+
+ 
         
         private void ResetTimer()
         {
@@ -132,6 +179,8 @@ namespace Ui.Buttons
                 GameStates.Instance.OnGameResumed += ResumeCooldown;
                 GameStates.Instance.OnGameEnded += CancelCooldown;
                 GameStates.Instance.OnGameReset += CancelCooldown;
+                MeteorRainSpawnPos.OnMeteorRainAccruing += MeteorRainInProgress;
+                MeteorRainSpawnPos.OnMeteorRainEnding += MeteorRainInEnded;
             }
 
             private void OnDisable()
@@ -140,6 +189,8 @@ namespace Ui.Buttons
                 GameStates.Instance.OnGameResumed -= ResumeCooldown;
                 GameStates.Instance.OnGameEnded -= CancelCooldown;
                 GameStates.Instance.OnGameReset -= CancelCooldown;
+                MeteorRainSpawnPos.OnMeteorRainAccruing -= MeteorRainInProgress;
+                MeteorRainSpawnPos.OnMeteorRainEnding -= MeteorRainInEnded;
             }
 
             private void PauseCooldown()

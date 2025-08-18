@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bases;
+using Special_Attacks;
 using units.Behavior;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -25,6 +26,9 @@ namespace Ui.Buttons.Deploy_Button
 
         [Header("Lane Lifecycle")] 
         public bool IsDestroyed;
+        
+        [Header("Lane Lifecycle")] 
+        public MeteorRainSpawnPos MeteorRainSpawnPosition;
 
 
         private EnemyBaseHealth _enemyBaseHealth;

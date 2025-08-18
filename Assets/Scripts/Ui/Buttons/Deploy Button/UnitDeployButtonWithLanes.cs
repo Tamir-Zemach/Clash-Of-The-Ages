@@ -28,7 +28,7 @@ namespace Ui.Buttons.Deploy_Button
         
         public UnitType Type => _unitType;
 
-        private bool _choseValidLane;
+        //private bool _choseValidLane;
         
         private Lane _selectedLane;
         
@@ -53,64 +53,36 @@ namespace Ui.Buttons.Deploy_Button
 
         public void DeployUnit()
         {
-            if (_unit == null)
-            {
-                Debug.LogWarning($"[UnitDeployButton] Unit data not initialized for {_unitType}");
-                return;
-            }
+            if (_unit == null || !CanDeployUnit()) return;
 
-            if (CanDeployUnit())
+            if (EnemyBasesManager.Instance.MultipleBases())
             {
-
-                if (EnemyBasesManager.Instance.MultipleBases())
-                {
-                    ChooseLane(() =>
+                LaneChooser.ChooseLane(
+                    onLaneChosen: lane =>
                     {
-                        if (_choseValidLane)
-                        {
-                            PlayerCurrency.Instance.SubtractMoney(Cost);
-                            if (GameManager.Instance != null && DeployManager.Instance != null)
-                            {
-                                DeployManager.Instance.QueueUnitForDeployment(_unit, _selectedLane);
-                            }
-                        }
+                        ExecuteDeployment(lane);
+                    },
+                    onCancel: () =>
+                    {
+                        Debug.Log("Lane selection canceled or invalid.");
                     });
-                }
-                else
-                {
-                    PlayerCurrency.Instance.SubtractMoney(Cost);
-
-                    if (GameManager.Instance != null && DeployManager.Instance != null)
-                    {
-                        DeployManager.Instance.QueueUnitForDeployment(_unit);
-                    } 
-                }
+            }
+            else
+            {
+                ExecuteDeployment();
             }
         }
-        
 
-        private void ChooseLane(Action onLaneChosen)
+        private void ExecuteDeployment(Lane lane = null)
         {
-            MouseRayCaster.Instance.StartClickRoutine(
-                onValidHit: hit =>
-                {
-                    if (hit.collider.GetComponentInParent<Lane>() is Lane lane && !lane.IsDestroyed)
-                    {
-                        _choseValidLane = true;
-                        _selectedLane = lane;
-                        onLaneChosen?.Invoke();
-                    }
-                    else
-                    {
-                        _choseValidLane = false;
-                    }
-                },
-                onMissedClick: () =>
-                {
-                    _choseValidLane = false;
-                });
-            
+            PlayerCurrency.Instance.SubtractMoney(Cost);
+            if (GameManager.Instance != null && DeployManager.Instance != null)
+            {
+                DeployManager.Instance.QueueUnitForDeployment(_unit, lane);
+            }
         }
+
+        
 
         private bool CanDeployUnit()
         {

@@ -11,15 +11,15 @@ namespace Special_Attacks
         [SerializeField, Tooltip("Total duration (in seconds) that the meteor shower will last. Can be desimal number.")]
         private float _timeOfTheSpecialAttack;
         
-        private SpecialAttackSpawnPos _specialAttackSpawnPos;
+        private MeteorRainSpawnPos _meteorRainSpawnPos;
         private float _timer;
 
         public SpecialAttackData SpecialAttack { get; private set; }
 
-        public void Initialize(SpecialAttackData specialAttackData, SpecialAttackSpawnPos spawnPos)
+        public void Initialize(SpecialAttackData specialAttackData, MeteorRainSpawnPos spawnPos)
         {
             SpecialAttack = specialAttackData;
-            _specialAttackSpawnPos  = spawnPos;
+            _meteorRainSpawnPos  = spawnPos;
             _timer = 0;
         }
         
@@ -34,7 +34,7 @@ namespace Special_Attacks
             _timer += Time.deltaTime;
             if (!(_timer >= _timeOfTheSpecialAttack)) return;
             StopAllCoroutines();
-            _specialAttackSpawnPos.IsSpecialAttackAccruing = false;
+            _meteorRainSpawnPos.ClearSpecialAttack();
             Destroy(gameObject);
         }
         

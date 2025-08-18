@@ -62,6 +62,7 @@ namespace Managers.Spawners
         private void Update()
         {
             if (!GameStates.Instance.GameIsPlaying) return;
+            
             _timer += Time.deltaTime;
             TryDeployNextUnit();
         }
