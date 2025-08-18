@@ -114,6 +114,8 @@ GameObject:
   - component: {fileID: 1128451362367272301}
   - component: {fileID: 8529186710521724706}
   - component: {fileID: -7271297166880796645}
+  - component: {fileID: 6875355897480350196}
+  - component: {fileID: 3847239692709596445}
   m_Layer: 5
   m_Name: Attacker Deploy Button (MultLane))
   m_TagString: Untagged
@@ -250,6 +252,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cost: 130
+  _unitType: 0
+--- !u!114 &6875355897480350196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211420547073608469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c30c422cd6cc8c48b5327fe26512c58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fillBar: {fileID: 5703282288541218125}
+--- !u!114 &3847239692709596445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5211420547073608469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 030877d0ba54b4341bfdb2d50bf981b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _queueCountText: {fileID: 4677578618835289243}
   _unitType: 0
 --- !u!1 &6275936121704177237
 GameObject:

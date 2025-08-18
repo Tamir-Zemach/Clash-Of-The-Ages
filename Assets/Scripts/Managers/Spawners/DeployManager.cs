@@ -36,12 +36,23 @@ namespace Managers.Spawners
 
             UnitDeploymentQueue.Instance.ClearAllDeploymentQueues();
             
+            UnitDeploymentQueue.Instance.OnUnitReadyToDeploy += ResetTimer;
+            
             if (EnemyBasesManager.Instance.MultipleBases()) return;
             
             _defaultLane = FindAnyObjectByType<Lane>();
 
         }
-        
+
+        private void OnDestroy()
+        {
+            UnitDeploymentQueue.Instance.OnUnitReadyToDeploy -= ResetTimer;
+        }
+
+        private void ResetTimer(UnitData obj)
+        {
+            _timer = 0;
+        }
 
         #endregion
 
@@ -51,7 +62,6 @@ namespace Managers.Spawners
         private void Update()
         {
             if (!GameStates.Instance.GameIsPlaying) return;
-
             _timer += Time.deltaTime;
             TryDeployNextUnit();
         }
@@ -76,13 +86,13 @@ namespace Managers.Spawners
         public void QueueUnitForDeployment(UnitData unit, Lane lane = null)
         {
             UnitDeploymentQueue.Instance.EnqueueUnit(unit, lane);
+            
         }
-        
         
         private void AttemptDeployment(UnitData unit, Lane lane = null)
         {
             if (!CanDeploy(unit, lane)) return;
-
+            
             SpawnAndInitializeUnit(unit, lane);
             FinishDeployment();
         }
@@ -108,6 +118,7 @@ namespace Managers.Spawners
             if (_unitInstance.TryGetComponent(out UnitBaseBehaviour behaviour))
             {
                 InitializeUnitBehaviour(behaviour, unit, lane);
+                //print("unit deployed");
                 OnUnitDeployedOnLane?.Invoke(lane, behaviour);
             }
         }
@@ -122,6 +133,8 @@ namespace Managers.Spawners
             {
                 behaviour.Initialize(unit, lane.EnemyBase);
             }
+            
+            
         }
         #endregion
         

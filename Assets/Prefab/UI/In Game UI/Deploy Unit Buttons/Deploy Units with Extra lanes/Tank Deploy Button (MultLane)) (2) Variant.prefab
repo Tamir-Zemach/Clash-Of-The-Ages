@@ -104,6 +104,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3847239692709596445, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
+      propertyPath: _unitType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5211420547073608469, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
       propertyPath: m_Name
       value: Tank Deploy Button (MultLane)) (2) Variant

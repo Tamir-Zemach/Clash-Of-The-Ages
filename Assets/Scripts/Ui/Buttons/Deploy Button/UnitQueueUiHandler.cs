@@ -49,22 +49,22 @@ namespace Ui.Buttons.Deploy_Button
             {
                 return;
             }
-//TODO:Check this script
             // Filter queue to only include characters matching _assignedCharacter
-           // _queueArray = UnitDeploymentQueue.Instance.UnitQueue.Where(c => c == _assignedUnit).ToArray();
+            _queueArray = UnitDeploymentQueue.Instance.UnitQueue
+                .Where(unit => unit.Type == _assignedUnit.Type)
+                .ToArray();
 
             _queueCountText.text = _queueArray.Length > 0 ? $"+ {_queueArray.Length}" : "";
         }
 
         private bool NullChecksForSafety()
         {
-            //if (_assignedUnit == null ||
-            //    DeployManager.Instance == null || UnitDeploymentQueue.Instance.UnitQueue == null)
-           // {
-          //      _queueCountText.text = "Error: Queue not initialized";
+            if (_assignedUnit == null || DeployManager.Instance == null)
+            {
+                _queueCountText.text = "Error: Queue not initialized";
                 return true;
-          //  }
-         //   else { return false; }
+            }
+            return false;
         }
 
 

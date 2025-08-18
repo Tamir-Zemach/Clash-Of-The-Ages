@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using Ui.Buttons.Deploy_Button;
+using UnityEngine;
 
 namespace Managers.Spawners
 {
@@ -31,6 +32,16 @@ namespace Managers.Spawners
                 Lane = lane;
             }
         }
+        public IEnumerable<UnitData> UnitQueue
+        {
+            get
+            {
+                foreach (var request in _deploymentQueue)
+                {
+                    yield return request.Unit;
+                }
+            }
+        }
 
         #endregion
 
@@ -41,6 +52,7 @@ namespace Managers.Spawners
         private bool _isDeploymentInProgress;
 
         public int CurrentUnitsInQueue => _deploymentQueue.Count;
+        
 
         #endregion
 
@@ -115,11 +127,13 @@ namespace Managers.Spawners
         
         private void PrepareNextDeployment()
         {
-            _currentRequest = _deploymentQueue.Dequeue(); // Get the next request
-            _isDeploymentInProgress = true; // Mark deployment as active
+            
+            _currentRequest = _deploymentQueue.Dequeue(); 
+            _isDeploymentInProgress = true; 
 
             OnQueueChanged?.Invoke();
             OnUnitReadyToDeploy?.Invoke(_currentRequest.Value.Unit);
+            
         }
         
         private void ResetDeploymentState()

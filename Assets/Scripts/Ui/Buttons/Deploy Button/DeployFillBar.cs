@@ -1,4 +1,5 @@
 using System;
+using BackEnd.Base_Classes;
 using BackEnd.Enums;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Data_Getters;
@@ -10,12 +11,12 @@ using UnityEngine.UI;
 
 namespace Ui.Buttons.Deploy_Button
 {
-    [RequireComponent(typeof(UnitDeployButton))]
-    public class DeployFillBar : MonoBehaviour
+    [RequireComponent(typeof(UnitDeployButtonWithLanes))]
+    public class DeployFillBar : InGameObject
     {
         [SerializeField] private Slider _fillBar;
         
-        private UnitDeployButton _unitDeployButton;
+        private UnitDeployButtonWithLanes _unitDeployButton;
         private UnitType  _unitType;
         private UnitData  _unitData;
         private CanvasGroup _canvasGroup;
@@ -25,7 +26,7 @@ namespace Ui.Buttons.Deploy_Button
         private void Awake()
         {
             UnitDeploymentQueue.Instance.OnUnitReadyToDeploy += ActivateCountdown;
-            _unitDeployButton = GetComponent<UnitDeployButton>();
+            _unitDeployButton = GetComponent<UnitDeployButtonWithLanes>();
             _unitType = _unitDeployButton.Type;
             _unitData = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
             _canvasGroup = _fillBar.gameObject.GetComponent<CanvasGroup>();
@@ -48,12 +49,28 @@ namespace Ui.Buttons.Deploy_Button
                 onComplete: () => { UIEffects.FadeCanvasGroup(_canvasGroup, 0, 0.02f); });
             }
         }
-        
-        
-        
-        
-        
-        
-        
+
+
+        protected override void HandlePause()
+        {
+            _countdownTween?.Pause();
+        }
+
+        protected override void HandleResume()
+        {
+            _countdownTween?.Play();
+        }
+
+        protected override void HandleGameEnd()
+        {
+            _countdownTween?.Kill();
+            _countdownTween =  null;
+        }
+
+        protected override void HandleGameReset()
+        {
+            _countdownTween?.Kill();
+            _countdownTween =  null;
+        }
     }
 }
