@@ -16,7 +16,7 @@ namespace Managers
         protected override void Awake()
         {
             base.Awake();
-            DeployManager.OnUnitDeployedOnLane += RegisterUnitToLane;
+            DeployManager.OnUnitDeployedOnLane += (lane, unit) => RegisterUnitToLane(unit, lane);
         }
 
         protected override void InitializeOnSceneLoad()
@@ -27,10 +27,23 @@ namespace Managers
             SubscribeToLanes();
         }
 
-        private void RegisterUnitToLane(Lane lane, UnitBaseBehaviour unit)
+        private void RegisterUnitToLane(UnitBaseBehaviour unit , Lane lane = null)
         {
+            // Fallback to single lane if lane is null
+            if (lane == null && _lanes.Count == 1)
+            {
+                var defaultLane = _lanes[0];
+                lane = defaultLane;
+            }
+            
+            if (lane == null)
+            {
+                Debug.LogWarning("[LaneManager] No lane provided and no fallback lane available.");
+                return;
+            }
+            
             // If the lane is not yet tracked in the dictionary, initialize its entry
-            if (!_unitsOnLane.ContainsKey(lane))
+            if (lane != null && !_unitsOnLane.ContainsKey(lane))
             {
                 _unitsOnLane[lane] = new List<UnitBaseBehaviour>();
             }
@@ -50,6 +63,9 @@ namespace Managers
             }
             
         }
+        
+        
+   
 
         private void UnregisterUnitFromLane(Lane lane, UnitBaseBehaviour unit)
         {
