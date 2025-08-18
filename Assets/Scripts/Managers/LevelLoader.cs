@@ -70,6 +70,7 @@ namespace Managers
         {
             Loader.LoadSpecificLevel(sceneIndex, _scenes, out _currentLevelIndex, _uiFlags);
             LoadUiScenes();
+            GameStates.Instance.StartGame();
         }
 
         public void AdminUiToggle(bool isAdmin) => _adminUiEnabled = isAdmin;
