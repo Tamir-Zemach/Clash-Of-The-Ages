@@ -4,15 +4,13 @@ using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Utilities;
 using Managers;
-using Ui.Buttons.Deploy_Button;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace units.Behavior
 {
-    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(UnitRayCaster))]
+    [RequireComponent(typeof(UnitMovement))]
     public class UnitBaseBehaviour : InGameObject
     {
         public delegate void AttackDelegate(GameObject target, int strength);
@@ -22,10 +20,11 @@ namespace units.Behavior
         public event Action OnDying;
 
         public delegate void Spawned(Renderer renderer);
-        public static event Spawned OnSpawned;
+        public static event Spawned OnUnFriendlySpawned;
 
-        private NavMeshAgent _agent;
+        private UnitRayCaster _raycaster;
         private UnitHealthManager _healthManager;
+        private UnitMovement _movement;
         private GameObject _enemyBase;
         private GameObject _currentTarget;
         private Animator _animator;
@@ -35,39 +34,55 @@ namespace units.Behavior
 
         private bool _isAttacking = false;
         private bool _isDying;
-
-
+        private float _defaultSpeed;
+        
         public UnitData Unit { get; private set; }
 
         public bool IsAttacking => _isAttacking;
-
         public GameObject GetAttackTarget() => _currentTarget;
 
         private void Awake()
         {
+            GetComponents();
+            SubscribeToRayCaster();
+            _healthManager.OnDying += Dying;
+        }
+
+        private void GetComponents()
+        {
             _col = GetComponent<Collider>();
             _animator = GetComponentInChildren<Animator>();
             _renderer = GetComponentInChildren<Renderer>();
-            _agent = GetComponent<NavMeshAgent>();
+            _raycaster = GetComponent<UnitRayCaster>();
             _healthManager = GetComponent<UnitHealthManager>();
-            _healthManager.OnDying += Dying;
+            _movement = GetComponent<UnitMovement>();
         }
-        
+
+        private void SubscribeToRayCaster()
+        {
+            _raycaster.OnFriendlyDetection += HandleFriendlyDetection;
+            _raycaster.OnEnemyDetection += HandleEnemyDetection;
+            _raycaster.OnNoDetection += HandleNoDetection;
+        }
 
         public void Initialize(UnitData unitData, Transform destination = null)
         {
             Unit = unitData;
-            
+            _defaultSpeed = Unit.Speed;
+
             SetDestination(destination);
-            _agent.speed = Unit.Speed;
-            
+            _movement.ResumeMovement(_defaultSpeed);
+            InvokeSpawned();
+        }
+
+        private void InvokeSpawned()
+        {
             OnInitialized?.Invoke();
-            
+
             if (!Unit.IsFriendly)
             {
-                OnSpawned?.Invoke(_renderer);
+                OnUnFriendlySpawned?.Invoke(_renderer);
             }
-
         }
 
         private void SetDestination(Transform destination)
@@ -75,90 +90,58 @@ namespace units.Behavior
             if (destination == null)
             {
                 _enemyBase = GameObject.FindGameObjectWithTag(Unit.OppositeBaseTag);
-                _agent.destination = _enemyBase.transform.position;
+                _movement.SetDestination(_enemyBase.transform.position);
             }
             else
             {
-                _agent.destination = destination.position;
+                _movement.SetDestination(destination);
             }
-            
         }
-
 
         private void Update()
         {
             if (_isDying || !GameStates.Instance.GameIsPlaying) return;
-
-            CheckForEnemyUnit();
-            CheckForFriendlyUnit();
-        }
-
-
-        private void CheckForEnemyUnit()
-        {
-            _agent.isStopped = false; 
-
-            if (Physics.BoxCast(transform.position,
-                    Unit.boxSize,
-                    transform.forward,
-                    out var hitInfo,
-                    Quaternion.identity,
-                    Unit.Range,
-                    Unit.OppositeUnitMask))
-            {
-                GameObject obj = hitInfo.transform.gameObject;
-
-                if (obj.CompareTag(Unit.OppositeUnitTag) || obj.CompareTag(Unit.OppositeBaseTag))
-                {
-                    HandleEnemyDetection(obj);
-                }
-            }
-
             ResetAttackStateIfNeeded();
         }
+
         private void HandleEnemyDetection(GameObject target)
         {
-            _agent.isStopped = true;
-            if (!_isAttacking)
-            {
-                _isAttacking = true;
-                Attack(target);
-            }
+            _movement.StopMovement();
+            if (_isAttacking) return;
+            _isAttacking = true;
+            Attack(target);
         }
 
-        private void CheckForFriendlyUnit()
+        private void HandleFriendlyDetection(GameObject obj)
         {
-            if (Physics.BoxCast(transform.position,
-                    Unit.boxSize, transform.forward,
-                    out var hitInfo,
-                    Quaternion.identity,
-                    Unit.RayLengthForFriendlyUnit))
+            _movement.StopMovement();
+        }
+        
+        private void HandleNoDetection()
+        {
+            if (!_isDying && !_isAttacking)
             {
-                GameObject obj = hitInfo.transform.gameObject;
-                if (obj.CompareTag(Unit.FriendlyUnitTag))
-                {
-                    _agent.isStopped = true;
-                }
+                _movement.ResumeMovement(_defaultSpeed, 0.7f);
             }
         }
-
 
         private void ResetAttackStateIfNeeded()
         {
-            if (_attackCoroutine != null && !_agent.isStopped)
+            if (_attackCoroutine != null && !_movement.IsStopped)
             {
                 _attackCoroutine.Stop();
                 _attackCoroutine = null;
                 _isAttacking = false;
             }
         }
+
         private void Attack(GameObject target)
         {
             _currentTarget = target;
             _attackCoroutine = CoroutineManager.Instance.StartManagedCoroutine(AttackAction(Unit.InitialAttackDelay, target));
         }
 
-        IEnumerator AttackAction(float initialAttackDelay, GameObject target)
+        private IEnumerator AttackAction(float initialAttackDelay, GameObject target)
         {
             yield return new WaitForSeconds(initialAttackDelay);
 
@@ -169,11 +152,17 @@ namespace units.Behavior
             }
 
             _isAttacking = false;
+
+            // Resume movement if target is gone
+            if (target == null || !target.activeInHierarchy)
+            {
+                _movement.ResumeMovement(_defaultSpeed);
+            }
         }
         private void Dying()
         {
             _isDying = true;
-            _agent.isStopped = true;
+            _movement.StopMovement();
             _col.enabled = false;
 
             _attackCoroutine?.Stop();
@@ -183,48 +172,30 @@ namespace units.Behavior
 
         private int SetRandomStrength()
         {
-            return Random.Range(Unit.MinStrength,  Unit.MaxStrength);
+            return Random.Range(Unit.MinStrength, Unit.MaxStrength);
         }
-        
-        
-        
 
-        #region GameLifcyle
+        #region GameLifecycle
 
         protected override void HandlePause()
         {
-            _attackCoroutine?.Pause();
-            _agent.isStopped = true;
+            _movement.StopMovement();
         }
 
         protected override void HandleResume()
         {
-            _attackCoroutine?.Resume();
-            _agent.isStopped = false;
+            _movement.ResumeMovement(_defaultSpeed);
         }
 
-        protected override void HandleGameEnd()
-        {
-            _attackCoroutine?.Stop();
-            _attackCoroutine = null;
-        }
+        protected override void HandleGameEnd() { }
 
-        protected override void HandleGameReset()
-        {
-            _attackCoroutine?.Stop();
-            _attackCoroutine = null;
-        }
-        
+        protected override void HandleGameReset() { }
+
         private void OnDestroy()
         {
-            
             _healthManager.OnDying -= Dying;
         }
 
         #endregion
-
     }
 }
-
-
-

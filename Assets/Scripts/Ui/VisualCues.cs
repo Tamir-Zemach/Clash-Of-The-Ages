@@ -42,7 +42,7 @@ namespace Ui
         protected void OnEnable()
         {
             LevelLoader.Instance.OnSceneChanged += InitializeOnSceneLoad;
-            UnitBaseBehaviour.OnSpawned += HandleSpawned;
+            UnitBaseBehaviour.OnUnFriendlySpawned += HandleUnFriendlySpawned;
             PlayerHealth.OnDroppedBelowHalfHealth += IndexForPlayerHealthDrop;
             PlayerHealth.OnHealedAboveHalfHealth += IndexForPlayerHealed;
             EnemyHealth.OnDroppedBelowHalfHealth += IndexForEnemyHealthDrop;
@@ -51,7 +51,7 @@ namespace Ui
 
         protected void OnDisable()
         {
-            UnitBaseBehaviour.OnSpawned -= HandleSpawned;
+            UnitBaseBehaviour.OnUnFriendlySpawned -= HandleUnFriendlySpawned;
             PlayerHealth.OnDroppedBelowHalfHealth -= IndexForPlayerHealthDrop;
             PlayerHealth.OnHealedAboveHalfHealth -= IndexForPlayerHealed;
             EnemyHealth.OnDroppedBelowHalfHealth -= IndexForEnemyHealthDrop;
@@ -88,7 +88,7 @@ namespace Ui
 
         #region Enemy Visibility
 
-        private void HandleSpawned(Renderer rend)
+        private void HandleUnFriendlySpawned(Renderer rend)
         {
             if (rend && !_activeEnemyRenderers.Contains(rend))
                 _activeEnemyRenderers.Add(rend);

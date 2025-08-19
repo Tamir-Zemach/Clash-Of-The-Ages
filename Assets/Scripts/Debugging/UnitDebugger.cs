@@ -10,7 +10,7 @@ namespace Debugging
         private UnitBaseBehaviour _unitBaseBehaviour;
         private UnitData  _unit;
 
-        private void Awake()
+        private void Start()
         {
             _unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
             _unit = _unitBaseBehaviour.Unit;
@@ -20,24 +20,22 @@ namespace Debugging
         private void OnDrawGizmos()
         {
             if (_unit == null) return;
-            Gizmos.color = _unit.boxColor;
 
             Vector3 origin = transform.position;
             Vector3 direction = transform.forward;
 
-            // Perform the BoxCast
-            if (Physics.BoxCast(origin,_unit.boxSize , direction, out RaycastHit hitInfo, Quaternion.identity, _unit.Range))
+            // Default color
+            Gizmos.color = _unit.boxColor;
+
+            // Check for detection
+            if (Physics.BoxCast(origin, _unit.boxSize, direction, out RaycastHit hitInfo, Quaternion.identity, _unit.Range))
             {
-                // Draw the hit box
-                Gizmos.DrawWireCube(hitInfo.point, _unit.boxSize);
+                Gizmos.color = Color.red;
             }
 
-            // Draw the initial box
-            Gizmos.DrawWireCube(origin, _unit.boxSize);
-
-            // Draw the movement path
-            Gizmos.DrawLine(origin, origin + direction * _unit.Range);
-
+            // Now draw the gizmo with the correct color
+            Vector3 center = origin + direction * (_unit.Range / 2);
+            Gizmos.DrawWireCube(center, _unit.boxSize + new Vector3(0, 0, _unit.Range));
         }
 
         

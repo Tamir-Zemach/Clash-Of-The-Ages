@@ -114,7 +114,7 @@ namespace Managers.Spawners
             // Use lane-specific spawn point if provided; otherwise, use the default lane's spawn point (single-lane fallback).
             var spawnPoint = lane != null ? lane.PlayerUnitSpawnPosition : _defaultLane.PlayerUnitSpawnPosition;
 
-            _unitInstance = Instantiate(unit.Prefab, spawnPoint.position, spawnPoint.rotation);
+            _unitInstance = Instantiate(unit.Prefab, spawnPoint.position, spawnPoint.localRotation);
 
             if (_unitInstance.TryGetComponent(out UnitBaseBehaviour behaviour))
             {
