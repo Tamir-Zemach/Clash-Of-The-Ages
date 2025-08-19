@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace units.Behavior
 {
-    [RequireComponent(typeof(UnitBaseBehaviour))]
     public class UnitRayCaster :  MonoBehaviour
     {
         public event Action<GameObject> OnFriendlyDetection;

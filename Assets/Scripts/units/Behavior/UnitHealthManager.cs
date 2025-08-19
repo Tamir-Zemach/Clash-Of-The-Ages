@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace units.Behavior
 {
-    [RequireComponent(typeof(UnitBaseBehaviour))]
     public class UnitHealthManager : MonoBehaviour, IDamageable
     {
         public event Action OnHealthChanged;

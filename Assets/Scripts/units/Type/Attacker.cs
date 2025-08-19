@@ -7,9 +7,6 @@ using UnityEngine;
 namespace units.Type
 {
 
-
-    [RequireComponent(typeof(UnitBaseBehaviour))]
-
     public class Attacker : MonoBehaviour
     {
         private UnitBaseBehaviour _unitBaseBehaviour;

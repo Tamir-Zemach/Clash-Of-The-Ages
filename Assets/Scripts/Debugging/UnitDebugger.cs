@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Debugging
 {
-    [RequireComponent(typeof(UnitBaseBehaviour))]
     public class UnitDebugger : MonoBehaviour
     {
         private UnitBaseBehaviour _unitBaseBehaviour;

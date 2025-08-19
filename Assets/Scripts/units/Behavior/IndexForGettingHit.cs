@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace units.Behavior
 {
-    [RequireComponent(typeof(UnitHealthManager))]
     public class IndexForGettingHit : MonoBehaviour
     {
         public float _flashTime = 0.2f;

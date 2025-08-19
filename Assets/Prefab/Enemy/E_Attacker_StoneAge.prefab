@@ -105,6 +105,8 @@ GameObject:
   - component: {fileID: -690399695543495113}
   - component: {fileID: 462259269568565476}
   - component: {fileID: 4662853977738279434}
+  - component: {fileID: -4134247279924864558}
+  - component: {fileID: 2620744028557991250}
   m_Layer: 6
   m_Name: E_Attacker_StoneAge
   m_TagString: Enemy Character
@@ -161,7 +163,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7476198131129608348}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 16
   avoidancePriority: 50
@@ -356,6 +358,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-4134247279924864558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7476198131129608348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01db15dc1bac4fc79100b267af9366a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2620744028557991250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7476198131129608348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 619b246d0fd8494f984abeb72f0fc160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7889377606003847327
 GameObject:
   m_ObjectHideFlags: 0

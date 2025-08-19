@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 namespace units.Behavior
 {
-    [RequireComponent(typeof(NavMeshAgent))]
     public class UnitMovement : MonoBehaviour
     {
         private NavMeshAgent _agent;

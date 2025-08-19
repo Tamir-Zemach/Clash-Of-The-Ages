@@ -17,7 +17,7 @@ MonoBehaviour:
   _isFriendly: 0
   _gameObject: {fileID: 0}
   _sfx: []
-  _prefab: {fileID: 7476198131129608348, guid: 401aa4e1fa2368146b7f64d28bc29846, type: 3}
+  _prefab: {fileID: 1720934774587516007, guid: 89fa31cebd8f98248a2fd0b22ba2069c, type: 3}
   DeployDelayTime: 0
   MoneyWhenKilled: 100
   ExpWhenKilled: 100

@@ -9,8 +9,6 @@ using Random = UnityEngine.Random;
 
 namespace units.Behavior
 {
-    [RequireComponent(typeof(UnitRayCaster))]
-    [RequireComponent(typeof(UnitMovement))]
     public class UnitBaseBehaviour : InGameObject
     {
         public delegate void AttackDelegate(GameObject target, int strength);
@@ -71,7 +69,7 @@ namespace units.Behavior
             _defaultSpeed = Unit.Speed;
 
             SetDestination(destination);
-            _movement.ResumeMovement(_defaultSpeed);
+            _movement.ResumeMovement(_defaultSpeed, 0.1f);
             InvokeSpawned();
         }
 
@@ -121,7 +119,7 @@ namespace units.Behavior
         {
             if (!_isDying && !_isAttacking)
             {
-                _movement.ResumeMovement(_defaultSpeed, 0.7f);
+                _movement.ResumeMovement(_defaultSpeed);
             }
         }
 

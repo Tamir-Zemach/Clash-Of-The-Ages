@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace Audio
 {
-    [RequireComponent(typeof(AudioSource))]
     public class UnitAudioManager : MonoBehaviour
     {
         private AudioSource _audioSource;
