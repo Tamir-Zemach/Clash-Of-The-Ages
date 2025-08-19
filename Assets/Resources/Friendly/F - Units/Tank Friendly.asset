@@ -29,6 +29,9 @@ MonoBehaviour:
   OppositeUnitMask:
     serializedVersion: 2
     m_Bits: 576
+  FriendlyUnitMask:
+    serializedVersion: 2
+    m_Bits: 8
   FriendlyUnitTag: Friendly Character
   Speed: 2
   Health: 230

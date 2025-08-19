@@ -33,7 +33,10 @@ namespace BackEnd.Data__ScriptableOBj_
 
         [Tooltip("Layer used to detect enemy Units & Bases during targeting.")]
         [SerializeField] public LayerMask OppositeUnitMask;
-
+        
+        [Tooltip("Layer used to detect Friendly Units during targeting.")]
+        [SerializeField] public LayerMask FriendlyUnitMask;
+        
         [Tooltip("Tag used to identify friendly units (used to avoid collision or combat).")]
         [SerializeField, TagSelector] public string FriendlyUnitTag;
 

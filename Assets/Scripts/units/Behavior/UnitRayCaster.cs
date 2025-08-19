@@ -35,13 +35,15 @@ namespace units.Behavior
 
         private void Update()
         {
+            
             if (!GameStates.Instance.GameIsPlaying) return;
 
             bool detected = false;
 
-            detected |= CheckForUnitInFront(~0, _unit.RayLengthForFriendlyUnit, FriendlyDetection, _unit.FriendlyUnitTag);
+            detected |= CheckForUnitInFront(_unit.FriendlyUnitMask, _unit.RayLengthForFriendlyUnit, FriendlyDetection, _unit.FriendlyUnitTag);
             detected |= CheckForUnitInFront(_unit.OppositeUnitMask, _unit.Range, EnemyDetection, _unit.OppositeUnitTag, _unit.OppositeBaseTag);
 
+            
             if (!detected && _wasDetectingSomething)
             {
                 OnNoDetection?.Invoke();
