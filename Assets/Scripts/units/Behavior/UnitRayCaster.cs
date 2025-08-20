@@ -42,7 +42,6 @@ namespace units.Behavior
 
             detected |= CheckForUnitInFront(_unit.FriendlyUnitMask, _unit.RayLengthForFriendlyUnit, FriendlyDetection, _unit.FriendlyUnitTag);
             detected |= CheckForUnitInFront(_unit.OppositeUnitMask, _unit.Range, EnemyDetection, _unit.OppositeUnitTag, _unit.OppositeBaseTag);
-
             
             if (!detected && _wasDetectingSomething)
             {
@@ -56,6 +55,7 @@ namespace units.Behavior
         
         private bool CheckForUnitInFront(LayerMask mask, float range, Action<GameObject> onDetected, string unitTag, string baseTag = null)
         {
+
             if (Physics.BoxCast(transform.position, _unit.boxSize, transform.forward,
                     out var hitInfo, Quaternion.identity, range, mask))
             {

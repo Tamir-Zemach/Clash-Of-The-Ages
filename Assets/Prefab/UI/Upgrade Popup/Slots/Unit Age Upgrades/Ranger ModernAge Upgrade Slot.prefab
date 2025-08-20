@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 3554683822342920565, guid: 3432e46e803c5f747b25c5bab5d1b515, type: 3}
       propertyPath: _upgradedUnitPrefab
       value: 
-      objectReference: {fileID: 2906663908437237772, guid: 69a44062b324edf46a14c689cef9fa42, type: 3}
+      objectReference: {fileID: 779195711443008612, guid: 147ec8f3903150943b2e3ccb6890c876, type: 3}
     - target: {fileID: 3554683822342920565, guid: 3432e46e803c5f747b25c5bab5d1b515, type: 3}
       propertyPath: _upgradedButtonSprite
       value: 

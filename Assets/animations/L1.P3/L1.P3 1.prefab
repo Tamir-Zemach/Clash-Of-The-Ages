@@ -970,7 +970,7 @@ Animator:
   m_GameObject: {fileID: 4380009161428219911}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 44b71b8f8741f0247acdb9cbad44e2a5, type: 2}
+  m_Controller: {fileID: 9100000, guid: eb751f12dda5ae04ca2ff88b9a8ed065, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1018,11 +1018,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff205b7416faf39419749dd48791b2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overrideControllerTemplate: {fileID: 22100000, guid: 44b71b8f8741f0247acdb9cbad44e2a5, type: 2}
-  customIdleClip: {fileID: 7400000, guid: 49f86762d7fe90a41978263a79b457b4, type: 2}
-  customWalkClip: {fileID: 7400000, guid: 7e8a9a053db1e9340aec0f3c1d20b5ce, type: 2}
-  customAttackClip: {fileID: 7400000, guid: cbe362f9fbdff2a4d9e7d224d8495e7b, type: 2}
-  customDeathClip: {fileID: 7400000, guid: f4aa6351d74fa8143a6d96dcfe318b62, type: 2}
 --- !u!1 &4989564617009037694
 GameObject:
   m_ObjectHideFlags: 0

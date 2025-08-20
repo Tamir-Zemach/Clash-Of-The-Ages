@@ -69,7 +69,7 @@ namespace units.Behavior
             _defaultSpeed = Unit.Speed;
 
             SetDestination(destination);
-            _movement.ResumeMovement(_defaultSpeed, 0.1f);
+            _movement.ResumeMovement(_defaultSpeed, 0.2f);
             InvokeSpawned();
         }
 
@@ -83,12 +83,12 @@ namespace units.Behavior
             }
         }
 
-        private void SetDestination(Transform destination)
+        private void SetDestination(Transform destination = null)
         {
             if (destination == null)
             {
                 _enemyBase = GameObject.FindGameObjectWithTag(Unit.OppositeBaseTag);
-                _movement.SetDestination(_enemyBase.transform.position);
+                _movement.SetDestination(_enemyBase.transform);
             }
             else
             {
@@ -117,7 +117,9 @@ namespace units.Behavior
         
         private void HandleNoDetection()
         {
-            if (!_isDying && !_isAttacking)
+            _isAttacking = false;
+
+            if (!_isDying)
             {
                 _movement.ResumeMovement(_defaultSpeed);
             }
@@ -165,6 +167,7 @@ namespace units.Behavior
 
             _attackCoroutine?.Stop();
             _attackCoroutine = null;
+            _isAttacking = false; 
             OnDying?.Invoke();
         }
 

@@ -20,7 +20,7 @@ MonoBehaviour:
   - _type: 0
     _audioClip: {fileID: 0}
     _volume: 0
-  _prefab: {fileID: 7476198131129608348, guid: 24c6171552fef6c4ca2e6b752b3e7dee, type: 3}
+  _prefab: {fileID: 3495933123246538938, guid: a1bd75173cf96c54a9b25449030225ab, type: 3}
   DeployDelayTime: 0
   MoneyWhenKilled: 130
   ExpWhenKilled: 130

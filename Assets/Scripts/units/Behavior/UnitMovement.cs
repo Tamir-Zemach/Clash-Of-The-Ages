@@ -20,17 +20,20 @@ namespace units.Behavior
         {
             _agent = GetComponent<NavMeshAgent>();
         }
+        
 
-        public void SetDestination(Vector3 position)
+        public void SetDestination(Transform destination = null)
         {
-            _destination = null;
-            _agent.destination = position;
-        }
+            if (destination == null)
+            {
+                _destination = null;
+            }
+            else
+            {
+                _destination = destination;
+                _agent.destination = destination.position;
+            }
 
-        public void SetDestination(Transform destination)
-        {
-            _destination = destination;
-            _agent.destination = destination.position;
         }
 
         public void StopMovement()
@@ -49,10 +52,10 @@ namespace units.Behavior
 
         private IEnumerator LerpAgentSpeed(float duration)
         {
+            _agent.isStopped = false;
             float startSpeed = 0f;
             float elapsed = 0f;
-
-            _agent.isStopped = true;
+            
             _agent.speed = 0f;
 
             while (elapsed < duration)
@@ -63,7 +66,6 @@ namespace units.Behavior
             }
 
             _agent.speed = _targetSpeed;
-            _agent.isStopped = false;
         }
 
 
