@@ -6,8 +6,7 @@ using Bases;
 using Ui.Buttons.Deploy_Button;
 using units.Behavior;
 using UnityEngine;
-using UnityEngine.Serialization;
-
+//TODO: build bugs fix
 namespace Managers.Spawners
 {
     public class DeployManager : SceneAwareMonoBehaviour<DeployManager>
@@ -62,12 +61,28 @@ namespace Managers.Spawners
         private void Update()
         {
             if (!GameStates.Instance.GameIsPlaying) return;
-            
+
+            if (DefaultLaneSafetyCheck()) return;
             _timer += Time.deltaTime;
             TryDeployNextUnit();
         }
 
-        
+        private bool DefaultLaneSafetyCheck()
+        {
+            if (_defaultLane == null && !LevelLoader.Instance.InStartMenu())
+            {
+                _defaultLane = FindAnyObjectByType<Lane>();
+                if (_defaultLane == null)
+                {
+                    //Default lane still not found during Update.
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
         /// <summary>
         /// Checks the deployment queue and attempts to deploy the next unit if ready.
         /// </summary>
@@ -87,13 +102,18 @@ namespace Managers.Spawners
         public void QueueUnitForDeployment(UnitData unit, Lane lane = null)
         {
             UnitDeploymentQueue.Instance.EnqueueUnit(unit, lane);
-            
         }
         
         private void AttemptDeployment(UnitData unit, Lane lane = null)
         {
+            if (EnemyBasesManager.Instance.MultipleBases() && lane == null)
+            {
+                Debug.LogWarning("Multiple lanes exist but no lane was provided for deployment.");
+                return;
+            }
+
             if (!CanDeploy(unit, lane)) return;
-            
+
             SpawnAndInitializeUnit(unit, lane);
             FinishDeployment();
         }
@@ -119,7 +139,7 @@ namespace Managers.Spawners
             if (_unitInstance.TryGetComponent(out UnitBaseBehaviour behaviour))
             {
                 InitializeUnitBehaviour(behaviour, unit, lane);
-                //print("unit deployed");
+                
                 OnUnitDeployedOnLane?.Invoke(lane, behaviour);
             }
         }
@@ -146,13 +166,18 @@ namespace Managers.Spawners
         private bool CanDeploy(UnitData unit, Lane lane = null)
         {
             var targetLane = lane ?? _defaultLane;
-            var spawnArea = targetLane.PlayerSpawnArea;
+            if (targetLane == null)
+            {
+                //Target lane is null. Cannot deploy unit.
+                return false;
+            }
 
+            var spawnArea = targetLane.PlayerSpawnArea;
             if (spawnArea == null || spawnArea.HasUnitInside)
             {
                 return false;
             }
-            
+
             return _timer >= unit.DeployDelayTime;
         }
         

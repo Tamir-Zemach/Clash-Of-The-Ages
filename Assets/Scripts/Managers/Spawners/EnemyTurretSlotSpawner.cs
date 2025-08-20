@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
 using turrets;
+using Ui.Buttons.Deploy_Button;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Managers.Spawners
 {
@@ -12,7 +15,9 @@ namespace Managers.Spawners
         protected override float RandomSpawnTimer { get; set ; }
         protected override float Timer { get; set; } = 0;
 
-        public List<TurretSpawnPoint> TurretSpawnPoints { get; private set; }
+        private List<Lane> _lanes = new List<Lane>();
+
+        public List<TurretSpawnPoint> TurretSpawnPoints { get; }  = new List<TurretSpawnPoint>();
 
         private bool _isSlotWaitingToBeAdded = false;
 
@@ -25,15 +30,35 @@ namespace Managers.Spawners
         protected override void InitializeOnSceneLoad()
         {
             if (LevelLoader.Instance.InStartMenu()) return;
+            _lanes.Clear();
+            _lanes.AddRange(LaneManager.Instance.Lanes);
+            SubscribeToAllLanes();
             _isSlotWaitingToBeAdded = true;
             EnemyTurretSpawner.Instance.OnTurretPlaced += StartTimer;
             GetAllEnemyTurretSpawnPoints();
             ResetTimer();
         }
 
+        private void SubscribeToAllLanes()
+        {
+            foreach (var lane in _lanes)
+            {
+                lane.OnLaneDestroyed += RemoveDestroyedTurretSlots;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var lane in _lanes)
+            {
+                lane.OnLaneDestroyed -= RemoveDestroyedTurretSlots;
+            }
+        }
+
         private void StartTimer()
         {
             ResetTimer();
+            
             if (HasSlotToUnlock())
             {
                 _isSlotWaitingToBeAdded = true;
@@ -76,12 +101,35 @@ namespace Managers.Spawners
         }
         private void GetAllEnemyTurretSpawnPoints()
         {
-            TurretSpawnPoints = FindObjectsByType<TurretSpawnPoint>(FindObjectsSortMode.None)
+            foreach (var lane in _lanes)
+            {
+                var turretSpawnPoint = lane.GetComponentsInChildren<TurretSpawnPoint>();
+                TurretSpawnPoints.AddRange(turretSpawnPoint.
+                    Where(spawnPoint => !spawnPoint.IsFriendly));
+            }   
+        }
+        
+        private void RemoveDestroyedTurretSlots(Lane lane)
+        {
+            if (lane == null) return;
+
+            // Get all turret spawn points in the destroyed lane
+            var destroyedSpawnPoints = lane.GetComponentsInChildren<TurretSpawnPoint>()
                 .Where(spawnPoint => !spawnPoint.IsFriendly)
                 .ToList();
+
+            // Remove them from the global list
+            foreach (var spawnPoint in destroyedSpawnPoints)
+            {
+                TurretSpawnPoints.Remove(spawnPoint);
+            }
+
+            
+            _lanes.Remove(lane);
         }
 
 
+        
 
         private TurretSpawnPoint GetAvailableTurretSlot()
         {
@@ -90,7 +138,6 @@ namespace Managers.Spawners
 
         protected override bool CanDeploy()
         {
-            //TODO: deside what are the conditions for the enemy turret slot Spawner and implement them
             return Timer >= RandomSpawnTimer;
         }
 

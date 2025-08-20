@@ -37,7 +37,7 @@ namespace Managers.Spawners
         protected override void InitializeOnSceneLoad()
         {
             if (LevelLoader.Instance.InStartMenu()) return;
-            _lanes.AddRange(FindObjectsByType<Lane>(FindObjectsSortMode.None));
+            _lanes.AddRange(LaneManager.Instance.Lanes);
             GetEnemySpawnPoints();
             _enemyUnits = GameDataRepository.Instance.EnemyUnits;
             _playerBase = FindAnyObjectByType<FriendlyBaseHealth>();

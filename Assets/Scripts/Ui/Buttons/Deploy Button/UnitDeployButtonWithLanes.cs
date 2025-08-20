@@ -27,8 +27,6 @@ namespace Ui.Buttons.Deploy_Button
         private Image _image;
         
         public UnitType Type => _unitType;
-
-        //private bool _choseValidLane;
         
         private Lane _selectedLane;
         
@@ -54,7 +52,7 @@ namespace Ui.Buttons.Deploy_Button
         public void DeployUnit()
         {
             if (_unit == null || !CanDeployUnit()) return;
-
+            
             if (EnemyBasesManager.Instance.MultipleBases())
             {
                 LaneChooser.ChooseLane(

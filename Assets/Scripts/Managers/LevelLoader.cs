@@ -28,15 +28,27 @@ namespace Managers
         private int _currentLevelIndex;
         public int LevelIndex => _currentLevelIndex;
         public List<SceneReference> SceneList => _scenes;
+        
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += HandleSceneLoaded;
+        }
 
-        private void OnEnable() => SceneManager.sceneLoaded += HandleSceneLoaded;
-        private void OnDisable() => SceneManager.sceneLoaded -= HandleSceneLoaded;
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= HandleSceneLoaded;
+        }
 
         private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (mode == LoadSceneMode.Single)
+            {
+                Debug.Log($"OnSceneChanged invoked");
                 OnSceneChanged?.Invoke();
+            }
+
         }
+
 
         public void LoadNextLevel()
         {

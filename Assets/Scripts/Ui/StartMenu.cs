@@ -11,10 +11,6 @@ namespace Ui
     {
         public Toggle AdminUi;
         public Toggle DebuggerUi;
-        public void StartGame()
-        {
-            LevelLoader.Instance.LoadNextLevel();
-        }
 
         public void AdminUiToggle()
         {

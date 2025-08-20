@@ -81,7 +81,10 @@ namespace BackEnd.Utilities
         public static void LoadSceneAndResetAdditiveFlags(SceneReference scene, bool[] flags, out int currentLevelIndex)
         {
             if (flags != null)
+            {
                 Array.Fill(flags, false);
+            }
+                
 
             int buildIndex = scene.GetBuildIndex();
             SceneManager.LoadScene(buildIndex);

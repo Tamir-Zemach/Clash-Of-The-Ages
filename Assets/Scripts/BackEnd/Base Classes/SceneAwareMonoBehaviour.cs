@@ -16,8 +16,11 @@ namespace BackEnd.Base_Classes
             LevelLoader.Instance.OnSceneChanged -= HandleSceneLoaded;
         }
 
+        protected bool IsSceneInitialized { get; private set; }
+
         private void HandleSceneLoaded()
-        { 
+        {
+            IsSceneInitialized = true;
             InitializeOnSceneLoad();
         }
 

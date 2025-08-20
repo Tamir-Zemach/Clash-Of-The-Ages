@@ -13,6 +13,9 @@ namespace Managers
         private readonly List<Lane> _lanes = new List<Lane>();
         
         private Dictionary<Lane, List<UnitBaseBehaviour>> _unitsOnLane = new();
+        
+        
+        public List<Lane> Lanes => _lanes;
         protected override void Awake()
         {
             base.Awake();
@@ -38,7 +41,6 @@ namespace Managers
             
             if (lane == null)
             {
-                Debug.LogWarning("[LaneManager] No lane provided and no fallback lane available.");
                 return;
             }
             
