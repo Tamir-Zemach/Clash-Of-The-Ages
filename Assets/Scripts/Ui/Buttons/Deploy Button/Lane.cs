@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Bases;
 using Special_Attacks;
 using units.Behavior;
 using UnityEngine;
-using UnityEngine.Serialization;
+using VisualCues;
 
 namespace Ui.Buttons.Deploy_Button
 {
+    [RequireComponent(typeof(HighlightGfx))]
     public class Lane : MonoBehaviour
     {
+
         public event Action<Lane> OnLaneDestroyed;
+        private HighlightGfx _highlightGfx;
         
         [Header("Unit Spawn Positions")]
         public Transform PlayerUnitSpawnPosition;
@@ -38,6 +40,7 @@ namespace Ui.Buttons.Deploy_Button
         {
             _enemyBaseHealth = EnemyBase.GetComponent<EnemyBaseHealth>();
             _enemyBaseHealth.OnBaseDestroyed += DestroyLane;
+            _highlightGfx  = GetComponent<HighlightGfx>();
         }
 
         private void OnDestroy()
@@ -51,6 +54,23 @@ namespace Ui.Buttons.Deploy_Button
             OnLaneDestroyed?.Invoke(this);
         }
 
+        public void StartFlashing(float interval)
+        {
+            _highlightGfx?.StartFlashing(interval);
+        }
+
+        public void StopFlashing()
+        {
+            _highlightGfx?.StopFlashing();
+        }
+
+        public void ShrinkAndHide()
+        {
+            _highlightGfx?.ShrinkAndHide(
+                growMultiplier: new Vector3(1f, 1.2f, 1.2f),
+                shrinkMultiplier: new Vector3(1f, 0f, 0f)
+            );
+        }
         
     }
 }

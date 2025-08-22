@@ -43,7 +43,6 @@ namespace Managers
         {
             if (mode == LoadSceneMode.Single)
             {
-                Debug.Log($"OnSceneChanged invoked");
                 OnSceneChanged?.Invoke();
             }
 

@@ -1,59 +1,41 @@
-﻿using System.Collections;
-using BackEnd.Enums;
-using BackEnd.Utilities;
+﻿using BackEnd.Enums;
 using UnityEngine;
-using UnityEngine.Serialization;
+using VisualCues;
 
 namespace turrets
 {
+    [RequireComponent(typeof(HighlightGfx))]
     public class TurretSpawnPoint : MonoBehaviour
     {
-        [FormerlySerializedAs("highlightGfx")] [SerializeField] private GameObject _highlightGfx;
-
         [field: SerializeField] public bool IsFriendly { get; private set; }
-
-        public bool IsUnlocked {  get; set; }
-
+        public bool IsUnlocked { get; set; }
         public bool HasTurret { get; set; }
-        
         public TurretType TurretType { get; set; }
 
+        private HighlightGfx _highlightGfx;
 
-        private ManagedCoroutine _flashRoutine;
-        
-        public void ShowHighlight(bool show)
+        private void Awake()
         {
-            if (_highlightGfx != null)
-                _highlightGfx.SetActive(show);
+            _highlightGfx = GetComponent<HighlightGfx>();
+            if (_highlightGfx == null)
+            {
+                Debug.LogWarning("HighlightGfx component missing on TurretSpawnPoint.");
+            }
         }
 
-        public void StartFlashing(float timeBetweenFlashes)
+        public void ShowHighlight(bool show)
         {
-            if (_flashRoutine == null)
-            {
-                _flashRoutine = CoroutineManager.Instance.StartManagedCoroutine(FlashLoop(timeBetweenFlashes));
-            }
+            _highlightGfx?.Show(show);
+        }
+
+        public void StartFlashing(float interval)
+        {
+            _highlightGfx?.StartFlashing(interval);
         }
 
         public void StopFlashing()
         {
-            if (_flashRoutine != null)
-            {
-                _flashRoutine.Stop();
-                _highlightGfx.SetActive(false);
-                _flashRoutine = null;
-            }
-        }
-
-        private IEnumerator FlashLoop(float timeBetweenFlashes)
-        {
-            while (true)
-            {
-                _highlightGfx.SetActive(true);
-                yield return new WaitForSeconds(timeBetweenFlashes);
-                _highlightGfx.SetActive(false);
-                yield return new WaitForSeconds(timeBetweenFlashes);
-            }
+            _highlightGfx?.StopFlashing();
         }
     }
 }

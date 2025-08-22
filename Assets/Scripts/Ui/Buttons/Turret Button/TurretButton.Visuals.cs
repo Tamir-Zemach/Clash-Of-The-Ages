@@ -1,6 +1,7 @@
 ﻿using System;
 using BackEnd.Enums;
 using BackEnd.Utilities;
+using BackEnd.Utilities.EffectsUtil;
 using DG.Tweening;
 using turrets;
 
@@ -17,7 +18,7 @@ namespace Ui.Buttons.Turret_Button
         /// For persistent highlighting after turret state changes (like placing or selling a turret),
         /// </remarks>
         /// <param name="condition">Condition to filter which spawn points receive visual feedback.</param>
-        /// <param name="mode">The type of visual feedback to apply (Highlight, Flash, or Off).</param>
+        /// <param name="mode">The type of visual feedback to apply (Highlight, HighLightGfx, or Off).</param>
         /// <param name="flashInterval">Optional interval for flashing mode.</param>
         private void SetVisualFeedback(Func<TurretSpawnPoint, bool> condition,
             VisualFeedbackType mode, float flashInterval = 0.2f)

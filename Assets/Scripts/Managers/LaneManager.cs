@@ -10,7 +10,7 @@ namespace Managers
 {
     public class LaneManager : SceneAwareMonoBehaviour<LaneManager>
     {
-        private readonly List<Lane> _lanes = new List<Lane>();
+        private List<Lane> _lanes = new List<Lane>();
         
         private Dictionary<Lane, List<UnitBaseBehaviour>> _unitsOnLane = new();
         
@@ -65,9 +65,6 @@ namespace Managers
             }
             
         }
-        
-        
-   
 
         private void UnregisterUnitFromLane(Lane lane, UnitBaseBehaviour unit)
         {
@@ -100,6 +97,21 @@ namespace Managers
             }
 
             _unitsOnLane.Remove(lane); // Clean up the dictionary
+        }
+
+        public void StartFlashingAllLanes()
+        {
+            foreach (var lane in _lanes)
+            {
+                lane.StartFlashing(0.2f);
+            }
+        }
+        public void StopFlashingAllLanes()
+        {
+            foreach (var lane in _lanes)
+            {
+                lane.StopFlashing();
+            }
         }
     }
 }

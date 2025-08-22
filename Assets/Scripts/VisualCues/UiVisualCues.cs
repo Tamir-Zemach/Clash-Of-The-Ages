@@ -2,6 +2,7 @@
 using System.Linq;
 using BackEnd.Economy;
 using BackEnd.Utilities;
+using BackEnd.Utilities.EffectsUtil;
 using DG.Tweening;
 using Managers;
 using Managers.Camera;
@@ -9,9 +10,9 @@ using units.Behavior;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Ui
+namespace VisualCues
 {
-    public class VisualCues : MonoBehaviour
+    public class UiVisualCues : MonoBehaviour
     {
         #region Fields
 

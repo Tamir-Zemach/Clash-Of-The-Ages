@@ -9,6 +9,7 @@ namespace BackEnd.Utilities
     {
         public static void ChooseLane(Action<Lane> onLaneChosen, Action onCancel)
         {
+            LaneManager.Instance.StartFlashingAllLanes();
             MouseRayCaster.Instance.StartClickRoutine(
                 onValidHit: hit =>
                 {
@@ -16,19 +17,21 @@ namespace BackEnd.Utilities
                     var lane = hit.collider.GetComponentInParent<Lane>();
                     if (lane != null && !lane.IsDestroyed)
                     {
- 
                         onLaneChosen?.Invoke(lane);
+                        LaneManager.Instance.StopFlashingAllLanes();
+                        lane.ShrinkAndHide();
                     }
                     else
                     {
-
+                        LaneManager.Instance.StopFlashingAllLanes();
                         onCancel?.Invoke();
                     }
+
                 },
                 onMissedClick: () =>
                 {
-
                     onCancel?.Invoke();
+                    LaneManager.Instance.StopFlashingAllLanes();
                 });
         }
     }

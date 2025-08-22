@@ -4,7 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BackEnd.Utilities
+namespace BackEnd.Utilities.EffectsUtil
 {
     public static class UIEffects
     {
@@ -190,8 +190,6 @@ namespace BackEnd.Utilities
         
 
         #endregion
-        
-
             
     }
 }

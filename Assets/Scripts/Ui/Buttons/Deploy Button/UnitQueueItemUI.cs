@@ -2,6 +2,7 @@
 using BackEnd.Enums;
 using BackEnd.InterFaces;
 using BackEnd.Utilities;
+using BackEnd.Utilities.EffectsUtil;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;

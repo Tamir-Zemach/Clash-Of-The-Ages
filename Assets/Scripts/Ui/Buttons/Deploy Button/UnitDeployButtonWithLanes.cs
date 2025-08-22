@@ -62,7 +62,6 @@ namespace Ui.Buttons.Deploy_Button
                     },
                     onCancel: () =>
                     {
-                        Debug.Log("Lane selection canceled or invalid.");
                     });
             }
             else
