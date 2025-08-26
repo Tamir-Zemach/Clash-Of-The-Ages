@@ -55,12 +55,11 @@ namespace units.Behavior
         
         private bool CheckForUnitInFront(LayerMask mask, float range, Action<GameObject> onDetected, string unitTag, string baseTag = null)
         {
-
             if (Physics.BoxCast(transform.position, _unit.boxSize, transform.forward,
                     out var hitInfo, Quaternion.identity, range, mask))
             {
                 GameObject obj = hitInfo.transform.gameObject;
-
+                
                 if (obj.CompareTag(unitTag) || (baseTag != null && obj.CompareTag(baseTag)))
                 {
                     onDetected?.Invoke(obj);

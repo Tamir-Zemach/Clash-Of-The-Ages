@@ -132,9 +132,10 @@ namespace Managers.Spawners
         private void SpawnAndInitializeUnit(UnitData unit, Lane lane = null)
         {
             // Use lane-specific spawn point if provided; otherwise, use the default lane's spawn point (single-lane fallback).
-            var spawnPoint = lane != null ? lane.PlayerUnitSpawnPosition : _defaultLane.PlayerUnitSpawnPosition;
-
-            _unitInstance = Instantiate(unit.Prefab, spawnPoint.position, spawnPoint.localRotation);
+            var selectedLane = lane ?? _defaultLane;
+            var spawnPoint = selectedLane.PlayerUnitSpawnPosition;
+            var rotation = SetNormalizePos(selectedLane); 
+            _unitInstance = Instantiate(unit.Prefab, spawnPoint.position, rotation);
 
             if (_unitInstance.TryGetComponent(out UnitBaseBehaviour behaviour))
             {
@@ -156,6 +157,13 @@ namespace Managers.Spawners
             }
             
             
+        }
+
+        private Quaternion SetNormalizePos(Lane lane)
+        {
+            Vector3 direction = lane.EnemyBase.transform.position - lane.PlayerUnitSpawnPosition.position;
+            //direction.Normalize();
+            return Quaternion.LookRotation(direction);
         }
         #endregion
         
