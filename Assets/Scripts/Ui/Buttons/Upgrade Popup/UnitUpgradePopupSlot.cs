@@ -29,6 +29,12 @@ namespace Ui.Buttons.Upgrade_Popup
 
         public UnitType UnitType => _unitType;
         public StatType Stat => _stat;
+        
+        public int StatBonus => _statBonus;
+
+        public float AttackDelayReductionPercent => _attackDelayReductionPercent;
+        
+        public override SlotType SlotType => SlotType.UnitUpgrade;
         private void Start()
         {
             GetData();

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1866844494973043103}
   - component: {fileID: -1254622873784971633}
   - component: {fileID: 3937559096206534236}
+  - component: {fileID: -8293663239242904660}
   m_Layer: 5
   m_Name: Global Upgrade Slot
   m_TagString: Untagged
@@ -167,6 +168,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-8293663239242904660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904271810235389937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b91511a9e7f2483a9b7e409553b7916c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpgradeDescriptionText: {fileID: 5049641122535923623}
 --- !u!1 &1992230265138141977
 GameObject:
   m_ObjectHideFlags: 0

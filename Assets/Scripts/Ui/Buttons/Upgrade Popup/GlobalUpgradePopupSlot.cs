@@ -21,6 +21,12 @@ namespace Ui.Buttons.Upgrade_Popup
         [SerializeField] private int _statBonus;
 
         public UpgradeType UpgradeType => _type;
+        
+        public int StatBonus => _statBonus;
+        
+        public override SlotType SlotType => SlotType.GlobalUpgrade;
+        
+        
 
         public void ApplyUpgrade()
         {
@@ -60,9 +66,10 @@ namespace Ui.Buttons.Upgrade_Popup
 
         private void DecreaseCostToAllFriendlyUnits()
         {
-            foreach (var unit in UIObjectFinder.GetButtons<UnitDeployButton, UnitType>())
+            var deployButtons = UIObjectFinder.GetButtons<UnitDeployButtonWithLanes, UnitType>();
+            foreach (var deployButton in deployButtons)
             {
-                unit.Cost -= _statBonus;
+                deployButton.Cost -= _statBonus;
             }
 
         }

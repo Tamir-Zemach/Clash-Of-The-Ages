@@ -52,6 +52,7 @@ namespace Ui.Buttons.Upgrade_Popup
         
         public UnitType Type => _unitType;
         public AgeStageType AgeStage => _ageStage;
+        public override SlotType SlotType => SlotType.AgeUpgrade;
         private void Awake()
         {
             _unitData = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
@@ -91,5 +92,7 @@ namespace Ui.Buttons.Upgrade_Popup
                 OnUnitAgeUpgrade?.Invoke(_unitType, _upgradedButtonSprite);
             });
         }
+
+        
     }
 }

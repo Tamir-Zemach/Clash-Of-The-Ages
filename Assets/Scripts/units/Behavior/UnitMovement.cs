@@ -52,6 +52,7 @@ namespace units.Behavior
 
         private IEnumerator LerpAgentSpeed(float duration)
         {
+            if (_agent == null) yield return null;
             _agent.isStopped = false;
             float startSpeed = 0f;
             float elapsed = 0f;

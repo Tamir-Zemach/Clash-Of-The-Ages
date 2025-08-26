@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4173829767757713661}
   - component: {fileID: 1305773559909602161}
   - component: {fileID: 3554683822342920565}
+  - component: {fileID: -8333320779348667633}
   m_Layer: 5
   m_Name: Unit Age Upgrade Slot
   m_TagString: Untagged
@@ -175,6 +176,19 @@ MonoBehaviour:
   MinStrength: 1
   MaxStrength: 1
   AttackDelayReductionPercent: 0
+--- !u!114 &-8333320779348667633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585102682884704020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b91511a9e7f2483a9b7e409553b7916c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpgradeDescriptionText: {fileID: 8583682624649829049}
 --- !u!1 &4119240233537020804
 GameObject:
   m_ObjectHideFlags: 0

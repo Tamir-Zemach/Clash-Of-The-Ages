@@ -12,9 +12,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Attacker Strength Slot
       objectReference: {fileID: 0}
+    - target: {fileID: 3536314145875068856, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 586b7fdf39027f146ae646759ccff287, type: 3}
     - target: {fileID: 6849065297138656746, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: _stat
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6849065297138656746, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: _attackDelayReductionPercent
