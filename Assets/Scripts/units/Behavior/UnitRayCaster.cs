@@ -35,7 +35,6 @@ namespace units.Behavior
 
         private void Update()
         {
-            
             if (!GameStates.Instance.GameIsPlaying) return;
 
             bool detected = false;

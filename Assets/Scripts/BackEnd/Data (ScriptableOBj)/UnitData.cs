@@ -77,9 +77,7 @@ namespace BackEnd.Data__ScriptableOBj_
         [Header("Debug Visualization")]
         [Tooltip("Size of the gizmo box used to visualize detection range.")]
         public Vector3 boxSize = new Vector3(0.5f, 0.5f, 0.5f);
-
-        [Tooltip("Color of the gizmo box drawn for debugging purposes.")]
-        public Color boxColor = Color.red;
+        
 
 
 

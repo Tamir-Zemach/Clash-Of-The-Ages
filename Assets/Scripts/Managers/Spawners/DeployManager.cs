@@ -162,7 +162,7 @@ namespace Managers.Spawners
         private Quaternion SetNormalizePos(Lane lane)
         {
             Vector3 direction = lane.EnemyBase.transform.position - lane.PlayerUnitSpawnPosition.position;
-            //direction.Normalize();
+            direction.Normalize(); // This modifies the vector in place
             return Quaternion.LookRotation(direction);
         }
         #endregion
