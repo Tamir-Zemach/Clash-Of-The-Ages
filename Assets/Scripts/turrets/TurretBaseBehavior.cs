@@ -19,8 +19,7 @@ namespace turrets
         [FormerlySerializedAs("_bulletPrefab")]
         [Tooltip("Projectile prefab to spawn when attacking.")]
         public GameObject BulletPrefab;
-
-        private Transform _detectionOrigin;
+        
         private Vector3 _origin;
         private Vector3 _direction;
         private Quaternion _rotation;
@@ -33,24 +32,13 @@ namespace turrets
         public Vector3 Direction => _direction;
         public Quaternion Rotation => _rotation;
 
-        public void Initialize(TurretData turretData)
+        public void Initialize(TurretData turretData,Transform originTransform, GameObject oppositeBase = null)
         {
             Turret = turretData;
-
-            var baseObject = GameObject.FindGameObjectWithTag(Turret.FriendlyBase);
-            var enemyBaseObject = GameObject.FindGameObjectWithTag(Turret.OppositeBase);
-
-            if (baseObject != null && enemyBaseObject != null)
-            {
-                _detectionOrigin = baseObject.transform;
-                _origin = _detectionOrigin.position;
-                _direction = (enemyBaseObject.transform.position - transform.position).normalized;
-                _rotation = _detectionOrigin.rotation;
-            }
-            else
-            {
-                Debug.LogWarning($"TurretBaseBehavior: Could not find base objects with tags {Turret.FriendlyBase} or {Turret.OppositeBase}");
-            }
+            
+            _origin = originTransform.position;
+            _direction = oppositeBase != null ? (oppositeBase.transform.position - transform.position).normalized : originTransform.forward;
+            _rotation = originTransform.rotation;
         }
 
         private void Update()
@@ -61,8 +49,8 @@ namespace turrets
 
         private void CheckForEnemies()
         {
-            if (Physics.BoxCast(_origin, Turret.BoxSize, _direction, out var hitInfo,
-                    _detectionOrigin.rotation, Turret.Range, Turret.OppositeUnitLayer))
+            if (Physics.BoxCast(_origin, Turret.BoxSize / 2f, _direction, out var hitInfo,
+                    _rotation, Turret.Range, Turret.OppositeUnitLayer))
             {
                 transform.LookAt(hitInfo.transform);
                 if (!_isAttacking)

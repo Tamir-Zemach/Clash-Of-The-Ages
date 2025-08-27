@@ -12,7 +12,7 @@ namespace Debugging
         private TurretData _turretData;
         private TurretBaseBehavior _turretBaseBehavior;
 
-        [SerializeField] private Color _boxColor = Color.red;
+        private Color _boxColor = Color.green;
 
         private void OnDrawGizmos()
         {
@@ -21,29 +21,35 @@ namespace Debugging
             if (_turretData == null)
                 _turretData = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretBaseBehavior.Turret.Type);
 
-
             Gizmos.color = _boxColor;
 
-            // Perform the BoxCast
-            if (Physics.BoxCast(_turretBaseBehavior.Origin,
-                    _turretData.BoxSize,
-                    _turretBaseBehavior.Direction, 
-                    out var hitInfo,
-                    _turretBaseBehavior.Rotation, 
-                    _turretData.Range,
-                    _turretData.OppositeUnitLayer))
+            Vector3 origin = _turretBaseBehavior.Origin;
+            Vector3 direction = _turretBaseBehavior.Direction;
+            Quaternion rotation = _turretBaseBehavior.Rotation;
+            
+            if (Physics.BoxCast(origin, _turretData.BoxSize / 2f, direction, out RaycastHit hitInfo, rotation,
+                    _turretData.Range, _turretData.OppositeUnitLayer))
             {
-                // Draw the hit box
-                Gizmos.DrawWireCube(hitInfo.point, _turretData.BoxSize);
+                    Gizmos.color = Color.red;
             }
+            
+            
+            // Save current matrix
+            Matrix4x4 oldMatrix = Gizmos.matrix;
 
-            // Draw the initial box
-            Gizmos.DrawWireCube(_turretBaseBehavior.Origin, _turretData.BoxSize);
+            // Set gizmo matrix to match the cast direction
+            Gizmos.matrix = Matrix4x4.TRS(origin + direction * (_turretData.Range / 2f), rotation, Vector3.one);
 
-            // Draw the movement path
-            Gizmos.DrawLine(_turretBaseBehavior.Origin,
-                _turretBaseBehavior.Origin + _turretBaseBehavior.Direction * _turretData.Range);
+            // Draw the box representing the full cast volume
+            Vector3 castSize = _turretData.BoxSize + new Vector3(0, 0, _turretData.Range);
+            Gizmos.DrawWireCube(Vector3.zero, castSize);
 
+            // Restore matrix
+            Gizmos.matrix = oldMatrix;
+
+            // Optional: Draw origin and direction line for clarity
+            Gizmos.DrawWireCube(origin, _turretData.BoxSize);
+            Gizmos.DrawLine(origin, origin + direction * _turretData.Range);
         }
 
     }

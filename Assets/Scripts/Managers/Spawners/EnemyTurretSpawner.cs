@@ -19,8 +19,9 @@ namespace Managers.Spawners
 
         private List<TurretData> _enemyTurrets;
 
-        private bool _isTurretWaitingToSpawn = false;    
+        private bool _isTurretWaitingToSpawn = false;
 
+        private GameObject _playerBase;
         protected override void Awake()
         {
             base.Awake();
@@ -34,6 +35,8 @@ namespace Managers.Spawners
             RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
             EnemyTurretSlotSpawner.Instance.OnTurretSlotActivated += StartTimer;
             ResetTimer();
+            var turret = _enemyTurrets[0];
+            _playerBase = GameObject.FindGameObjectWithTag(turret.OppositeBase);
         }
 
 
@@ -77,7 +80,7 @@ namespace Managers.Spawners
 
             if (behaviour)
             {
-                behaviour.Initialize(randomTurretData);
+                behaviour.Initialize(randomTurretData, _availableSpawnPoint.transform, _playerBase);
             }
             else
             {

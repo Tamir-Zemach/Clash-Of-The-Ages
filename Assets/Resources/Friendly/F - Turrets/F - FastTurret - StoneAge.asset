@@ -28,7 +28,7 @@ MonoBehaviour:
   <OppositeBase>k__BackingField: Enemy Base
   <FriendlyBase>k__BackingField: Player Base
   <Range>k__BackingField: 8
-  BoxSize: {x: 3, y: 3, z: 1}
+  BoxSize: {x: 10, y: 5, z: 1}
   <InitialAttackDelay>k__BackingField: 1
   <MinBulletStrength>k__BackingField: 7
   <MaxBulletStrength>k__BackingField: 14

@@ -63,7 +63,7 @@ namespace Ui.Buttons.Turret_Button
 
             if (behaviour)
             {
-                behaviour.Initialize(_turret);
+                behaviour.Initialize(_turret, _playerBase.transform);
             }
             else
             {

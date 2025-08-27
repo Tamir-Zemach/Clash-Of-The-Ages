@@ -33,6 +33,7 @@ namespace Ui.Buttons.Turret_Button
 
         private TurretData _turret;
         private Image _image;
+        private GameObject _playerBase;
 
         private Dictionary<TurretButtonType, Func<TurretSpawnPoint, bool>> _conditions;
 
@@ -61,7 +62,8 @@ namespace Ui.Buttons.Turret_Button
             LevelLoader.Instance.OnSceneChanged += GetAllFriendlyTurretSpawnPoints;
             UiAgeUpgrade.Instance.OnUiRefreshTurrets += UpdateSprite;
             GetAllFriendlyTurretSpawnPoints();
-
+            if (_turretButtonType is TurretButtonType.AddSlot or TurretButtonType.SellTurret) return;
+            _playerBase = GameObject.FindGameObjectWithTag(_turret.FriendlyBase);
         }
 
         private void UpdateSprite(List<SpriteEntries.SpriteEntry<TurretKey>> spriteMap)
