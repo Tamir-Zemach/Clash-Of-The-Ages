@@ -19,7 +19,7 @@ namespace BackEnd.Utilities
                     {
                         onLaneChosen?.Invoke(lane);
                         LaneManager.Instance.StopFlashingAllLanes();
-                        lane.ShrinkAndHide();
+                        lane.FlashOnce();
                     }
                     else
                     {
