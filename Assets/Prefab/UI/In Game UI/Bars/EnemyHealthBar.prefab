@@ -22,11 +22,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3301264283069888137, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
       propertyPath: m_Name
-      value: EnemyHealthBar Variant
+      value: EnemyHealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058565005624313354, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4058565005624313354, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4380212758072567972, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
       propertyPath: m_text
       value: Enemy Health
+      objectReference: {fileID: 0}
+    - target: {fileID: 7473841945801342370, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
+      propertyPath: m_Name
+      value: Skull
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965179444752411277, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 016dde6c77e41c042ac33bf5edd8937c, type: 3}
+    - target: {fileID: 7965179444752411277, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965179444752411277, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7965179444752411277, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9186245419416559444, guid: 8058ce6d11e456f49acdcf08999b0cc8, type: 3}
       propertyPath: m_Pivot.x
