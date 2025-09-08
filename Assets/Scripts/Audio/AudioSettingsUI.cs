@@ -30,6 +30,17 @@ namespace Audio
             AudioManager.GlobalSoundtrackVolume = soundtrackSlider.value;
             _audioSource.volume = soundtrackSlider.value;
         }
+
+        public void SetSlidersToCurrentAudio(Slider sfxSlider, Slider soundtrackSlider)
+        {
+            sfxSlider.value = AudioManager.GlobalSfxVolume;
+            soundtrackSlider.value = AudioManager.GlobalSoundtrackVolume;
+        }
+        
+        public void MuteSfx()
+        {
+            _audioSource.mute = !_audioSource.mute;
+        }
         
     }
 }
