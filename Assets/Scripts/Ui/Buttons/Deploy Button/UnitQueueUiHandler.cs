@@ -26,7 +26,6 @@ namespace Ui.Buttons.Deploy_Button
 
         private void Awake()
         {
-            _queueCountText = GetComponentInChildren<TextMeshProUGUI>();
             UnitDeploymentQueue.Instance.OnQueueChanged += UpdateQueueIndex;
         }
         private void Start()

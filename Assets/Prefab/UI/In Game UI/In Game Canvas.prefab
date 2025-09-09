@@ -1293,6 +1293,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Attacker Deploy Button (MultLane)) (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6480653166533100468, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3.9324036
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2267,6 +2271,10 @@ PrefabInstance:
       propertyPath: _cost
       value: 120
       objectReference: {fileID: 0}
+    - target: {fileID: 8042949841249187704, guid: fc9ae7068c83fac44a978458090e8f2c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3.9324036
+      objectReference: {fileID: 0}
     - target: {fileID: 8442184943281807871, guid: fc9ae7068c83fac44a978458090e8f2c, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -52
@@ -2407,6 +2415,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3034352080915755004}
     m_Modifications:
+    - target: {fileID: 2998504271494224877, guid: 08fd0a9176edf604186ac6e25f2e5758, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 3.9324036
+      objectReference: {fileID: 0}
     - target: {fileID: 4044684810716599116, guid: 08fd0a9176edf604186ac6e25f2e5758, type: 3}
       propertyPath: m_Name
       value: Tank Deploy Button (MultLane)) (2)

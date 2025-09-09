@@ -111,45 +111,28 @@ PrefabInstance:
     - target: {fileID: 3847239692709596445, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
       propertyPath: _queueCountText
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852911749951706419, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
-      propertyPath: m_Pivot.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852911749951706419, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
-      propertyPath: m_Pivot.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852911749951706419, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852911749951706419, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852911749951706419, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852911749951706419, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852911749951706419, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852911749951706419, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 76
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8546621551769137239}
     - target: {fileID: 5211420547073608469, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
       propertyPath: m_Name
       value: Ranger Deploy Button (MultLane)) Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 7513436784244462720, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3d93c7fbaee3d8a4297cde7d6255211e, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
+--- !u!114 &8546621551769137239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4677578618835289243, guid: b293e6257ecfe194fa961d4d74dea8dd, type: 3}
+  m_PrefabInstance: {fileID: 3923105850952414412}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
