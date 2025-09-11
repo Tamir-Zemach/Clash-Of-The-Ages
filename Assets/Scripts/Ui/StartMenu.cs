@@ -4,6 +4,7 @@ using BackEnd.Utilities;
 using BackEnd.Utilities.EffectsUtil;
 using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Ui
@@ -12,7 +13,8 @@ namespace Ui
     {
         public Toggle AdminUi;
         public Toggle DebuggerUi;
-
+        
+        
         public void AdminUiToggle()
         {
             LevelLoader.Instance.AdminUiToggle(AdminUi.isOn);
@@ -23,16 +25,6 @@ namespace Ui
             LevelLoader.Instance.DebuggerUiToggle(DebuggerUi.isOn);
         }
         
-        
-        public void OnSFXVolumeChanged(Slider sfxSlider)
-        {
-            AudioSettingsUI.Instance.OnSFXVolumeChanged(sfxSlider);
-        }
-
-        public void OnSoundtrackVolumeChange(Slider soundtrackSlider)
-        {
-            AudioSettingsUI.Instance.OnSoundtrackVolumeChange(soundtrackSlider);
-        }
 
         public void LoadLevel(int levelIndex)
         {

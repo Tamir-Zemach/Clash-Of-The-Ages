@@ -20,8 +20,7 @@ namespace Audio
             _audioSource.clip = StartMenuSoundtrack;
             if (StartMenuSoundtrack == null) return;
             _audioSource.enabled = true;
-            _audioSource.mute = false;
-            _audioSource.volume = AudioManager.GlobalSoundtrackVolume; 
+            //_audioSource.volume = AudioManager.GlobalSoundtrackVolume; 
             _audioSource.Play();
         }
 

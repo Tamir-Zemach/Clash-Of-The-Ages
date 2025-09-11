@@ -36,7 +36,6 @@ namespace Ui.Pause
 
         private void ShowPauseMenu()
         {
-            _pauseMenu.SetSlidersToCurrentAudio();
             _tween = UIEffects.FadeCanvasGroup(_canvasGroup, 1, 0.3f, onComplete: () =>
             {
                 _canvasGroup.interactable = true;

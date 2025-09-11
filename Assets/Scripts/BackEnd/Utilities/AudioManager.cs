@@ -10,8 +10,28 @@ namespace BackEnd.Utilities
     public static class AudioManager
     {
 
-        public static float GlobalSfxVolume = 0;
-        public static float GlobalSoundtrackVolume = 0;
+        private const string SfxVolumeKey = "GlobalSfxVolume";
+        private const string SoundtrackMuteKey = "SoundtrackMuted";
+
+        public static float GlobalSfxVolume
+        {
+            get => PlayerPrefs.GetFloat(SfxVolumeKey, 1f); // default to full volume
+            set
+            {
+                PlayerPrefs.SetFloat(SfxVolumeKey, value);
+                PlayerPrefs.Save();
+            }
+        }
+
+        public static bool IsSoundtrackMuted
+        {
+            get => PlayerPrefs.GetInt(SoundtrackMuteKey, 0) == 1;
+            set
+            {
+                PlayerPrefs.SetInt(SoundtrackMuteKey, value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
         
         
 

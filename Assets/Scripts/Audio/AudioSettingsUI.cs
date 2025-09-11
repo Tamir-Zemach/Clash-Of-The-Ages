@@ -17,30 +17,30 @@ namespace Audio
         {
             base.Awake();
             _audioSource = GetComponent<AudioSource>();
+            _audioSource.mute = AudioManager.IsSoundtrackMuted;
         }
         
 
-        public void OnSFXVolumeChanged(Slider sfxSlider)
+        public void SetSfxTogglesToCurrentAudio(Toggle sfxToggle)
         {
-            AudioManager.GlobalSfxVolume = sfxSlider.value;
+            sfxToggle.SetIsOnWithoutNotify(AudioManager.GlobalSfxVolume > 0);
         }
 
-        public void OnSoundtrackVolumeChange(Slider soundtrackSlider)
+        public void SetSoundtrackToggleToCurrentAudio(Toggle soundtrackToggle)
         {
-            AudioManager.GlobalSoundtrackVolume = soundtrackSlider.value;
-            _audioSource.volume = soundtrackSlider.value;
-        }
-
-        public void SetSlidersToCurrentAudio(Slider sfxSlider, Slider soundtrackSlider)
-        {
-            sfxSlider.value = AudioManager.GlobalSfxVolume;
-            soundtrackSlider.value = AudioManager.GlobalSoundtrackVolume;
+            soundtrackToggle.SetIsOnWithoutNotify(AudioManager.IsSoundtrackMuted);
         }
         
         public void MuteSfx()
         {
-            _audioSource.mute = !_audioSource.mute;
+            AudioManager.GlobalSfxVolume = AudioManager.GlobalSfxVolume > 0 ? 0f : 1f;
         }
-        
+
+        public void MuteSoundtrack()
+        {
+            var newMuteState = !AudioManager.IsSoundtrackMuted;
+            AudioManager.IsSoundtrackMuted = newMuteState;
+            _audioSource.mute = newMuteState;
+        }
     }
 }
