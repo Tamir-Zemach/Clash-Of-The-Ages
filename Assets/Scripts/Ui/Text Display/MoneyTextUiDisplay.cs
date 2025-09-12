@@ -29,7 +29,7 @@ namespace Ui.Text_Display
             {
                 return;
             }
-            MoneyText.text = $"Money: {PlayerCurrency.Instance.Money}";
+            MoneyText.text = $"{PlayerCurrency.Instance.Money}";
         }
 
         private static void MoneyFlashInRed()
