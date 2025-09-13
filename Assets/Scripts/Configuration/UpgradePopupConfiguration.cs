@@ -20,6 +20,7 @@ namespace Configuration
         [SerializeField] private float _unitSpawnChance = 1f;
         [SerializeField] private float _globalSpawnChance = 1f;
         [SerializeField] private float _ageUpgradeSpawnChance = 1f;
+        [SerializeField] private float _turretSpawnChance = 1f;
 
         [Header("Prefabs")]
         [SerializeField] private int _maxInstancesPerUnitPrefab = 3;
@@ -27,11 +28,14 @@ namespace Configuration
         [SerializeField] private int _maxInstancesPerGlobalPrefab = 2;
         [SerializeField] private List<GameObject> _globalPrefabs;
         [SerializeField] private List<GameObject> _ageUpgradePrefabs;
-
+        [SerializeField] private int _maxTurretSlots = 2;
+        [SerializeField] private List<GameObject> _turretSlotPrefabs;
+        
         
         public List<GameObject> UnitPrefabs => _unitPrefabs;
         public List<GameObject> GlobalPrefabs => _globalPrefabs;
         public List<GameObject> AgeUpgradePrefabs => _ageUpgradePrefabs;
+        public List<GameObject> TurretSlotPrefabs => _turretSlotPrefabs;
 
         public int MaxInstancesPerUnitPrefab => _maxInstancesPerUnitPrefab;
         public int MaxInstancesPerGlobalPrefab => _maxInstancesPerGlobalPrefab;
@@ -47,6 +51,7 @@ namespace Configuration
                 eligible.AddRange(Filter(_unitPrefabs, _unitSpawnChance, SlotType.UnitUpgrade, _maxInstancesPerUnitPrefab));
                 eligible.AddRange(Filter(_globalPrefabs, _globalSpawnChance, SlotType.GlobalUpgrade, _maxInstancesPerGlobalPrefab));
                 eligible.AddRange(Filter(_ageUpgradePrefabs, _ageUpgradeSpawnChance, SlotType.AgeUpgrade));
+                eligible.AddRange(Filter(_turretSlotPrefabs, _turretSpawnChance, SlotType.TurretUpgrade, _maxTurretSlots));
             }
 
             if (eligible.Count < 3)
@@ -55,6 +60,7 @@ namespace Configuration
                 eligible.AddRange(Filter(_unitPrefabs, 1f, SlotType.UnitUpgrade, _maxInstancesPerUnitPrefab));
                 eligible.AddRange(Filter(_globalPrefabs, 1f, SlotType.GlobalUpgrade, _maxInstancesPerGlobalPrefab));
                 eligible.AddRange(Filter(_ageUpgradePrefabs, 1f, SlotType.AgeUpgrade));
+                eligible.AddRange(Filter(_turretSlotPrefabs, 1f, SlotType.TurretUpgrade, _maxTurretSlots));
             }
 
             return eligible;
@@ -82,6 +88,7 @@ namespace Configuration
             {
                 SlotType.UnitUpgrade => _maxInstancesPerUnitPrefab,
                 SlotType.GlobalUpgrade => _maxInstancesPerGlobalPrefab,
+                SlotType.TurretUpgrade => _maxTurretSlots,
                 _ => int.MaxValue
             };
 
@@ -95,14 +102,16 @@ namespace Configuration
             storage.OnUnitUpgradeRegistered += HandleUnitUpgrade;
             storage.OnGlobalUpgradeRegistered += HandleGlobalUpgrade;
             storage.OnAgeUnitUpgradeRegistered += HandleAgeUpgrade;
+            storage.OnTurretUpgradeRegistered += HandleTurretUpgrade;
         }
 
-        private void OnDestroy()
+        private void OnDestroy()    
         {
             var storage = UpgradeDataStorage.Instance;
             storage.OnUnitUpgradeRegistered -= HandleUnitUpgrade;
             storage.OnGlobalUpgradeRegistered -= HandleGlobalUpgrade;
             storage.OnAgeUnitUpgradeRegistered -= HandleAgeUpgrade;
+            storage.OnTurretUpgradeRegistered -= HandleTurretUpgrade;
         }
 
         private void HandleUnitUpgrade(UnitType unitType, StatType statType)
@@ -137,5 +146,11 @@ namespace Configuration
 
             if (prefab) OnUpgradeRegistered?.Invoke(prefab);
         }
+        private void HandleTurretUpgrade()
+        {
+            var prefab = _turretSlotPrefabs.FirstOrDefault(p => p.GetComponent<TurretPopUpSlot>() != null);
+            if (prefab) OnUpgradeRegistered?.Invoke(prefab);
+        }
+        
     }
 }

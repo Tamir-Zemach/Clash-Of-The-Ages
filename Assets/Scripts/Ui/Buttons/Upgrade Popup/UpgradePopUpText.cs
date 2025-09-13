@@ -17,6 +17,10 @@ namespace Ui.Buttons.Upgrade_Popup
         private void Awake()
         {
             _slot = GetComponent<UpgradeSlotBase>();
+        }
+
+        private void Start()
+        {
             UpdateDescriptionText();
         }
 
@@ -41,7 +45,10 @@ namespace Ui.Buttons.Upgrade_Popup
                 case SlotType.GlobalUpgrade:
                     UpgradeDescriptionText.text = UpgradeDescriptionUtility.GetGlobalUpgradeDescription(_slot as GlobalUpgradePopupSlot);
                     break;
-
+                case SlotType.TurretUpgrade:
+                    UpgradeDescriptionText.text = UpgradeDescriptionUtility.GetTurretSlotDescription(_slot as TurretPopUpSlot);
+                    break;
+                
                 default:
                     UpgradeDescriptionText.text = "Unsupported slot type.";
                     break;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
@@ -29,6 +30,11 @@ namespace Debugging
             _config.OnUpgradeRegistered += UnitUpgradeApplied;
             _config.OnPrefabEligibilityChecked += MarkIneligibleSlots;
 
+
+        }
+
+        private void Start()
+        {
             InstantiateAllEntries();
             UpdateSlotTexts();
         }
@@ -44,7 +50,8 @@ namespace Debugging
         {
             var allPrefabs = _config.UnitPrefabs
                 .Concat(_config.GlobalPrefabs)
-                .Concat(_config.AgeUpgradePrefabs);
+                .Concat(_config.AgeUpgradePrefabs)
+                .Concat(_config.TurretSlotPrefabs);
 
             foreach (var prefab in allPrefabs)
             {

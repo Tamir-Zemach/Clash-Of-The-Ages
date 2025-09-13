@@ -26,7 +26,10 @@ namespace BackEnd.Utilities.PopupUtil
                     var ageSlot = prefab.GetComponent<UnitAgeUpgradePopupSlot>();
                     return ageSlot != null &&
                            !storage.HasAgeUpgrade(ageSlot.Type);
-
+                
+                case SlotType.TurretUpgrade:
+                    return UpgradeDataStorage.Instance.GetTurretUpgradeCount() < maxAllowed;
+                
                 default:
                     return false;
             }

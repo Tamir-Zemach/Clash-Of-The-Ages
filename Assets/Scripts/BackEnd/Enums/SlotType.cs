@@ -7,6 +7,7 @@ namespace BackEnd.Enums
     {
         UnitUpgrade,
         GlobalUpgrade,
-        AgeUpgrade
+        AgeUpgrade,
+        TurretUpgrade,
     }
 }

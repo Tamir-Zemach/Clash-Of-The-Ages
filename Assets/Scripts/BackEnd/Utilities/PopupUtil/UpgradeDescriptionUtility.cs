@@ -63,5 +63,21 @@ namespace BackEnd.Utilities.PopupUtil
                     return "Unknown global upgrade.";
             }
         }
+        
+        public static string GetTurretSlotDescription(TurretPopUpSlot turretPopUpSlot)
+        {
+            if (turretPopUpSlot == null)
+                return "Invalid global upgrade slot.";
+
+            var turret = turretPopUpSlot.TurretData;
+            
+            return
+                $"Add Turret to Base. \n" +
+                $"Strength: {turret.MinBulletStrength} - {turret.MaxBulletStrength} \n" +
+                $"Range: {turret.Range} \n" +
+                $"Attack Speed: {turret.InitialAttackDelay}";
+        }
+        
+        
     }
 }

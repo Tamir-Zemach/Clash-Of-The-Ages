@@ -14,13 +14,24 @@ namespace Ui.Buttons.Upgrade_Popup
         public event Action<UnitType, StatType> OnUnitUpgradeRegistered;
         public event Action<UpgradeType> OnGlobalUpgradeRegistered;
         public event Action<UnitType, AgeStageType> OnAgeUnitUpgradeRegistered;
+        public event Action OnTurretUpgradeRegistered;
 
         private readonly Dictionary<UnitType, Dictionary<StatType, int>> _unitStatUpgrades = new();
         private readonly Dictionary<UpgradeType, int> _globalUpgrades = new();
         private readonly Dictionary<UnitType, AgeStageType> _ageUpgrades = new();
+        
+        private int _turretUpgrades = 0;
+        
+        public int GetTurretUpgradeCount() => _turretUpgrades;
         public UpgradeDataStorage()
         {
             GameStates.Instance.OnGameReset += ResetAllUpgradeData;
+        }
+
+        public void RegisterTurretUpgrade()
+        {
+            _turretUpgrades++;
+            OnTurretUpgradeRegistered?.Invoke();
         }
         
         public void RegisterUnitStatUpgrade(UnitType unitType, StatType statType)
@@ -76,6 +87,7 @@ namespace Ui.Buttons.Upgrade_Popup
             _unitStatUpgrades.Clear();
             _globalUpgrades.Clear();
             _ageUpgrades.Clear();
+            _turretUpgrades = 0;
         }
         
     }

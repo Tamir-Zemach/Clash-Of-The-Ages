@@ -11,6 +11,7 @@ namespace BackEnd.Utilities.PopupUtil
             if (prefab.GetComponent<UnitUpgradePopupSlot>()) return SlotType.UnitUpgrade;
             if (prefab.GetComponent<GlobalUpgradePopupSlot>()) return SlotType.GlobalUpgrade;
             if (prefab.GetComponent<UnitAgeUpgradePopupSlot>()) return SlotType.AgeUpgrade;
+            if (prefab.GetComponent<TurretPopUpSlot>()) return SlotType.TurretUpgrade;
             return null;
         }
     }

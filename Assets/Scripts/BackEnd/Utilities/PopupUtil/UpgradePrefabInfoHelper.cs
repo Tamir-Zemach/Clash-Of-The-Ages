@@ -13,6 +13,7 @@ namespace BackEnd.Utilities.PopupUtil
             if (config.UnitPrefabs.Contains(prefab)) return "Unit";
             if (config.GlobalPrefabs.Contains(prefab)) return "Global";
             if (config.AgeUpgradePrefabs.Contains(prefab)) return "AgeUpgrade";
+            if (config.TurretSlotPrefabs.Contains(prefab)) return "Turret";
             return "Unknown";
         }
 
@@ -44,6 +45,15 @@ namespace BackEnd.Utilities.PopupUtil
                 bool applied = storage.HasAgeUpgrade(slot.Type);
                 return $"Age Upgrade Applied: {applied}";
             }
+            if (config.TurretSlotPrefabs.Contains(prefab))
+            {
+                var slot = prefab.GetComponent<TurretPopUpSlot>();
+                if (slot == null) return "Missing TurretPopUpSlot";
+                int count = storage.GetTurretUpgradeCount();
+                return $"Turret Slot Used: {count}";
+            }
+
+
 
             return "Unknown prefab type";
         }
