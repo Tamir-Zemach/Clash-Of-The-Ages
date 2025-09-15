@@ -30,7 +30,6 @@ namespace Ui.Buttons.Upgrade_Buttons
             PlayerCurrency.Instance.SubtractMoney(Cost);
             ApplyUpgrade();
             Cost += _statCostInc;
-            HoverCostDisplay.Instance.UpdateCost(Cost);
         }
 
         private void ApplyUpgrade()

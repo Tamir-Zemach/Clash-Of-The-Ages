@@ -80,7 +80,6 @@ namespace Ui.Buttons.Upgrade_Buttons
             PlayerCurrency.Instance.SubtractMoney(Cost);
             ApplyUpgrade(_unit);
             Cost += _statCostInc;
-            HoverCostDisplay.Instance.UpdateCost(Cost);
         }
 
         private void ApplyUpgrade(UnitData unit)
