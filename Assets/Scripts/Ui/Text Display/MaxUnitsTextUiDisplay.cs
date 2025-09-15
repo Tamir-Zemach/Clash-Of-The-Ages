@@ -1,5 +1,7 @@
+using System;
 using BackEnd.Utilities;
 using BackEnd.Utilities.EffectsUtil;
+using Managers;
 using Managers.Spawners;
 using TMPro;
 using UnityEngine;
@@ -17,18 +19,25 @@ namespace Ui.Text_Display
         private void Awake()
         {
             DeployManager.OnMaxCapacity += MaxUnitsFlashInRed;
+            UnitCounter.OnFriendlyCounterChanged += UpdateMoneyUI;
             MaxUnitsImage = GetComponentInChildren<Image>();
             MaxUnItsText =  GetComponentInChildren<TextMeshProUGUI>();
             UpdateMoneyUI();
         }
-        
+
+        private void OnDestroy()
+        {
+            DeployManager.OnMaxCapacity -= MaxUnitsFlashInRed;
+            UnitCounter.OnFriendlyCounterChanged -= UpdateMoneyUI;
+        }
+
         private static void UpdateMoneyUI()
         {
             if (!MaxUnItsText)
             {
                 return;
             }
-            MaxUnItsText.text = $"Max Units: {DeployManager.Instance.MaxDeployableUnits}";
+            MaxUnItsText.text = $" {UnitCounter.FriendlyCount} / {DeployManager.Instance.MaxDeployableUnits}";
         }
 
         private static void MaxUnitsFlashInRed()

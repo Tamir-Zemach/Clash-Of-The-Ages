@@ -28,6 +28,8 @@ namespace Ui.Buttons.Deploy_Button
         
         public UnitType Type => _unitType;
         
+        public UnitData UnitData => _unit;
+        
         private Lane _selectedLane;
         
         

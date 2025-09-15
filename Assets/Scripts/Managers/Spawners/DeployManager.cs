@@ -6,7 +6,8 @@ using Bases;
 using Ui.Buttons.Deploy_Button;
 using units.Behavior;
 using UnityEngine;
-//TODO: build bugs fix
+
+
 namespace Managers.Spawners
 {
     public class DeployManager : SceneAwareMonoBehaviour<DeployManager>

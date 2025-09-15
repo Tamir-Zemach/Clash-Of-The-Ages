@@ -22,6 +22,7 @@ MonoBehaviour:
     _volume: 0.1
   _prefab: {fileID: 57035632262017829, guid: 8ca636266831d6d4aa3b3226e3e188f7, type: 3}
   DeployDelayTime: 1.5
+  Count: 2
   MoneyWhenKilled: 0
   ExpWhenKilled: 0
   OppositeBaseTag: Enemy Base
@@ -41,4 +42,3 @@ MonoBehaviour:
   RayLengthForFriendlyUnit: 2
   Range: 5
   boxSize: {x: 0.5, y: 0.5, z: 0.5}
-  boxColor: {r: 0, g: 0.1660657, b: 1, a: 1}

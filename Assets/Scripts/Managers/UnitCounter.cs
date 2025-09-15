@@ -1,3 +1,4 @@
+using System;
 using units.Behavior;
 using UnityEngine;
 
@@ -5,31 +6,44 @@ namespace Managers
 {
     public class UnitCounter : MonoBehaviour
     {
-        private UnitBaseBehaviour unitBaseBehaviour;
+        private UnitBaseBehaviour _unitBaseBehaviour;
+        public static Action OnFriendlyCounterChanged;
+        public static Action OnEnemyCounterChanged;
 
         public static int FriendlyCount { get; private set; }
         public static int EnemyCount { get; private set; }
-
+        
         private void Awake()
         {
-            unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
+            _unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
+            
         }
         private void Start()
         {
-            if (unitBaseBehaviour.Unit.IsFriendly)
-                FriendlyCount++;
+            if (_unitBaseBehaviour.Unit.IsFriendly)
+            {
+                FriendlyCount += _unitBaseBehaviour.Unit.Count;
+                OnFriendlyCounterChanged?.Invoke();
+            }
             else
+            {
                 EnemyCount++;
+                OnEnemyCounterChanged?.Invoke();
+            }
         }
 
         private void OnDestroy()
         {
-            if (unitBaseBehaviour != null && unitBaseBehaviour.Unit != null)
+            if (_unitBaseBehaviour == null || _unitBaseBehaviour.Unit == null) return;
+            if (_unitBaseBehaviour.Unit.IsFriendly)
             {
-                if (unitBaseBehaviour.Unit.IsFriendly)
-                    FriendlyCount--;
-                else
-                    EnemyCount--;
+                FriendlyCount -= _unitBaseBehaviour.Unit.Count;
+                OnFriendlyCounterChanged?.Invoke();
+            }
+            else
+            {
+                EnemyCount--;
+                OnEnemyCounterChanged?.Invoke();
             }
         }
     }

@@ -11,9 +11,14 @@ namespace BackEnd.Data__ScriptableOBj_
     public class UnitData : DataObject<UnitType>
     {
 
+        [Header("Deployment Settings")]
         [Tooltip("Delay in seconds between button press and unit deployment.")]
         [Min(0f)]
         public float DeployDelayTime;
+        
+        [Tooltip("How much will this unit cost for the unit counter.")]
+        [Min(1f)]
+        public int Count;
 
         [FormerlySerializedAs("_moneyWhenKilled")]
         [Header("Enemy Unit Reward")]
