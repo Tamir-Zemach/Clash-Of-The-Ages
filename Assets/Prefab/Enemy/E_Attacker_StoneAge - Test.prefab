@@ -15,12 +15,12 @@ GameObject:
   - component: {fileID: 2291979579065589522}
   - component: {fileID: 194186755288215043}
   - component: {fileID: 6040702131048245298}
-  - component: {fileID: 5058023936191881483}
   - component: {fileID: 6527824792250601352}
   - component: {fileID: 4737827798899146701}
   - component: {fileID: 1250936541850749956}
   - component: {fileID: 8447413611239456849}
   - component: {fileID: 2330523843814078196}
+  - component: {fileID: 8162979181425654438}
   m_Layer: 6
   m_Name: E_Attacker_StoneAge - Test
   m_TagString: Enemy Character
@@ -139,18 +139,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flashTime: 0.2
---- !u!114 &5058023936191881483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3495933123246538938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e9e3eb25d9933f4495454692206fa25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6527824792250601352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +282,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 619b246d0fd8494f984abeb72f0fc160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8162979181425654438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3495933123246538938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc89c5923174cc548ba4ae2f0e376790, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8622094680372612314

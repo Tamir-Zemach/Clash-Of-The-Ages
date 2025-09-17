@@ -21,15 +21,10 @@ namespace Ui.Buttons.Deploy_Button
         private UnitData _assignedUnit;
 
         public UnitType UnitType => _unitType;
-
-
-
-        private void Awake()
-        {
-            UnitDeploymentQueue.Instance.OnQueueChanged += UpdateQueueIndex;
-        }
+        
         private void Start()
         {
+            UnitDeploymentQueue.Instance.OnQueueChanged += UpdateQueueIndex;
             SetAssignedUnit(GameDataRepository.Instance.FriendlyUnits.GetData(_unitType));
         }
         private void OnDestroy()
@@ -58,7 +53,7 @@ namespace Ui.Buttons.Deploy_Button
 
         private bool NullChecksForSafety()
         {
-            if (_assignedUnit == null || DeployManager.Instance == null)
+            if (_assignedUnit == null || UnitSpawner.Instance == null)
             {
                 _queueCountText.text = "Error: Queue not initialized";
                 return true;

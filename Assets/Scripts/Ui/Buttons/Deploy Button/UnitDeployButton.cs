@@ -1,5 +1,6 @@
+
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using BackEnd.Enums;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
@@ -7,12 +8,12 @@ using BackEnd.Data_Getters;
 using BackEnd.Economy;
 using BackEnd.InterFaces;
 using BackEnd.Utilities;
+using Bases;
 using Managers;
 using Managers.Spawners;
 using Ui.Buttons.Upgrade_Popup;
 using UnityEngine;
 using UnityEngine.UI;
-using static BackEnd.Utilities.SpriteKeys;
 
 namespace Ui.Buttons.Deploy_Button
 {
@@ -27,6 +28,9 @@ namespace Ui.Buttons.Deploy_Button
         
         public UnitType Type => _unitType;
         
+        public UnitData UnitData => _unit;
+        
+        private Lane _selectedLane;
         
         
         private void Awake()
@@ -38,7 +42,6 @@ namespace Ui.Buttons.Deploy_Button
         }
 
         
-        //this is the name for now 
         private void UpdateSpriteFromSlot(UnitType unitType, Sprite sprite)
         {
             if (unitType == _unitType)
@@ -46,33 +49,46 @@ namespace Ui.Buttons.Deploy_Button
                 _image.sprite = sprite;
             }
         }
-
         
 
         public void DeployUnit()
         {
-            if (_unit == null)
+            if (_unit == null || !CanDeployUnit()) return;
+            
+            if (EnemyBasesManager.Instance.MultipleBases())
             {
-                Debug.LogWarning($"[UnitDeployButton] Unit data not initialized for {_unitType}");
-                return;
+                LaneChooser.ChooseLane(
+                    onLaneChosen: lane =>
+                    {
+                        ExecuteDeployment(lane);
+                    },
+                    onCancel: () =>
+                    {
+                    });
             }
-
-            if (CanDeployUnit())
+            else
             {
-                
-                PlayerCurrency.Instance.SubtractMoney(Cost);
-
-                if (GameManager.Instance != null && DeployManager.Instance != null)
-                {
-                    DeployManager.Instance.QueueUnitForDeployment(_unit);
-                }
+                ExecuteDeployment();
             }
         }
+
+        private void ExecuteDeployment(Lane lane = null)
+        {
+            PlayerCurrency.Instance.SubtractMoney(Cost);
+            if (GameManager.Instance == null || UnitSpawner.Instance == null) return;
+            
+            GlobalUnitCounter.Instance.AddCount(1, friendly: true);
+            UnitDeploymentQueue.Instance.EnqueueUnit(_unit, lane);
+        }
+
+        
 
         private bool CanDeployUnit()
         {
-            return PlayerCurrency.Instance.HasEnoughMoney(Cost) && !DeployManager.Instance.MaxUnitCapacity();
+            return PlayerCurrency.Instance.HasEnoughMoney(Cost) && !UnitSpawner.Instance.MaxUnitCapacity();
         }
+        
+        
         
     }
 }

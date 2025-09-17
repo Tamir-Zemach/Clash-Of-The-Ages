@@ -72,11 +72,13 @@ namespace Managers
         {
             LevelLoader.Instance.LoadGameOver();
             GameStates.Instance.EndGame();
+            GlobalUnitCounter.Instance.ResetCounts();
         }
 
         private void ResetGame()
         {
             PlayerExp.Instance.ResetExp();
+            GlobalUnitCounter.Instance.ResetCounts();
         }
 
         protected override void InitializeOnSceneLoad()

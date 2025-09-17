@@ -13,22 +13,25 @@ namespace Ui.Text_Display
     {
         private static TextMeshProUGUI MaxUnItsText { get; set; }
         private static Image MaxUnitsImage { get; set; }
-
-
+        
 
         private void Awake()
         {
-            DeployManager.OnMaxCapacity += MaxUnitsFlashInRed;
-            UnitCounter.OnFriendlyCounterChanged += UpdateMoneyUI;
+            UnitSpawner.OnMaxCapacity += MaxUnitsFlashInRed;
             MaxUnitsImage = GetComponentInChildren<Image>();
             MaxUnItsText =  GetComponentInChildren<TextMeshProUGUI>();
             UpdateMoneyUI();
         }
 
+        private void Start()
+        {
+            GlobalUnitCounter.Instance.OnCountChanged += UpdateMoneyUI;
+        }
+
         private void OnDestroy()
         {
-            DeployManager.OnMaxCapacity -= MaxUnitsFlashInRed;
-            UnitCounter.OnFriendlyCounterChanged -= UpdateMoneyUI;
+            UnitSpawner.OnMaxCapacity -= MaxUnitsFlashInRed;
+            GlobalUnitCounter.Instance.OnCountChanged -= UpdateMoneyUI;
         }
 
         private static void UpdateMoneyUI()
@@ -37,7 +40,7 @@ namespace Ui.Text_Display
             {
                 return;
             }
-            MaxUnItsText.text = $" {UnitCounter.FriendlyCount} / {DeployManager.Instance.MaxDeployableUnits}";
+            MaxUnItsText.text = $" {GlobalUnitCounter.Instance.FriendlyCount} / {UnitSpawner.Instance.MaxDeployableUnits}";
         }
 
         private static void MaxUnitsFlashInRed()

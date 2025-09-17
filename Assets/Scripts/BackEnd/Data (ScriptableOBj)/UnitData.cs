@@ -16,10 +16,6 @@ namespace BackEnd.Data__ScriptableOBj_
         [Min(0f)]
         public float DeployDelayTime;
         
-        [Tooltip("How much will this unit cost for the unit counter.")]
-        [Min(1f)]
-        public int Count;
-
         [FormerlySerializedAs("_moneyWhenKilled")]
         [Header("Enemy Unit Reward")]
         [Tooltip("Amount of money rewarded when this enemy unit is destroyed.")]

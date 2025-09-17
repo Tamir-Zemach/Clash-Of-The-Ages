@@ -90,8 +90,8 @@ namespace Managers
 
         public void DisplayUnitCounterInConsole()
         {
-            print($"Friendly Units: {UnitCounter.FriendlyCount}," +
-                  $"Enemy Units: {UnitCounter.EnemyCount}");
+            print($"Friendly Units: {GlobalUnitCounter.Instance.FriendlyCount}," +
+                  $"Enemy Units: {GlobalUnitCounter.Instance.EnemyCount}");
         }
 
 

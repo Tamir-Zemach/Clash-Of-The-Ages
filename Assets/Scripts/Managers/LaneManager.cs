@@ -19,7 +19,7 @@ namespace Managers
         protected override void Awake()
         {
             base.Awake();
-            DeployManager.OnUnitDeployedOnLane += (lane, unit) => RegisterUnitToLane(unit, lane);
+            UnitSpawner.OnUnitDeployedOnLane += (lane, unit) => RegisterUnitToLane(unit, lane);
         }
 
         protected override void InitializeOnSceneLoad()

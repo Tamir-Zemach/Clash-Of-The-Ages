@@ -66,7 +66,7 @@ namespace Ui.Buttons.Upgrade_Popup
 
         private void DecreaseCostToAllFriendlyUnits()
         {
-            var deployButtons = UIObjectFinder.GetButtons<UnitDeployButtonWithLanes, UnitType>();
+            var deployButtons = UIObjectFinder.GetButtons<UnitDeployButton, UnitType>();
             foreach (var deployButton in deployButtons)
             {
                 deployButton.Cost -= _statBonus;

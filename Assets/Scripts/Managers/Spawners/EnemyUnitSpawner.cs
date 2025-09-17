@@ -96,7 +96,7 @@ namespace Managers.Spawners
 
         protected override bool CanDeploy()
         {
-            return Timer >= RandomSpawnTimer && GetAvailableLane() != null && UnitCounter.EnemyCount < _maxEnemies;
+            return Timer >= RandomSpawnTimer && GetAvailableLane() != null && GlobalUnitCounter.Instance.EnemyCount < _maxEnemies;
         }
         
         

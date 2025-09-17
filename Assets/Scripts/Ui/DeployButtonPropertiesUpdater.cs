@@ -12,9 +12,8 @@ namespace Ui
     {
         public TextMeshProUGUI CostText;
         public TextMeshProUGUI PowerText;
-        public TextMeshProUGUI UnitCountText;
 
-        private UnitDeployButtonWithLanes _deployButton;
+        private UnitDeployButton _deployButton;
         private UnitData  _unitData;
         private UnitType _unitType;
         private int _lastCost;
@@ -23,10 +22,9 @@ namespace Ui
 
         private void Awake()
         {
-            _deployButton = GetComponentInParent<UnitDeployButtonWithLanes>();
+            _deployButton = GetComponentInParent<UnitDeployButton>();
             _unitType  = _deployButton.Type;
             _unitData = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
-            UnitCountText.text = _unitData.Count.ToString(); 
         }
 
         private void Update()

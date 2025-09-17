@@ -3,6 +3,7 @@ using BackEnd.Base_Classes;
 using BackEnd.Enums;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Data_Getters;
+using BackEnd.Structs;
 using BackEnd.Utilities;
 using BackEnd.Utilities.EffectsUtil;
 using DG.Tweening;
@@ -12,12 +13,12 @@ using UnityEngine.UI;
 
 namespace Ui.Buttons.Deploy_Button
 {
-    [RequireComponent(typeof(UnitDeployButtonWithLanes))]
+    [RequireComponent(typeof(UnitDeployButton))]
     public class DeployFillBar : InGameObject
     {
         [SerializeField] private Slider _fillBar;
         
-        private UnitDeployButtonWithLanes _unitDeployButton;
+        private UnitDeployButton _unitDeployButton;
         private UnitType  _unitType;
         private UnitData  _unitData;
         private CanvasGroup _canvasGroup;
@@ -26,8 +27,8 @@ namespace Ui.Buttons.Deploy_Button
 
         private void Awake()
         {
-            UnitDeploymentQueue.Instance.OnUnitReadyToDeploy += ActivateCountdown;
-            _unitDeployButton = GetComponent<UnitDeployButtonWithLanes>();
+            UnitDeploymentQueue.Instance.OnUnitStartDeploying += ActivateCountdown;
+            _unitDeployButton = GetComponent<UnitDeployButton>();
             _unitType = _unitDeployButton.Type;
             _unitData = GameDataRepository.Instance.FriendlyUnits.GetData(_unitType);
             _canvasGroup = _fillBar.gameObject.GetComponent<CanvasGroup>();
@@ -36,19 +37,18 @@ namespace Ui.Buttons.Deploy_Button
 
         private void OnDestroy()
         {
-            UnitDeploymentQueue.Instance.OnUnitReadyToDeploy -= ActivateCountdown;
+            UnitDeploymentQueue.Instance.OnUnitStartDeploying -= ActivateCountdown;
         }
 
-        private void ActivateCountdown(UnitData unitData)
+        private void ActivateCountdown(Deployment? deployment)
         {
-            if (unitData.Type == _unitType)
-            {
-                _countdownTween?.Kill();
-                _fillBar.value = 1;
-                UIEffects.FadeCanvasGroup(_canvasGroup, 1, 0.02f);
-                _countdownTween = UIEffects.AnimateSliderFill(_fillBar, 0, _unitData.DeployDelayTime, 
+            var unitData = deployment?.Unit;
+            if (unitData == null || unitData.Type != _unitType) return;
+            _countdownTween?.Kill();
+            _fillBar.value = 1;
+            UIEffects.FadeCanvasGroup(_canvasGroup, 1, 0.02f);
+            _countdownTween = UIEffects.AnimateSliderFill(_fillBar, 0, _unitData.DeployDelayTime, 
                 onComplete: () => { UIEffects.FadeCanvasGroup(_canvasGroup, 0, 0.02f); });
-            }
         }
 
 

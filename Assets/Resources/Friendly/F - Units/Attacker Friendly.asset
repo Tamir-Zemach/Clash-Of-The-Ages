@@ -21,8 +21,7 @@ MonoBehaviour:
     _audioClip: {fileID: 8300000, guid: 4652c5da23d529e4d84fc1bf9002ded0, type: 3}
     _volume: 0.182
   _prefab: {fileID: 6578747469787437173, guid: 2d350e19883cdcb4f8d9461609a59c22, type: 3}
-  DeployDelayTime: 1
-  Count: 1
+  DeployDelayTime: 1.5
   MoneyWhenKilled: 0
   ExpWhenKilled: 0
   OppositeBaseTag: Enemy Base

@@ -86,8 +86,8 @@ namespace Ui
 
         private void DisplayUnitCounter()
         {
-            UnitCounterText.text = $"Friendly Units: {UnitCounter.FriendlyCount}\n" +
-                                   $"Enemy Units: {UnitCounter.EnemyCount}";
+            UnitCounterText.text = $"Friendly Units: {GlobalUnitCounter.Instance.FriendlyCount}\n" +
+                                   $"Enemy Units: {GlobalUnitCounter.Instance.EnemyCount}";
         }
         
         private void LogHalfHealthAggression()
