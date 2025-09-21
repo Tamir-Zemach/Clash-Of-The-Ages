@@ -59,19 +59,26 @@ namespace Managers.Spawners
         private void Update()
         {
             if (LevelLoader.Instance.InStartMenu() || !GameStates.Instance.GameIsPlaying) return;
+            ResetTimer();
             SpawnPrefabsWithRandomTime();
 
+        }
+
+        private void ResetTimer()
+        {
+            if (Timer > RandomSpawnTimer)
+            {
+                Timer = 0;
+            }
         }
 
         private void SpawnPrefabsWithRandomTime()
         {
             Timer += Time.deltaTime;
-            if (CanDeploy())
-            {
-                SpawnRandomEnemyPrefab();
-                Timer = 0;
-                RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
-            }
+            if (!CanDeploy()) return;
+            SpawnRandomEnemyPrefab();
+            Timer = 0;
+            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
         }
 
         private void SpawnRandomEnemyPrefab()

@@ -6,6 +6,7 @@ using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Data_Getters;
 using BackEnd.Enums;
 using Special_Attacks;
+using Ui.Buttons.Deploy_Button;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,7 +16,7 @@ namespace Managers.Spawners
     {
         private SpecialAttackData _specialAttack;
         
-        private List<MeteorRainSpawnPos> _meteorRainSpawnPosList = new ();
+        private List<Lane> _lanes = new ();
         private int _randomSpawnPosIndex;
         
         private SpecialAttackType _specialAttackType;
@@ -36,7 +37,7 @@ namespace Managers.Spawners
         protected override void InitializeOnSceneLoad()
         {
             if (LevelLoader.Instance.InStartMenu()) return;
-            _meteorRainSpawnPosList = FindObjectsByType<MeteorRainSpawnPos>(FindObjectsSortMode.None).ToList();
+            _lanes = LaneManager.Instance.Lanes;
             _specialAttack = GameDataRepository.Instance.EnemySpecialAttacks.GetData(SpecialAttackType.DestroyPath);
             ResetRandoms();
             MeteorRainSpawnPos.OnMeteorRainAccruing += MeteorRainInProgress;
@@ -61,7 +62,7 @@ namespace Managers.Spawners
 
         protected override bool CanDeploy()
         {
-            if (_meteorRainSpawnPosList == null)
+            if (_lanes == null)
             {
                 return false;
             }
@@ -72,10 +73,10 @@ namespace Managers.Spawners
         private void SpawnPrefabsWithRandomTime()
         {
             Timer += Time.deltaTime;
-            if (!CanDeploy() || _meteorRainSpawnPosList.Count == 0) return;
+            if (!CanDeploy() || _lanes.Count == 0) return;
 
             SpawnSpecialAttack();
-            _meteorRainSpawnPosList[_randomSpawnPosIndex].ApplySpecialAttack();
+            _lanes[_randomSpawnPosIndex].MeteorRainSpawnPosition.ApplySpecialAttack();
             ResetRandoms();
         }
 
@@ -83,20 +84,20 @@ namespace Managers.Spawners
         {
             Timer = 0;
             RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
-            _randomSpawnPosIndex = Random.Range(0, _meteorRainSpawnPosList.Count);
+            _randomSpawnPosIndex = Random.Range(0, _lanes.Count);
         }
 
 
         private void SpawnSpecialAttack()
         {
 
-            if (_randomSpawnPosIndex < 0 || _meteorRainSpawnPosList[_randomSpawnPosIndex] == null || _specialAttack == null) return;
-            var specialAttack = Instantiate(_specialAttack.Prefab, _meteorRainSpawnPosList[_randomSpawnPosIndex].transform.position, _meteorRainSpawnPosList[_randomSpawnPosIndex].transform.localRotation);
+            if (_randomSpawnPosIndex < 0 || _lanes[_randomSpawnPosIndex] == null || _specialAttack == null) return;
+            var specialAttack = Instantiate(_specialAttack.Prefab, _lanes[_randomSpawnPosIndex].MeteorRainSpawnPosition.transform.position, _lanes[_randomSpawnPosIndex].transform.localRotation);
             var behaviour = specialAttack.GetComponent<SpecialAttackBaseBehavior>();
 
             if (behaviour != null)
             {
-                behaviour.Initialize(_specialAttack, _meteorRainSpawnPosList[_randomSpawnPosIndex]);
+                behaviour.Initialize(_specialAttack, _lanes[_randomSpawnPosIndex].MeteorRainSpawnPosition);
             }
             else
             {

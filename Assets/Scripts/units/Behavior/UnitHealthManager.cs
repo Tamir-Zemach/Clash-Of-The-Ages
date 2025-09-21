@@ -47,6 +47,7 @@ namespace units.Behavior
             }
             else
             {
+                OnDying?.Invoke();
                 Destroy(gameObject);
             }
         }

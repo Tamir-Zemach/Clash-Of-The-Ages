@@ -54,12 +54,24 @@ namespace Special_Attacks
         {
             if (_hasCollided) return;
 
-            print($"{other.gameObject.name} collided");
             _hasCollided = true;
 
-            Vector3 impactPoint = other.ClosestPoint(transform.position);
+            Vector3 impactPoint = transform.position; // fallback
+
+            // Check if collider type supports ClosestPoint
+            if (IsClosestPointSafe(other))
+            {
+                impactPoint = other.ClosestPoint(transform.position);
+            }
+
             OnImpact?.Invoke(impactPoint);
             Destroy(gameObject);
+        }
+        
+        private bool IsClosestPointSafe(Collider col)
+        {
+            return col is BoxCollider || col is SphereCollider || col is CapsuleCollider ||
+                   (col is MeshCollider mesh && mesh.convex);
         }
     }
 }

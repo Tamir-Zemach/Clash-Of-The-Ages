@@ -16,7 +16,7 @@ namespace Special_Attacks
         private GameObject _meteorPrefab;
 
         [SerializeField, Tooltip("The defined area within which meteors will randomly spawn.")]
-        private Collider _specialAttackArea;
+        private BoxCollider _specialAttackArea;
 
         [FormerlySerializedAs("_meteorSterngth")]
         [SerializeField, Tooltip("Strength For Meteor")]
@@ -53,33 +53,31 @@ namespace Special_Attacks
 
         private Vector3 RandomSpawnPoint()
         {
-            if (!_isDestroyed && _specialAttackArea != null && _specialAttackArea.enabled)
-                return RandomPointInCollider(_specialAttackArea);
+            if (!_isDestroyed && _specialAttackArea != null)
+            {
+                return RandomPointInBoxCollider(_specialAttackArea);
+            }
+
             Debug.LogWarning($"{name}: Invalid spawn area — using fallback position.");
             return transform != null ? transform.position : Vector3.zero;
-
         }
-        private Vector3 RandomPointInCollider(Collider col)
+        private Vector3 RandomPointInBoxCollider(BoxCollider box)
         {
-            Vector3 point;
-            int attempts = 0;
-            do
-            {
-                point = new Vector3(
-                    Random.Range(col.bounds.min.x, col.bounds.max.x),
-                    Random.Range(col.bounds.min.y, col.bounds.max.y),
-                    Random.Range(col.bounds.min.z, col.bounds.max.z)
-                );
-                attempts++;
-            } while (!col.bounds.Contains(point) || !IsPointInsideCollider(col, point) && attempts < 10);
+            // Random point within the full size of the box
+            Vector3 localPoint = new Vector3(
+                Random.Range(0f, box.size.x),
+                Random.Range(0f, box.size.y),
+                Random.Range(0f, box.size.z)
+            );
 
-            return point;
-        }
+            // Shift to center-based coordinates
+            localPoint -= box.size * 0.5f;
 
-        private bool IsPointInsideCollider(Collider col, Vector3 point)
-        {
-            Vector3 closest = col.ClosestPoint(point);
-            return Vector3.Distance(closest, point) < 0.01f;
+            // Offset by the collider's center
+            localPoint += box.center;
+
+            // Convert to world space
+            return box.transform.TransformPoint(localPoint);
         }
 
         private float RandomSpawnTime(float minSpawnTime, float maxSpawntime)
@@ -116,7 +114,6 @@ namespace Special_Attacks
                 meteorScript.SetStrength(_meteorStrength);
             }
         }
-
         #region GameLifecycle
 
         protected override void HandlePause()
