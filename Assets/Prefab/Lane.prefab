@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 727509009625389552}
   - component: {fileID: 1806838476244585467}
   - component: {fileID: 2939164587151515630}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 'Player Unit SpawnArea '
   m_TagString: Player Spawn Area
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 7225198818818085301}
   - component: {fileID: 1626094036970366642}
   - component: {fileID: 609784124752473900}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 'Enemy Unit SpawnArea  '
   m_TagString: Player Spawn Area
   m_Icon: {fileID: 0}
@@ -984,11 +984,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1326338204936076475, guid: b3ab9f4b3304cdd46821bb0dcefcd6c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1326338204936076475, guid: b3ab9f4b3304cdd46821bb0dcefcd6c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 1326338204936076475, guid: b3ab9f4b3304cdd46821bb0dcefcd6c4, type: 3}
       propertyPath: m_LocalPosition.z

@@ -67,24 +67,7 @@ namespace Ui.Buttons
         {
             _meteorRainAccruing = true;
         }
-
-
-        private void UpdateSprite(List<SpriteEntries.SpriteEntry<SpecialAttackType>> spriteMap)
-        {
-            foreach (var s in spriteMap)
-            {
-                if (s.GetKey() == Type)
-                {
-                    var newSprite = s.GetSprite();
-                    if (_image != null && newSprite != null)
-                    {
-                        _image.sprite = newSprite;
-                    }
-                    break; 
-                }
-            }
-        }
-
+        
         public void PerformSpecialAttack()
         {
             if (!CanPerformAttack()) return;

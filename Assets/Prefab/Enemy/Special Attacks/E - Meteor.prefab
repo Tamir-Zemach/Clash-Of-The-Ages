@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 2438904674289388197}
   - component: {fileID: 633955720959305606}
   m_Layer: 12
-  m_Name: F - Meteor
+  m_Name: E - Meteor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a51eb0adfa311a3489eade5f2ba5703f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _oppositeUnitTag: Enemy Character
+  _oppositeUnitTag: Friendly Character
 --- !u!114 &633955720959305606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564ba168be5094c4d8085785eb68d825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FallDirectionZ: 0.5
+  FallDirectionZ: -0.5
   AdditionalFallForce: 50
   DebrisLifetime: 2
   ExplosionForce: 300

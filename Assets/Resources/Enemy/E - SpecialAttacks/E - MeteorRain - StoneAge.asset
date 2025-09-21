@@ -17,4 +17,4 @@ MonoBehaviour:
   _isFriendly: 0
   _gameObject: {fileID: 0}
   _sfx: []
-  _prefab: {fileID: 577148494940015122, guid: 5f580d9f3866d8d4e9652b7271bdc31d, type: 3}
+  _prefab: {fileID: 577148494940015122, guid: 204a80f874fa51947ac458f46d425f4f, type: 3}

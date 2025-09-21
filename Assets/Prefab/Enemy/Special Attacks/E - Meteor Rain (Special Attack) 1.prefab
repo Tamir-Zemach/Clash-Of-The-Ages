@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 815867402957247957}
   - component: {fileID: 757808708766798297}
-  - component: {fileID: -3117671209169372005}
-  - component: {fileID: 2931486161254131872}
-  - component: {fileID: 2693408812213459872}
-  m_Layer: 0
-  m_Name: E - Meteor Rain (Special Attack)
+  - component: {fileID: 5346495362125907546}
+  - component: {fileID: -2241609641428176453}
+  - component: {fileID: -2631345682988148623}
+  m_Layer: 12
+  m_Name: E - Meteor Rain (Special Attack) 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 577148494940015122}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 12.28, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -48,12 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60e1bab407e54184099dee67193e1ccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meteorPrefab: {fileID: 6357827531889126963, guid: 63d6a2dde05f17b4f960c7ba12c76eb5, type: 3}
+  _meteorPrefab: {fileID: 6357827531889126963, guid: fe75d5d59d57f414d95354186f91f779, type: 3}
   _specialAttackArea: {fileID: 4388196287644028814}
   _meteorStrength: 200
   _minSpawnTime: 0.2
-  _maxSpawnTime: 1
---- !u!114 &-3117671209169372005
+  _maxSpawnTime: 0.6
+--- !u!114 &5346495362125907546
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,8 +65,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0d57122c54242d7b070c2fcb4487b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeOfTheSpecialAttack: 10
---- !u!114 &2931486161254131872
+  _timeOfTheSpecialAttack: 12
+--- !u!114 &-2241609641428176453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c803fbb279bd438c949a9e06fefb8b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!82 &2693408812213459872
+--- !u!82 &-2631345682988148623
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 5756586678549487571}
   - component: {fileID: 4626320030435298961}
   - component: {fileID: 4388196287644028814}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Special Attack Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 30}
+  m_LocalScale: {x: 1.5, y: 1, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 815867402957247957}
@@ -224,7 +224,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8262765360805082668}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -240,7 +240,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 28d0fd7c2cbb4d44aac69515b0388aaa, type: 2}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

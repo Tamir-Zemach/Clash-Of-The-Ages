@@ -31,6 +31,8 @@ namespace Special_Attacks
         private ManagedCoroutine _spawnRoutine;
 
         private bool _isDestroyed = false;
+
+        private GameObject _enemyBase;
         
         private void Awake()
         {
@@ -51,18 +53,33 @@ namespace Special_Attacks
 
         private Vector3 RandomSpawnPoint()
         {
-            if (_isDestroyed || _specialAttackArea == null || !_specialAttackArea.enabled)
-            {
-                Debug.LogWarning($"{name}: Invalid spawn area — using fallback position.");
-                return transform != null ? transform.position : Vector3.zero;
-            }
+            if (!_isDestroyed && _specialAttackArea != null && _specialAttackArea.enabled)
+                return RandomPointInCollider(_specialAttackArea);
+            Debug.LogWarning($"{name}: Invalid spawn area — using fallback position.");
+            return transform != null ? transform.position : Vector3.zero;
 
-            var bounds = _specialAttackArea.bounds;
-            return new Vector3(
-                Random.Range(bounds.min.x, bounds.max.x),
-                Random.Range(bounds.min.y, bounds.max.y),
-                Random.Range(bounds.min.z, bounds.max.z)
-            );
+        }
+        private Vector3 RandomPointInCollider(Collider col)
+        {
+            Vector3 point;
+            int attempts = 0;
+            do
+            {
+                point = new Vector3(
+                    Random.Range(col.bounds.min.x, col.bounds.max.x),
+                    Random.Range(col.bounds.min.y, col.bounds.max.y),
+                    Random.Range(col.bounds.min.z, col.bounds.max.z)
+                );
+                attempts++;
+            } while (!col.bounds.Contains(point) || !IsPointInsideCollider(col, point) && attempts < 10);
+
+            return point;
+        }
+
+        private bool IsPointInsideCollider(Collider col, Vector3 point)
+        {
+            Vector3 closest = col.ClosestPoint(point);
+            return Vector3.Distance(closest, point) < 0.01f;
         }
 
         private float RandomSpawnTime(float minSpawnTime, float maxSpawntime)
@@ -85,11 +102,10 @@ namespace Special_Attacks
             {
                 Debug.LogWarning($"{name}: Meteor prefab is missing.");
                 return;
-            }
+            } 
+            
 
-            var spawnPos = RandomSpawnPoint();
-
-            var meteorReference = Instantiate(_meteorPrefab, spawnPos, Quaternion.identity);
+            var meteorReference = Instantiate(_meteorPrefab, RandomSpawnPoint(), Quaternion.identity);
             if (meteorReference == null) return;
 
             OnMeteorSpawned?.Invoke();
