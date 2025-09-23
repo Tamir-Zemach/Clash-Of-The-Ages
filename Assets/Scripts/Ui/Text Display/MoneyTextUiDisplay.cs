@@ -9,11 +9,10 @@ namespace Ui.Text_Display
 {
     public class MoneyTextUiDisplay : MonoBehaviour
     {
+        private static int _lastMoneyValue;
         private static TextMeshProUGUI MoneyText { get; set; }
         private static Image MoneyImage { get; set; }
-
-
-
+        
         private void Awake()
         {
             PlayerCurrency.OnMoneyChanged += UpdateMoneyUI;
@@ -21,15 +20,16 @@ namespace Ui.Text_Display
             MoneyImage = GetComponentInChildren<Image>();
             MoneyText =  GetComponentInChildren<TextMeshProUGUI>();
             UpdateMoneyUI();
+            _lastMoneyValue = PlayerCurrency.Instance.Money;
         }
         
         private static void UpdateMoneyUI()
         {
-            if (!MoneyText)
-            {
-                return;
-            }
-            MoneyText.text = $"{PlayerCurrency.Instance.Money}";
+            if (!MoneyText) return;
+
+            int newMoney = PlayerCurrency.Instance.Money;
+            NumberRisingUtil.AnimateNumberRise(MoneyText, _lastMoneyValue, newMoney);
+            _lastMoneyValue = newMoney;
         }
 
         private static void MoneyFlashInRed()

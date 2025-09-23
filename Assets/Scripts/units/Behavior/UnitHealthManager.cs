@@ -3,6 +3,7 @@ using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Economy;
 using BackEnd.InterFaces;
 using UnityEngine;
+using VisualCues;
 
 namespace units.Behavior
 {
@@ -38,8 +39,15 @@ namespace units.Behavior
 
         private void Die()
         {
-            PlayerCurrency.Instance.AddMoney(_unit.MoneyWhenKilled);
-            PlayerExp.Instance.AddExp(_unit.ExpWhenKilled);
+            if (!_unit.IsFriendly)
+            {
+                CoinPickupEffect.Instance.SpawnCoins(gameObject.transform.position, () =>
+                {
+                    PlayerCurrency.Instance.AddMoney(_unit.MoneyWhenKilled);
+                    PlayerExp.Instance.AddExp(_unit.ExpWhenKilled);
+                });
+            }
+
             TrygetAnimator();
             if (_animator != null)
             {
