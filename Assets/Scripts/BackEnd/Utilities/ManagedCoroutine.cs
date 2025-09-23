@@ -35,8 +35,10 @@ namespace BackEnd.Utilities
 
         public void Stop()
         {
-            if (_coroutine != null)
+            if (_coroutine != null || _owner)
+            {
                 _owner.StopCoroutine(_coroutine);
+            }
         }
 
         private IEnumerator Run()

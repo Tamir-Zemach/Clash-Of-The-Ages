@@ -37,6 +37,7 @@ namespace Special_Attacks
         private void Awake()
         {
             StartSpawning();
+            CameraShake.Shake();
         }
 
         private void StartSpawning()

@@ -4,7 +4,9 @@ using System.Linq;
 using BackEnd.Base_Classes;
 using BackEnd.Data_Getters;
 using BackEnd.Economy;
+using BackEnd.Utilities;
 using Ui.Buttons.Upgrade_Popup;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace Managers
@@ -83,10 +85,9 @@ namespace Managers
 
         protected override void InitializeOnSceneLoad()
         {
-            if ((int)AgeUpgrade.Instance.CurrentPlayerAge < LevelLoader.Instance.LevelIndex)
-            {
-                //UpgradePlayerAge();
-            }
+            if (LevelLoader.Instance.InStartMenu()) return;
+            var cinemachineCamera = FindAnyObjectByType<CinemachineCamera>();
+            CameraShake.Init(cinemachineCamera);
         }
 
 
