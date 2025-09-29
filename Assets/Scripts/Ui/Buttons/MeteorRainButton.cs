@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using BackEnd.Enums;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
@@ -133,7 +132,7 @@ namespace Ui.Buttons
         {
             return PlayerCurrency.Instance.HasEnoughMoney(Cost)
                    && !_meteorRainAccruing
-                   && _cooldownSlider.value >= 1f;
+                   && _cooldownSlider.value <= 0;
         }
 
 
@@ -141,10 +140,10 @@ namespace Ui.Buttons
         
         private void ResetTimer()
         {
-            _cooldownSlider.value = 0f;
+            _cooldownSlider.value = 1;
             OnTimerStarted?.Invoke();
 
-            _cooldownTween = UIEffects.AnimateSliderFill(_cooldownSlider, 1f, _specialAttackTimer, () =>
+            _cooldownTween = UIEffects.AnimateSliderFill(_cooldownSlider, 0, _specialAttackTimer, () =>
             {
                 UIEffects.ApplyGraphicFeedback(
                     graphic: _image,
