@@ -1,8 +1,10 @@
 
+using System;
 using Audio;
 using BackEnd.Utilities.EffectsUtil;
 using DG.Tweening;
 using Managers;
+using Managers.Loaders;
 using UnityEngine;
 
 namespace Ui.Pause
@@ -13,12 +15,22 @@ namespace Ui.Pause
         private CanvasGroup _canvasGroup;
         private Tween _tween;
 
-        private void Start()
+        private void Awake()
+        {
+            if (LevelLoader.Instance == null) return;
+            LevelLoader.Instance.OnNonAdditiveSceneChanged += FindComponents;
+        }
+
+        private void OnDestroy()
+        {
+            LevelLoader.Instance.OnNonAdditiveSceneChanged -= FindComponents;
+        }
+
+        private void FindComponents()
         {
             _pauseMenu = FindAnyObjectByType<PauseMenu>().GetComponent<PauseMenu>();
             _canvasGroup = _pauseMenu.GetComponent<CanvasGroup>();
         }
-
 
         public void OpenOrCloseMenu()
         {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using BackEnd.Base_Classes;
 using BackEnd.Utilities;
 using Managers;
+using Managers.Loaders;
 using UnityEngine;
 
 namespace Audio
@@ -27,7 +28,7 @@ namespace Audio
         protected override void InitializeOnSceneLoad()
         {
             if (LevelLoader.Instance.InStartMenu()) return;
-            LevelLoader.Instance.OnSceneChanged += PlaySoundtrack;
+            LevelLoader.Instance.OnNonAdditiveSceneChanged += PlaySoundtrack;
 
         }
         private void PlaySoundtrack()

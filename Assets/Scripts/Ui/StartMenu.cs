@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using Audio;
 using BackEnd.Utilities;
 using BackEnd.Utilities.EffectsUtil;
 using Managers;
+using Managers.Loaders;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -13,7 +15,9 @@ namespace Ui
     {
         public Toggle AdminUi;
         public Toggle DebuggerUi;
-        
+
+        public CanvasGroup Buttons;
+        public CanvasGroup LevelSelectionPanel;
         
         public void AdminUiToggle()
         {
@@ -30,18 +34,27 @@ namespace Ui
         {
             LevelLoader.Instance.LoadSpecificLevel(levelIndex);
         }
+        
 
-        public void FadeInCanvas(CanvasGroup canvasGroup)
+        public void ToggleCanvasGroups(bool showLevelSelection)
         {
-            UIEffects.FadeCanvasGroup(canvasGroup, 1, 0.3f);
-            canvasGroup.interactable = true;
-            canvasGroup.blocksRaycasts = true;
+            StartCoroutine(TransitionCanvasGroups(showLevelSelection ? LevelSelectionPanel : Buttons, showLevelSelection ? Buttons : LevelSelectionPanel));
         }
-        public void FadeOutCanvas(CanvasGroup canvasGroup)
+        
+        private IEnumerator TransitionCanvasGroups(CanvasGroup toShow, CanvasGroup toHide)
         {
-            UIEffects.FadeCanvasGroup(canvasGroup, 0, 0.3f);
-            canvasGroup.interactable = false;
-            canvasGroup.blocksRaycasts = false;
+            LoadingScreenController.Instance.StartAnimation();
+            yield return new WaitUntil(() => LoadingScreenController.Instance.IsInState("DoorClosedIdle"));
+
+            toShow.alpha = 1;
+            toShow.interactable = true;
+            toShow.blocksRaycasts = true;
+
+            toHide.alpha = 0;
+            toHide.interactable = false;
+            toHide.blocksRaycasts = false;
+
+            LoadingScreenController.Instance.EndAnimation();
         }
         
     }

@@ -8,6 +8,7 @@ using BackEnd.Data_Getters;
 using BackEnd.InterFaces;
 using BackEnd.Utilities;
 using Managers;
+using Managers.Loaders;
 using turrets;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -59,7 +60,7 @@ namespace Ui.Buttons.Turret_Button
         {
             _turret = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
             _image = GetComponent<Image>();
-            LevelLoader.Instance.OnSceneChanged += GetAllFriendlyTurretSpawnPoints;
+            LevelLoader.Instance.OnNonAdditiveSceneChanged += GetAllFriendlyTurretSpawnPoints;
             UiAgeUpgrade.Instance.OnUiRefreshTurrets += UpdateSprite;
             GetAllFriendlyTurretSpawnPoints();
             if (_turretButtonType is TurretButtonType.AddSlot or TurretButtonType.SellTurret) return;

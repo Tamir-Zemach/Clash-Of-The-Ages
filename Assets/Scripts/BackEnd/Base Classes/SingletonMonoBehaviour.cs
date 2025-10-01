@@ -12,7 +12,7 @@ namespace BackEnd.Base_Classes
     {
         public static T Instance;
 
-        public void InstantiateOneObject()
+        private void InstantiateOneObject()
         {
             if (Instance != null && Instance != this)
             {

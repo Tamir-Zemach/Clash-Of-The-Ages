@@ -5,6 +5,7 @@ using BackEnd.Utilities.EffectsUtil;
 using DG.Tweening;
 using Managers;
 using Managers.Camera;
+using Managers.Loaders;
 using units.Behavior;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,7 +36,7 @@ namespace VisualCues
 
         protected void OnEnable()
         {
-            LevelLoader.Instance.OnSceneChanged += InitializeOnSceneLoad;
+            LevelLoader.Instance.OnNonAdditiveSceneChanged += InitializeOnNonAdditiveSceneLoad;
             PlayerHealth.OnDroppedBelowHalfHealth += IndexForPlayerHealthDrop;
             PlayerHealth.OnHealedAboveHalfHealth += IndexForPlayerHealed;
             EnemyHealth.OnDroppedBelowHalfHealth += IndexForEnemyHealthDrop;
@@ -51,7 +52,7 @@ namespace VisualCues
             
         }
 
-        private void InitializeOnSceneLoad()
+        private void InitializeOnNonAdditiveSceneLoad()
         {
             _fadeTween?.Kill();
             _fadeTween = null;

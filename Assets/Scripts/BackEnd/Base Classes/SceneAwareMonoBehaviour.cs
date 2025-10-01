@@ -1,4 +1,5 @@
 ﻿using Managers;
+using Managers.Loaders;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,17 +9,17 @@ namespace BackEnd.Base_Classes
     {
         protected virtual void OnEnable()
         {
-            LevelLoader.Instance.OnSceneChanged += HandleSceneLoaded;
+            LevelLoader.Instance.OnNonAdditiveSceneChanged += HandleNonAdditiveSceneLoaded;
         }
 
         protected virtual void OnDisable()
         {
-            LevelLoader.Instance.OnSceneChanged -= HandleSceneLoaded;
+            LevelLoader.Instance.OnNonAdditiveSceneChanged -= HandleNonAdditiveSceneLoaded;
         }
 
         protected bool IsSceneInitialized { get; private set; }
 
-        private void HandleSceneLoaded()
+        private void HandleNonAdditiveSceneLoaded()
         {
             IsSceneInitialized = true;
             InitializeOnSceneLoad();
