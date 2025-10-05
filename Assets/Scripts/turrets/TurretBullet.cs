@@ -16,7 +16,7 @@ namespace turrets
         [SerializeField, TagSelector] private string _groundTag;
         [SerializeField] private float _destroyTime;
         [SerializeField] private TurretType _turretType;
-        [FormerlySerializedAs("isFriendly")] [SerializeField] private bool _isFriendly;
+        [SerializeField] private bool _isFriendly;
         private bool _hasHit;
         private float _timer;
         private TurretData _turretData;
@@ -47,7 +47,7 @@ namespace turrets
         }
         private void ApplyForceAtStart()
         {
-            _rb.AddForce(transform.forward * _turretData.BulletSpeed, ForceMode.Impulse);
+            _rb.AddForce(transform.right * _turretData.BulletSpeed, ForceMode.Impulse);
             _rb.AddForce(transform.up * 2, ForceMode.Impulse);
         }
 

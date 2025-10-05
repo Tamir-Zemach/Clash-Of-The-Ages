@@ -18,7 +18,7 @@ namespace Debugging
         {
             if (_turretBaseBehavior == null)
                 _turretBaseBehavior = gameObject.GetComponent<TurretBaseBehavior>();
-            if (_turretData == null)
+            if (_turretData == null) return;
                 _turretData = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretBaseBehavior.Turret.Type);
 
             Gizmos.color = _boxColor;

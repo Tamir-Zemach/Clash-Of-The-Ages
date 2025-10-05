@@ -11,14 +11,19 @@ namespace turrets
 {
     public class TurretBaseBehavior : InGameObject
     {
-        public event Action OnAttack;
+        public Action<Quaternion> OnSeeingEnemy;
+        public Action OnSeeingNothing;
+        public Action OnAttack;
 
         [Tooltip("Transform from where bullets will be instantiated.")]
         [SerializeField] private Transform _bulletSpawnPos;
-
-        [FormerlySerializedAs("_bulletPrefab")]
+        
         [Tooltip("Projectile prefab to spawn when attacking.")]
         public GameObject BulletPrefab;
+                
+        [Tooltip("Gfx that looks at the approaching enemies.")]
+        public GameObject MovableGfxPrefab;
+        
         
         private Vector3 _origin;
         private Vector3 _direction;
@@ -52,7 +57,10 @@ namespace turrets
             if (Physics.BoxCast(_origin, Turret.BoxSize / 2f, _direction, out var hitInfo,
                     _rotation, Turret.Range, Turret.OppositeUnitLayer))
             {
-                transform.LookAt(hitInfo.transform);
+                OnSeeingEnemy?.Invoke(GetLookDir(MovableGfxPrefab.transform, hitInfo.transform));
+                
+               
+                
                 if (!_isAttacking)
                 {
                     Attack();
@@ -74,7 +82,6 @@ namespace turrets
         {
             yield return new WaitForSeconds(initialAttackDelay);
             OnAttack?.Invoke();
-            Instantiate(BulletPrefab, _bulletSpawnPos.position, _bulletSpawnPos.rotation);
             _isAttacking = false;
         }
 
@@ -85,8 +92,14 @@ namespace turrets
                 _attackCoroutine.Stop();
                 _attackCoroutine = null;
             }
-
+            OnSeeingNothing?.Invoke();
             _isAttacking = false;
+        }
+        
+        private Quaternion GetLookDir(Transform turret, Transform target)
+        {
+            var rot = Quaternion.LookRotation(target.position - turret.position) * Quaternion.Euler(0, -90, 0);
+            return rot;
         }
         
 
