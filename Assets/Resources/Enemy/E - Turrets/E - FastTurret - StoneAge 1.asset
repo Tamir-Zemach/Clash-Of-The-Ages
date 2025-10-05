@@ -17,7 +17,7 @@ MonoBehaviour:
   _isFriendly: 0
   _gameObject: {fileID: 0}
   _sfx: []
-  _prefab: {fileID: 6152897977360850917, guid: 2cf09f5bf5e5ac440b76d6631f819475, type: 3}
+  _prefab: {fileID: 6152897977360850917, guid: 92a11f5f782c06b4eab85af1080d7cb1, type: 3}
   <OppositeUnitLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 264

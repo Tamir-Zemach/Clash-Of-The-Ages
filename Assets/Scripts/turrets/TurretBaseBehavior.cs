@@ -5,7 +5,6 @@ using BackEnd.Base_Classes;
 using BackEnd.Utilities;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace turrets
 {
@@ -18,8 +17,6 @@ namespace turrets
         [Tooltip("Transform from where bullets will be instantiated.")]
         [SerializeField] private Transform _bulletSpawnPos;
         
-        [Tooltip("Projectile prefab to spawn when attacking.")]
-        public GameObject BulletPrefab;
                 
         [Tooltip("Gfx that looks at the approaching enemies.")]
         public GameObject MovableGfxPrefab;

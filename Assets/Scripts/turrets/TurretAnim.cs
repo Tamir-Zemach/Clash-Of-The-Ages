@@ -1,20 +1,23 @@
 using System;
+using BackEnd.Base_Classes;
 using UnityEngine;
 
 namespace turrets
 {
-    public class TurretAnim : MonoBehaviour
+    public class TurretAnim : InGameObject
     {
         public AnimationClip AttackAnim;
         
         private TurretBaseBehavior  _turretBaseBehavior;
         private Animator _animator;
         private bool _seeingEnemy;
+        private float _defaultAnimSpeed;
         private void Awake()
         {
             _turretBaseBehavior = GetComponentInParent<TurretBaseBehavior>();
             _animator = GetComponent<Animator>();
-            
+            _defaultAnimSpeed = _animator.speed;
+
         }
 
         private void Start()
@@ -49,7 +52,28 @@ namespace turrets
             _animator.SetFloat("AttackSpeed", speedMultiplier);
             _animator.SetBool("SeeingEnemy", true);
         }
-        
-        
+
+        #region GameLifeCycle
+
+        protected override void HandlePause()
+        {
+          _animator.speed = 0;
+        }
+
+        protected override void HandleResume()
+        {
+            _animator.speed = _defaultAnimSpeed;
+        }
+
+        protected override void HandleGameEnd()
+        {
+        }
+
+        protected override void HandleGameReset()
+        {
+        }
+
+        #endregion
+
     }
 }

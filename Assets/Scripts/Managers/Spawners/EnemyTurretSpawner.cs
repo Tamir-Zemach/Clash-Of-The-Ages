@@ -11,7 +11,7 @@ namespace Managers.Spawners
 {
     public class EnemyTurretSpawner : EnemySpawner<EnemyTurretSpawner>
     {
-        public event System.Action OnTurretPlaced;
+        public System.Action OnTurretPlaced;
 
         protected override float RandomSpawnTimer { get; set; }
         protected override float Timer { get; set; }

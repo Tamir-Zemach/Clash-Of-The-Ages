@@ -15,6 +15,8 @@ namespace turrets
 
         [SerializeField, TagSelector] private string _groundTag;
         [SerializeField] private float _destroyTime;
+        [SerializeField] private float _torqueForceMin;
+        [SerializeField] private float _torqueForceMax;
         [SerializeField] private TurretType _turretType;
         [SerializeField] private bool _isFriendly;
         private bool _hasHit;
@@ -47,8 +49,10 @@ namespace turrets
         }
         private void ApplyForceAtStart()
         {
+            var torqueXYaxis = Random.Range(-4, 4);
             _rb.AddForce(transform.right * _turretData.BulletSpeed, ForceMode.Impulse);
             _rb.AddForce(transform.up * 2, ForceMode.Impulse);
+            _rb.AddRelativeTorque(new Vector3(torqueXYaxis, torqueXYaxis, Random.Range(_torqueForceMin, _torqueForceMax)), ForceMode.Impulse);
         }
 
         private void OnTriggerEnter(Collider other)
