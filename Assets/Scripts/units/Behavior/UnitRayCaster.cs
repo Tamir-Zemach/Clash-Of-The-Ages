@@ -50,14 +50,15 @@ namespace units.Behavior
             _wasDetectingSomething = detected;
         }
         
-        
+        //TODO: maybe refactor to BoxCastAll because raycast isnt detacting player base properly 
         
         private bool CheckForUnitInFront(LayerMask mask, float range, Action<GameObject> onDetected, string unitTag, string baseTag = null)
         {
             if (Physics.BoxCast(transform.position, _unit.boxSize, transform.forward,
                     out var hitInfo, Quaternion.identity, range, mask))
             {
-                GameObject obj = hitInfo.transform.gameObject;
+                GameObject obj = hitInfo.transform.root.gameObject;
+                Debug.Log($"{gameObject.name} is hitting: Hit object: {obj.name}, Tag: {obj.tag}");
                 
                 if (obj.CompareTag(unitTag) || (baseTag != null && obj.CompareTag(baseTag)))
                 {
