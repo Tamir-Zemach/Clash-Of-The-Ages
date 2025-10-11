@@ -5,22 +5,24 @@ using UnityEngine;
 
 namespace units.Behavior
 {
-    public class UnitRayCaster :  MonoBehaviour
+    public class UnitRayCaster : MonoBehaviour
     {
         public event Action<GameObject> OnFriendlyDetection;
         public event Action<GameObject> OnEnemyDetection;
-        
+        public event Action OnNoDetection;
+
         private UnitBaseBehaviour _unitBaseBehaviour;
         private UnitData _unit;
+        private bool _wasDetectingSomething;
+        public bool IsDetecting => _wasDetectingSomething;
         private void Awake()
         {
-            _unitBaseBehaviour  = GetComponent<UnitBaseBehaviour>();
+            _unitBaseBehaviour = GetComponent<UnitBaseBehaviour>();
             _unitBaseBehaviour.OnInitialized += GetUnitData;
-
         }
 
         private void OnDestroy()
-        { 
+        {
             _unitBaseBehaviour.OnInitialized -= GetUnitData;
         }
 
@@ -29,37 +31,36 @@ namespace units.Behavior
             _unit = _unitBaseBehaviour.Unit;
         }
 
-        public event Action OnNoDetection;
-
-        private bool _wasDetectingSomething;
-
         private void Update()
         {
-            if (!GameStates.Instance.GameIsPlaying) return;
+            if (_unit == null || !GameStates.Instance.GameIsPlaying) return;
 
             bool detected = false;
 
-            detected |= CheckForUnitInFront(_unit.FriendlyUnitMask, _unit.RayLengthForFriendlyUnit, FriendlyDetection, _unit.FriendlyUnitTag);
-            detected |= CheckForUnitInFront(_unit.OppositeUnitMask, _unit.Range, EnemyDetection, _unit.OppositeUnitTag, _unit.OppositeBaseTag);
-            
+            detected |= CheckForUnitsInFront(_unit.FriendlyUnitMask, _unit.RayLengthForFriendlyUnit, FriendlyDetection, _unit.FriendlyUnitTag);
+            detected |= CheckForUnitsInFront(_unit.OppositeUnitMask, _unit.Range, EnemyDetection, _unit.OppositeUnitTag, _unit.OppositeBaseTag);
+
             if (!detected && _wasDetectingSomething)
-            {
+            { 
                 OnNoDetection?.Invoke();
             }
 
             _wasDetectingSomething = detected;
         }
-        
-        //TODO: maybe refactor to BoxCastAll because raycast isnt detacting player base properly 
-        
-        private bool CheckForUnitInFront(LayerMask mask, float range, Action<GameObject> onDetected, string unitTag, string baseTag = null)
+
+        private bool CheckForUnitsInFront(LayerMask mask, float range, Action<GameObject> onDetected, string unitTag, string baseTag = null)
         {
-            if (Physics.BoxCast(transform.position, _unit.boxSize, transform.forward,
-                    out var hitInfo, Quaternion.identity, range, mask))
+            Vector3 origin = transform.position - transform.forward * (_unit.boxSize.z * 0.5f);
+            RaycastHit[] hits = Physics.BoxCastAll(origin, _unit.boxSize, transform.forward, Quaternion.identity, range, mask);
+
+            foreach (var hit in hits)
             {
-                GameObject obj = hitInfo.transform.root.gameObject;
-                Debug.Log($"{gameObject.name} is hitting: Hit object: {obj.name}, Tag: {obj.tag}");
+                GameObject obj = hit.transform.gameObject;
+
+                if (obj == gameObject || obj == transform.root.gameObject)
+                    continue;
                 
+
                 if (obj.CompareTag(unitTag) || (baseTag != null && obj.CompareTag(baseTag)))
                 {
                     onDetected?.Invoke(obj);
@@ -74,11 +75,10 @@ namespace units.Behavior
         {
             OnFriendlyDetection?.Invoke(obj);
         }
-        
+
         private void EnemyDetection(GameObject obj)
         {
             OnEnemyDetection?.Invoke(obj);
         }
-        
     }
 }

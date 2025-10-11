@@ -127,7 +127,7 @@ namespace units.Behavior
 
         private void ResetAttackStateIfNeeded()
         {
-            if (_attackCoroutine != null && !_movement.IsStopped)
+            if (_attackCoroutine != null && !_movement.IsStopped && !_raycaster.IsDetecting)
             {
                 _attackCoroutine.Stop();
                 _attackCoroutine = null;
