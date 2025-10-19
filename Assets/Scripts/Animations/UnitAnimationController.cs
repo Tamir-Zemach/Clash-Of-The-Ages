@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace Animations
 {
-    [RequireComponent(typeof(Billboard))]
+    
     [RequireComponent(typeof(UnitAnimationActions))]
     public class UnitAnimationController : InGameObject
     {

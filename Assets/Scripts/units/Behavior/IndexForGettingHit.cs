@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace units.Behavior
@@ -6,39 +8,36 @@ namespace units.Behavior
     public class IndexForGettingHit : MonoBehaviour
     {
         public float _flashTime = 0.2f;
+
         private UnitHealthManager HealthManager;
-        private MeshRenderer[] meshRenderers;
-        private SpriteRenderer[] spriteRenderers;
-        private Color[][] defaultMeshColors; // Store colors for multiple materials
-        private Color[] defaultSpriteColors; // Store sprite renderer colors
+
+        // Store default colors for each renderer
+        private Dictionary<Renderer, Color[]> defaultRendererColors = new();
+        private Dictionary<SpriteRenderer, Color> defaultSpriteColors = new();
 
         private void Awake()
         {
             HealthManager = GetComponent<UnitHealthManager>();
             if (HealthManager != null)
             {
-                HealthManager.OnHealthChanged += GettingHurtFlash; 
+                HealthManager.OnHealthChanged += GettingHurtFlash;
             }
 
-            meshRenderers = GetComponentsInChildren<MeshRenderer>() ?? new MeshRenderer[0];
-            spriteRenderers = GetComponentsInChildren<SpriteRenderer>() ?? new SpriteRenderer[0];
+            // Collect all MeshRenderers and SkinnedMeshRenderers
+            var meshRenderers = GetComponentsInChildren<MeshRenderer>() ?? new MeshRenderer[0];
+            var skinnedMeshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>() ?? new SkinnedMeshRenderer[0];
 
-            // Store default colors for mesh renderers
-            defaultMeshColors = new Color[meshRenderers.Length][];
-            for (int i = 0; i < meshRenderers.Length; i++)
+            foreach (var renderer in meshRenderers.Concat<Renderer>(skinnedMeshRenderers))
             {
-                defaultMeshColors[i] = new Color[meshRenderers[i].materials.Length];
-                for (int j = 0; j < meshRenderers[i].materials.Length; j++)
-                {
-                    defaultMeshColors[i][j] = meshRenderers[i].materials[j].color;
-                }
+                var colors = renderer.materials.Select(m => m.color).ToArray();
+                defaultRendererColors[renderer] = colors;
             }
 
-            // Store default colors for sprite renderers
-            defaultSpriteColors = new Color[spriteRenderers.Length];
-            for (int i = 0; i < spriteRenderers.Length; i++)
+            // Collect SpriteRenderers
+            var spriteRenderers = GetComponentsInChildren<SpriteRenderer>() ?? new SpriteRenderer[0];
+            foreach (var spriteRenderer in spriteRenderers)
             {
-                defaultSpriteColors[i] = spriteRenderers[i].color;
+                defaultSpriteColors[spriteRenderer] = spriteRenderer.color;
             }
         }
 
@@ -49,34 +48,56 @@ namespace units.Behavior
 
         private IEnumerator Flash(float flashTime)
         {
-            // Change colors to red
-            for (int i = 0; i < meshRenderers.Length; i++)
+            // Flash mesh/skinned renderers to red
+            if (defaultRendererColors.Count > 0)
             {
-                for (int j = 0; j < meshRenderers[i].materials.Length; j++)
+                foreach (var renderer in defaultRendererColors.Keys)
                 {
-                    meshRenderers[i].materials[j].color = Color.red;
+                    if (renderer.materials != null && renderer.materials.Length > 0)
+                    {
+                        foreach (var material in renderer.materials)
+                        {
+                            material.color = Color.red;
+                        }
+                    }
                 }
             }
 
-            for (int i = 0; i < spriteRenderers.Length; i++)
+            // Flash sprite renderers to red
+            if (defaultSpriteColors.Count > 0)
             {
-                spriteRenderers[i].color = Color.red;
+                foreach (var spriteRenderer in defaultSpriteColors.Keys)
+                {
+                    spriteRenderer.color = Color.red;
+                }
             }
 
             yield return new WaitForSeconds(flashTime);
 
-            // Restore original colors
-            for (int i = 0; i < meshRenderers.Length; i++)
+            // Restore mesh/skinned renderer colors
+            if (defaultRendererColors.Count > 0)
             {
-                for (int j = 0; j < meshRenderers[i].materials.Length; j++)
+                foreach (var kvp in defaultRendererColors)
                 {
-                    meshRenderers[i].materials[j].color = defaultMeshColors[i][j];
+                    var renderer = kvp.Key;
+                    var colors = kvp.Value;
+                    if (renderer.materials != null && renderer.materials.Length == colors.Length)
+                    {
+                        for (int i = 0; i < renderer.materials.Length; i++)
+                        {
+                            renderer.materials[i].color = colors[i];
+                        }
+                    }
                 }
             }
 
-            for (int i = 0; i < spriteRenderers.Length; i++)
+            // Restore sprite renderer colors
+            if (defaultSpriteColors.Count <= 0) yield break;
             {
-                spriteRenderers[i].color = defaultSpriteColors[i];
+                foreach (var kvp in defaultSpriteColors)
+                {
+                    kvp.Key.color = kvp.Value;
+                }
             }
         }
     }
