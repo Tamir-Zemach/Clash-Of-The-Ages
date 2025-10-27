@@ -44,7 +44,8 @@ namespace Ui.Buttons.Upgrade_Popup
             UIEffects.FadeCanvasGroup(_raycastBlockerPanel, 0.4f, 0.2f);
             _droppingDown = true;
             GameStates.Instance.PauseGame();
-            BlockRaycasts(true);
+            _raycastBlockerPanel.blocksRaycasts = true;
+            BlockRaycasts(false, false);
             _animator.SetBool("DropDown", _droppingDown); 
         }
 
@@ -94,6 +95,7 @@ namespace Ui.Buttons.Upgrade_Popup
             {
                 CancelInvoke(nameof(SpawnNextSlot));
                 OnSlotsSpawned?.Invoke();
+                BlockRaycasts(true, false);
                 return;
             }
 
@@ -114,9 +116,12 @@ namespace Ui.Buttons.Upgrade_Popup
             _currentIndex = 0;
         }
         
-        public void BlockRaycasts(bool state)
+        public void BlockRaycasts(bool state, bool raycastBlocker = true)
         {
-            _raycastBlockerPanel.blocksRaycasts = state;
+            if (raycastBlocker)
+            { 
+                _raycastBlockerPanel.blocksRaycasts = state;
+            }
             _canvasGroup.interactable = state;
             _canvasGroup.blocksRaycasts = state;
         }
