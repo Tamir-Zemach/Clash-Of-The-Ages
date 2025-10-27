@@ -143,6 +143,21 @@ namespace Ui.Buttons.Upgrade_Popup
 
         #endregion
 
+        /*
+        [SerializeField] private Animator _animator;
+
+        public void ShowPopup()
+        {
+            GameStates.Instance.PauseGame();
+            _animator.Play("DropIn"); // your animation clip state
+        }
+
+        public void OnDropInAnimationComplete()
+        {
+            // This can be called via an Animation Event at the end of the clip
+            SpawnAllSlots();
+        }
+        */
         
 
         
