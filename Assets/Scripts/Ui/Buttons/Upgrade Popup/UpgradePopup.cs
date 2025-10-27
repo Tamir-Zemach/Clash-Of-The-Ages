@@ -19,37 +19,54 @@ namespace Ui.Buttons.Upgrade_Popup
         
         [SerializeField] private float _spawnDelay = 0.5f;
         [SerializeField] private CanvasGroup _raycastBlockerPanel;
+        [SerializeField] private Transform _horizontalLayerGroup;
 
         private GameObject[] _selectedPrefabs;
         private int _currentIndex;
         private CanvasGroup _canvasGroup;
         private bool _isSpawningPaused;
- 
+        private bool _droppingDown;
+        private Animator _animator;
+
 
         public IReadOnlyList<GameObject> CurrentEligiblePrefabs => _selectedPrefabs;
         protected override void Awake()
         {
             base.Awake();
             _canvasGroup = GetComponent<CanvasGroup>();
+            _animator  = GetComponent<Animator>();
         }
+
+        
 
         public void ShowPopup()
         {
-            UIEffects.FadeCanvasGroup(_canvasGroup, 1, 0.3f, onComplete: () =>
-            {
-                GameStates.Instance.PauseGame();
-                SpawnAllSlots();
-            });
+            UIEffects.FadeCanvasGroup(_raycastBlockerPanel, 0.4f, 0.2f);
+            _droppingDown = true;
+            GameStates.Instance.PauseGame();
+            BlockRaycasts(true);
+            _animator.SetBool("DropDown", _droppingDown); 
+        }
+
+        //Animation Event
+        public void OnDropInAnimationComplete()
+        {
+            SpawnAllSlots();
+        }
+        //Animation Event
+        public void OnRiseUpAnimationComplete()
+        {
+            BlockRaycasts(false);
+            ClearAllSlots();
+            UIEffects.FadeCanvasGroup(_raycastBlockerPanel, 0, 0.2f);
+            GameStates.Instance.StartGame();
         }
 
         public void HidePopup()
         {
-            UIEffects.FadeCanvasGroup(_canvasGroup, 0, 0.3f, onComplete: () =>
-            {
-                BlockRaycasts(false);
-                ClearAllSlots();
-                GameStates.Instance.StartGame();
-            });
+            _droppingDown = false;
+            _animator.SetBool("DropDown", _droppingDown); 
+            
         }
 
         private void SpawnAllSlots()
@@ -77,19 +94,18 @@ namespace Ui.Buttons.Upgrade_Popup
             {
                 CancelInvoke(nameof(SpawnNextSlot));
                 OnSlotsSpawned?.Invoke();
-                BlockRaycasts(true);
                 return;
             }
 
             var prefab = _selectedPrefabs[_currentIndex];
-            Instantiate(prefab, transform);
+            Instantiate(prefab, _horizontalLayerGroup);
             
             _currentIndex++;
         }
 
         private void ClearAllSlots()
         {
-            foreach (Transform child in transform)
+            foreach (Transform child in _horizontalLayerGroup)
             {
                 Destroy(child.gameObject);
             }
@@ -142,22 +158,7 @@ namespace Ui.Buttons.Upgrade_Popup
         
 
         #endregion
-
-        /*
-        [SerializeField] private Animator _animator;
-
-        public void ShowPopup()
-        {
-            GameStates.Instance.PauseGame();
-            _animator.Play("DropIn"); // your animation clip state
-        }
-
-        public void OnDropInAnimationComplete()
-        {
-            // This can be called via an Animation Event at the end of the clip
-            SpawnAllSlots();
-        }
-        */
+        
         
 
         
