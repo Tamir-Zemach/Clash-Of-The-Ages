@@ -5,6 +5,7 @@ using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Data_Getters;
 using BackEnd.Enums;
 using BackEnd.Utilities.EffectsUtil;
+using Bases;
 using turrets;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -29,7 +30,7 @@ namespace Ui.Buttons.Upgrade_Popup
         private void Awake()
         {
             _turret = GameDataRepository.Instance.FriendlyTurrets.GetData(_turretType);
-            _playerBase = GameObject.FindGameObjectWithTag(_turret.FriendlyBase);
+            _playerBase = FindFirstObjectByType<FriendlyBaseHealth>().gameObject;
 
             FindValidSpawnPoint();
         }
@@ -74,7 +75,6 @@ namespace Ui.Buttons.Upgrade_Popup
            
             
             _spawnPoint = spawnPoints.First();
-            print($"Count: {spawnPoints.Count}, SpawnPoint: {_spawnPoint}" );
         }
         
     }
