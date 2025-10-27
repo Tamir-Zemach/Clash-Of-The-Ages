@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 311988681800857481, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: eaaca832e9fe432418ef20bbd10b4669, type: 3}
     - target: {fileID: 904271810235389937, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_Name
       value: Money Increase Slot
@@ -20,10 +24,30 @@ PrefabInstance:
       propertyPath: _statBonus
       value: 50
       objectReference: {fileID: 0}
-    - target: {fileID: 3536314145875068856, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 925af2653ecd74a49961fee9b07f0e07, type: 3}
+    - target: {fileID: 2953186187078730167, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953186187078730167, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953186187078730167, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953186187078730167, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953186187078730167, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953186187078730167, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 128
+      objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

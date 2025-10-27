@@ -67,11 +67,14 @@ namespace Ui.Buttons.Upgrade_Popup
 
         private void FindValidSpawnPoint()
         {
+            
             var spawnPoints = _playerBase.GetComponentsInChildren<TurretSpawnPoint>()
                 .Where(sp => !sp.HasTurret)
                 .ToList();
-
+           
+            
             _spawnPoint = spawnPoints.First();
+            print($"Count: {spawnPoints.Count}, SpawnPoint: {_spawnPoint}" );
         }
         
     }

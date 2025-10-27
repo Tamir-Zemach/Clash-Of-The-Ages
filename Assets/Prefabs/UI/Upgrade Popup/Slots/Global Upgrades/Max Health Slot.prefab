@@ -8,9 +8,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 311988681800857481, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fea96ce370555d84c937440b2c891b1d, type: 3}
     - target: {fileID: 904271810235389937, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_Name
       value: Max Health Slot
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953186187078730167, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953186187078730167, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 7529915342754289938, guid: 90dde3f68f8944a4fae596f86a046ffb, type: 3}
       propertyPath: m_Pivot.x

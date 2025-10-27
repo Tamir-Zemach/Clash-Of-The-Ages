@@ -24,10 +24,6 @@ PrefabInstance:
       propertyPath: _attackDelayReductionPercent
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 3536314145875068856, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 883f1447dd51b3f46b8a0c95723ced7f, type: 3}
     - target: {fileID: 6849065297138656746, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
       propertyPath: _stat
       value: 2
@@ -116,6 +112,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8766946918916840681, guid: 0f66377a626d67844a5ac4b16add267d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fea96ce370555d84c937440b2c891b1d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
