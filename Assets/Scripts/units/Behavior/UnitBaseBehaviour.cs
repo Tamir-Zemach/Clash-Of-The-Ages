@@ -93,7 +93,9 @@ namespace units.Behavior
             else
             {
                 _movement.SetDestination(destination);
+                print(destination.name);
             }
+            
         }
 
         private void Update()
