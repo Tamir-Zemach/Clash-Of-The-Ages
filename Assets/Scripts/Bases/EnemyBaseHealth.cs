@@ -9,11 +9,15 @@ namespace Bases
 {
     public class EnemyBaseHealth : MonoBehaviour, IDamageable
     {
-        public event Action OnBaseDestroyed; 
+        public Action OnBaseDestroyed; 
+        public Action OnHealthChanged; 
+        public Action<int> OnMaxHealthChanged;
         public UnityEvent OnBaseDestroyedForEffects;
         
         private int _maxHealth;
         private int _currentHealth;
+        
+        public int CurrentHealth => _currentHealth;
         
         public void GetHurt(int damage)
         {
@@ -27,6 +31,7 @@ namespace Bases
         private void SubtractLocalHealth(int damage)
         {
             _currentHealth -= EconomyUtils.ValidateAmount(Math.Max(0, damage));
+            OnHealthChanged?.Invoke();
             if (_currentHealth <= 0)
             {
                 OnBaseDestroyed?.Invoke();
@@ -38,6 +43,10 @@ namespace Bases
         {
             _maxHealth = health;
             _currentHealth = _maxHealth;
+            OnMaxHealthChanged?.Invoke(_maxHealth);
+            print($"base health: {health}, max health: {EnemyHealth.Instance.MaxHealth}");
         }
+        
+        
     }
 }

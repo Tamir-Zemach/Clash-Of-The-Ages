@@ -37,5 +37,10 @@ namespace Ui
         {
             _slider.value = IsFriendly ? PlayerHealth.Instance.CurrentHealth : EnemyHealth.Instance.CurrentHealth;
         }
+        
+        private void LateUpdate()
+        {
+            transform.forward = Camera.main.transform.forward;
+        }
     }
 }

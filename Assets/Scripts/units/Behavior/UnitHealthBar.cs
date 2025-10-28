@@ -26,7 +26,8 @@ namespace units.Behavior
             SetMaxHealth(healthManager.CurrentHealth);
             healthManager.OnHealthChanged += SetHealth;
         }
-        void LateUpdate()
+
+        private void LateUpdate()
         {
             transform.forward = Camera.main.transform.forward;
         }

@@ -680,7 +680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 944fefaf031e4bd198de3f9f64984beb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetLayer: {fileID: 8574412962073106934, guid: b0bff560aeb461f4ab4c2c556d09ce73, type: 2}
+  _targetLayer: {fileID: 8574412962073106934, guid: 309a48cdb10436b468877ddf46a6da98, type: 2}
   _defaultTexture: {fileID: 2800000, guid: 0be6fbc7567de3b4a852993f4aefa21e, type: 3}
   _alternateTexture: {fileID: 2800000, guid: 9777a4f367177654db4a985690e8db03, type: 3}
   _laneSelectedTexture: {fileID: 2800000, guid: 2011832146a744d49ae88863e18549ad, type: 3}
@@ -827,7 +827,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7217837283764849523, guid: bf0e2fb3da1600444b440d7ba310cf6f, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf0e2fb3da1600444b440d7ba310cf6f, type: 3}
