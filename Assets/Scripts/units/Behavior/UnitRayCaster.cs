@@ -56,13 +56,14 @@ namespace units.Behavior
             foreach (var hit in hits)
             {
                 GameObject obj = hit.transform.gameObject;
+                
 
                 if (obj == gameObject || obj == transform.root.gameObject)
                     continue;
                 
-
                 if (obj.CompareTag(unitTag) || (baseTag != null && obj.CompareTag(baseTag)))
                 {
+                    
                     onDetected?.Invoke(obj);
                     return true;
                 }
