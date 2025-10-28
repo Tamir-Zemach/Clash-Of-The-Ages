@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564ba168be5094c4d8085785eb68d825, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FallDirectionZ: -0.5
+  FallDirectionX: 0.5
   AdditionalFallForce: 50
   DebrisLifetime: 2
   ExplosionForce: 300

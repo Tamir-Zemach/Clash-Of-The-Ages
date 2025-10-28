@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace Special_Attacks
@@ -8,10 +9,11 @@ namespace Special_Attacks
     {
         public Action<Vector3> OnImpact;
 
+        [FormerlySerializedAs("FallDirectionZ")]
         [Header("Fall Direction Settings")] 
-        [Tooltip("The direction which the meteor will go toward, on the local Z axis.")]
+        [Tooltip("The direction which the meteor will go toward, on the local X axis.")]
         [Range(-1f, 1f)]
-        public float FallDirectionZ = 0;
+        public float FallDirectionX = 0;
         [Tooltip("Extra downward force applied to the meteor. 0 = normal gravity. Higher values make it fall faster.")]
         public float AdditionalFallForce = 100f;
     
@@ -47,7 +49,7 @@ namespace Special_Attacks
 
         private Vector3 SetRandomDirection()
         {
-            return new Vector3(0, -1f, Random.Range(0, FallDirectionZ));
+            return new Vector3(Random.Range(0, FallDirectionX), -1f ,0);
         }
     
         private void OnTriggerEnter(Collider other)
