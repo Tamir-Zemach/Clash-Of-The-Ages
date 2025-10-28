@@ -21,7 +21,7 @@ namespace BackEnd.Utilities
             DOTween.To(() => startValue, x =>
             {
                 startValue = x;
-                text.text = x.ToString();
+                text.text = $"x{startValue}";
             }, endValue, duration);
         }
     }
