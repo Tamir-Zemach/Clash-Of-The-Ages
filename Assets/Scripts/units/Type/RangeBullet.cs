@@ -22,6 +22,10 @@ namespace units.Type
 
         [Tooltip("The opposite unit that the bullet can hurt")]
         [SerializeField, TagSelector] private string _oppositeUnit;
+        
+        
+        [SerializeField] private float _torqueForceMin;
+        [SerializeField] private float _torqueForceMax;
 
         private Rigidbody rb;
         private Transform target;
@@ -65,6 +69,13 @@ namespace units.Type
                 rb.useGravity = true;
                 rb.AddForce(launchVelocity * rb.mass, ForceMode.Impulse);
             }
+            AddRandomSpin();
+        }
+
+        private void AddRandomSpin()
+        {
+            var randomTorque = Random.Range(-1, 1);
+            rb.AddTorque(new Vector3(0, 0, Random.Range(_torqueForceMin, _torqueForceMax)), ForceMode.Impulse);
         }
 
         private void Update()
