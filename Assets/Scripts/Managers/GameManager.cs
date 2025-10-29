@@ -108,8 +108,7 @@ namespace Managers
 
         public void NextLevel()
         {
-            LevelLoader.Instance.LoadNextLevel();
-            ResetEnemyHealth();
+            LevelLoader.Instance.LoadMainMenu();
         }
 
         public void ResetEnemyHealth()

@@ -69,6 +69,7 @@ namespace Managers.Loaders
         {
             _adminUiEnabled = false;
             StartCoroutine(LoadSceneWithTransition(_scenes[0], false));
+            GameStates.Instance.ResetGameState();
         }
 
         public void LoadGameOver()
