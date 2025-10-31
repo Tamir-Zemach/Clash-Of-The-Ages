@@ -35,7 +35,7 @@ namespace Managers.Spawners
             _enemyTurrets = GameDataRepository.Instance.EnemyTurrets;
             RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
             EnemyTurretSlotSpawner.Instance.OnTurretSlotActivated += StartTimer;
-            ResetTimer();
+            ResetAndReRandomTimer();
             var turret = _enemyTurrets[0];
             _playerBase = GameObject.FindGameObjectWithTag(turret.OppositeBase);
         }
@@ -46,7 +46,7 @@ namespace Managers.Spawners
         {
             _isTurretWaitingToSpawn = true;
             _availableSpawnPoint = slot;
-            ResetTimer();
+            ResetAndReRandomTimer();
         }
 
         private void Update()
@@ -99,13 +99,22 @@ namespace Managers.Spawners
             return Timer >= RandomSpawnTimer 
                    && EnemyTurretSlotSpawner.Instance.TurretSpawnPoints.Any(spawnPoint => !spawnPoint.HasTurret);
         }
+        
 
-        private void ResetTimer()
+        public override void HandlePause()
         {
-            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
-            Timer = 0;
+          
         }
 
+        public override void HandleResume()
+        {
+            
+        }
+
+        public override void HandleGameEnd()
+        {
+            ResetAndReRandomTimer();
+        }
 
 
     }

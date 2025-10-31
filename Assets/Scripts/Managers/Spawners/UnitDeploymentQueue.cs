@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
+using BackEnd.InterFaces;
 using BackEnd.Structs;
+using BackEnd.Utilities;
 using Managers.Loaders;
 using Ui.Buttons.Deploy_Button;
 using UnityEngine;
 
 namespace Managers.Spawners
 {
-    public class UnitDeploymentQueue : SceneAwareMonoBehaviour<UnitDeploymentQueue>
+    public class UnitDeploymentQueue : SceneAwareMonoBehaviour<UnitDeploymentQueue>, IGameStateListener
     {
 
         public event Action<Deployment?> OnUnitReadyToDeploy;
@@ -115,6 +117,23 @@ namespace Managers.Spawners
         {
             return _currentDeployment != null && _timer >= _currentDeployment.Value.Unit.DeployDelayTime;
         }
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            GameStateListener.Subscribe(this);
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            GameStateListener.Unsubscribe(this);
+        }
         
+        public void HandlePause(){}
+        public void HandleResume(){}
+        public void HandleGameEnd()
+        {
+            ClearAllDeploymentQueues();
+        }
     }
 }

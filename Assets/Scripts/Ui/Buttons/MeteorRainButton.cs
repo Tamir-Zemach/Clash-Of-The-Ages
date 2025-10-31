@@ -155,13 +155,12 @@ namespace Ui.Buttons
         }
 
         #region GameLifecycle
-            //TODO: make a helper/use the base class "InGameObject
+            //TODO: make a helper/use the base class "GameStatesSubscriber
             private void OnEnable()
             {
                 GameStates.Instance.OnGamePaused += PauseCooldown;
                 GameStates.Instance.OnGameResumed += ResumeCooldown;
                 GameStates.Instance.OnGameEnded += CancelCooldown;
-                GameStates.Instance.OnGameReset += CancelCooldown;
                 MeteorRainSpawnPos.OnMeteorRainAccruing += MeteorRainInProgress;
                 MeteorRainSpawnPos.OnMeteorRainEnding += MeteorRainInEnded;
             }
@@ -171,7 +170,6 @@ namespace Ui.Buttons
                 GameStates.Instance.OnGamePaused -= PauseCooldown;
                 GameStates.Instance.OnGameResumed -= ResumeCooldown;
                 GameStates.Instance.OnGameEnded -= CancelCooldown;
-                GameStates.Instance.OnGameReset -= CancelCooldown;
                 MeteorRainSpawnPos.OnMeteorRainAccruing -= MeteorRainInProgress;
                 MeteorRainSpawnPos.OnMeteorRainEnding -= MeteorRainInEnded;
             }

@@ -69,7 +69,6 @@ namespace Managers.Loaders
         {
             _adminUiEnabled = false;
             StartCoroutine(LoadSceneWithTransition(_scenes[0], false));
-            GameStates.Instance.ResetGameState();
         }
 
         public void LoadGameOver()
@@ -146,6 +145,7 @@ namespace Managers.Loaders
 
             // 10. Update level index and resume game
 
+            if (InStartMenu()) yield break;
             GameStates.Instance.StartGame();
         }
         

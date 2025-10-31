@@ -11,7 +11,6 @@ namespace BackEnd.Base_Classes
             gameStates.OnGamePaused += HandlePause;
             gameStates.OnGameResumed += HandleResume;
             gameStates.OnGameEnded += HandleGameEnd;
-            gameStates.OnGameReset += HandleGameReset;
         }
 
         protected virtual void OnDisable()
@@ -22,7 +21,6 @@ namespace BackEnd.Base_Classes
             gameStates.OnGamePaused -= HandlePause;
             gameStates.OnGameResumed -= HandleResume;
             gameStates.OnGameEnded -= HandleGameEnd;
-            gameStates.OnGameReset -= HandleGameReset;
         }
 
         #region GameLifecycle
@@ -30,7 +28,6 @@ namespace BackEnd.Base_Classes
         protected abstract void HandlePause();
         protected abstract void HandleResume();
         protected abstract void HandleGameEnd();
-        protected abstract void HandleGameReset();
 
         #endregion
     }

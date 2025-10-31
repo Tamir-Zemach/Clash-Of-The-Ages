@@ -55,21 +55,17 @@ namespace turrets
 
         #region GameLifeCycle
 
-        protected override void HandlePause()
+        public override void HandlePause()
         {
           _animator.speed = 0;
         }
 
-        protected override void HandleResume()
+        public override void HandleResume()
         {
             _animator.speed = _defaultAnimSpeed;
         }
 
-        protected override void HandleGameEnd()
-        {
-        }
-
-        protected override void HandleGameReset()
+        public override void HandleGameEnd()
         {
         }
 

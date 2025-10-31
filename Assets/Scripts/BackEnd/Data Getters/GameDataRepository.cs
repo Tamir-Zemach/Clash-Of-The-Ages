@@ -13,64 +13,104 @@ namespace BackEnd.Data_Getters
     {
         public event Action OnInitialized;
 
-        #region Serialized Fields
+        #region Serialized Source Data (Immutable)
 
-        [Header("Units")]
-        [field: SerializeField] public List<UnitData> FriendlyUnits { get; private set; }
-        [field: SerializeField] public List<UnitData> EnemyUnits { get; private set; }
+        [Header("Units (Source Data)")]
+        [SerializeField] private List<UnitData> friendlyUnitSources;
+        [SerializeField] private List<UnitData> enemyUnitSources;
 
-        [Header("Turrets")]
-        [field: SerializeField] public List<TurretData> FriendlyTurrets { get; private set; }
-        [field: SerializeField] public List<TurretData> EnemyTurrets { get; private set; }
+        [Header("Turrets (Source Data)")]
+        [SerializeField] private List<TurretData> friendlyTurretSources;
+        [SerializeField] private List<TurretData> enemyTurretSources;
 
-        [Header("Special Attacks")]
-        [field: SerializeField] public List<SpecialAttackData> FriendlySpecialAttacks { get; private set; }
-        [field: SerializeField] public List<SpecialAttackData> EnemySpecialAttacks { get; private set; }
+        [Header("Special Attacks (Source Data)")]
+        [SerializeField] private List<SpecialAttackData> friendlySpecialSources;
+        [SerializeField] private List<SpecialAttackData> enemySpecialSources;
 
-        [Header("Level Up Data")]
+        [Header("Level Up Data (Immutable)")]
         [field: SerializeField] public List<LevelUpDataGroup> PlayerLevelUpData { get; private set; }
         [field: SerializeField] public List<LevelUpDataGroup> EnemyLevelUpData { get; private set; }
 
         #endregion
 
+        #region Runtime Working Data (Mutable)
+
+        public List<UnitData> FriendlyUnits { get; private set; } = new List<UnitData>();
+        public List<UnitData> EnemyUnits { get; private set; } = new List<UnitData>();
+
+        public List<TurretData> FriendlyTurrets { get; private set; } = new List<TurretData>();
+        public List<TurretData> EnemyTurrets { get; private set; } = new List<TurretData>();
+
+        public List<SpecialAttackData> FriendlySpecialAttacks { get; private set; } = new List<SpecialAttackData>();
+        public List<SpecialAttackData> EnemySpecialAttacks { get; private set; } = new List<SpecialAttackData>();
+
+        #endregion
+
         #region Initialization
+
         protected override void Awake()
         {
             base.Awake();
             InstantiateAllData();
         }
+
         private void Start()
         {
             OnInitialized?.Invoke();
         }
-        private void InstantiateAllData()
+
+        public void ResetData()
         {
-            InstantiateList(FriendlyUnits);
-            InstantiateList(FriendlyTurrets);
-            InstantiateList(FriendlySpecialAttacks);
+            // Destroy old runtime instances
+            DestroyList(FriendlyUnits);
+            DestroyList(EnemyUnits);
+            DestroyList(FriendlyTurrets);
+            DestroyList(EnemyTurrets);
+            DestroyList(FriendlySpecialAttacks);
+            DestroyList(EnemySpecialAttacks);
 
+            // Re-instantiate fresh runtime copies from immutable sources
+            InstantiateAllData();
 
-            InstantiateList(EnemyUnits);
-            InstantiateList(EnemyTurrets);
-            InstantiateList(EnemySpecialAttacks);
-
+            OnInitialized?.Invoke();
         }
 
-        private void InstantiateList<T>(List<T> list) where T : UnityEngine.Object
+        private void DestroyList<T>(List<T> list) where T : UnityEngine.Object
         {
-            for (int i = 0; i < list.Count; i++)
+            foreach (var item in list)
             {
-                if (list[i] != null)
-                {
-                    list[i] = Instantiate(list[i]);
-                }
-
+                if (item != null)
+                    Destroy(item);
             }
+            list.Clear();
+        }
+
+        private void InstantiateAllData()
+        {
+            FriendlyUnits = InstantiateList(friendlyUnitSources);
+            EnemyUnits = InstantiateList(enemyUnitSources);
+
+            FriendlyTurrets = InstantiateList(friendlyTurretSources);
+            EnemyTurrets = InstantiateList(enemyTurretSources);
+
+            FriendlySpecialAttacks = InstantiateList(friendlySpecialSources);
+            EnemySpecialAttacks = InstantiateList(enemySpecialSources);
+        }
+
+        private List<T> InstantiateList<T>(List<T> source) where T : UnityEngine.Object
+        {
+            var newList = new List<T>(source.Count);
+            foreach (var item in source)
+            {
+                if (item != null)
+                    newList.Add(Instantiate(item));
+            }
+            return newList;
         }
 
         #endregion
-
     }
+
     #region Extensions
 
     public static class DataExtensions
@@ -80,6 +120,7 @@ namespace BackEnd.Data_Getters
         {
             return list.FirstOrDefault(d => EqualityComparer<TType>.Default.Equals(d.Type, type));
         }
+
         public static TData GetLevelUpData<TType, TData>(
             this List<LevelUpDataGroup> groups,
             AgeStageType ageStage,

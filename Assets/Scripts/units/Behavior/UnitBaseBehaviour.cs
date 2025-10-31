@@ -179,19 +179,17 @@ namespace units.Behavior
 
         #region GameLifecycle
 
-        protected override void HandlePause()
+        public override void HandlePause()
         {
             _movement.StopMovement();
         }
 
-        protected override void HandleResume()
+        public override void HandleResume()
         {
             _movement.ResumeMovement(_defaultSpeed);
         }
 
-        protected override void HandleGameEnd() { }
-
-        protected override void HandleGameReset() { }
+        public override void HandleGameEnd() { }
 
         private void OnDestroy()
         {

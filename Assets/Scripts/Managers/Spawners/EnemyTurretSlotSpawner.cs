@@ -37,7 +37,7 @@ namespace Managers.Spawners
             _isSlotWaitingToBeAdded = true;
             EnemyTurretSpawner.Instance.OnTurretPlaced += StartTimer;
             GetAllEnemyTurretSpawnPoints();
-            ResetTimer();
+            ResetAndReRandomTimer();
         }
 
         private void SubscribeToAllLanes()
@@ -58,7 +58,7 @@ namespace Managers.Spawners
 
         private void StartTimer()
         {
-            ResetTimer();
+            ResetAndReRandomTimer();
             
             if (HasSlotToUnlock())
             {
@@ -96,7 +96,7 @@ namespace Managers.Spawners
 
                 OnTurretSlotActivated?.Invoke(AvailableSlot);
 
-                ResetTimer();
+                ResetAndReRandomTimer();
                 _isSlotWaitingToBeAdded = false;
             }
         }
@@ -142,15 +142,27 @@ namespace Managers.Spawners
             return Timer >= RandomSpawnTimer;
         }
 
+        
         private bool HasSlotToUnlock()
         {
             return TurretSpawnPoints.Any(spawnPoint => !spawnPoint.IsUnlocked);
         }
-
-        private void ResetTimer()
+        
+        
+        
+        public override void HandlePause()
         {
-            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
-            Timer = 0;
+          
+        }
+
+        public override void HandleResume()
+        {
+            
+        }
+
+        public override void HandleGameEnd()
+        {
+            ResetAndReRandomTimer();
         }
 
     }

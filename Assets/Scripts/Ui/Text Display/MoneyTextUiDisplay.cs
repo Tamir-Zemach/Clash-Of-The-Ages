@@ -1,3 +1,5 @@
+using System;
+using BackEnd.Base_Classes;
 using BackEnd.Economy;
 using BackEnd.Utilities;
 using BackEnd.Utilities.EffectsUtil;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Ui.Text_Display
 {
-    public class MoneyTextUiDisplay : MonoBehaviour
+    public class MoneyTextUiDisplay : InGameObject
     {
         private static int _lastMoneyValue;
         private static TextMeshProUGUI MoneyText { get; set; }
@@ -19,10 +21,10 @@ namespace Ui.Text_Display
             PlayerCurrency.OnDoesntHaveEnoughMoney += MoneyFlashInRed;
             MoneyImage = GetComponentInChildren<Image>();
             MoneyText =  GetComponentInChildren<TextMeshProUGUI>();
-            UpdateMoneyUI();
-            _lastMoneyValue = PlayerCurrency.Instance.Money;
+            MoneyText.text = $"x{PlayerCurrency.Instance.Money}";
         }
         
+
         private static void UpdateMoneyUI()
         {
             if (!MoneyText) return;
@@ -38,6 +40,14 @@ namespace Ui.Text_Display
             UIEffects.ApplyGraphicFeedback(MoneyText, changeColor: true, new Color(0.83f, 0f, 0f, 0.88f),changeScale: true, shakeGraphic: true);
         }
 
+        public override void HandlePause(){}
+
+        public override void HandleResume(){}
+
+        public override void HandleGameEnd()
+        {
+            UpdateMoneyUI();
+        }
     }
 }
 

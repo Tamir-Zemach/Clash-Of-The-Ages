@@ -38,6 +38,7 @@ namespace units.Type
              ?? target.GetComponent<FriendlyBaseHealth>() as IDamageable
              ?? target.GetComponent<EnemyBaseHealth>() as IDamageable)
             ?.GetHurt(_strength);
+
         }
 
     }

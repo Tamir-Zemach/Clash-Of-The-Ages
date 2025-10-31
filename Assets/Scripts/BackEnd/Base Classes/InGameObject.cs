@@ -1,37 +1,23 @@
+using BackEnd.InterFaces;
+using BackEnd.Utilities;
 using UnityEngine;
 
-    namespace BackEnd.Base_Classes
+namespace BackEnd.Base_Classes
+{
+    public abstract class InGameObject : MonoBehaviour, IGameStateListener
     {
-        public abstract class InGameObject : MonoBehaviour
+        protected virtual void OnEnable()
         {
-            protected virtual void OnEnable()
-            {
-                var gameStates = Managers.GameStates.Instance;
-
-                gameStates.OnGamePaused += HandlePause;
-                gameStates.OnGameResumed += HandleResume;
-                gameStates.OnGameEnded += HandleGameEnd;
-                gameStates.OnGameReset += HandleGameReset;
-            }
-
-            protected virtual void OnDisable()
-            {
-                var gameStates = Managers.GameStates.Instance;
-                if (gameStates == null) return;
-
-                gameStates.OnGamePaused -= HandlePause;
-                gameStates.OnGameResumed -= HandleResume;
-                gameStates.OnGameEnded -= HandleGameEnd;
-                gameStates.OnGameReset -= HandleGameReset;
-            }
-
-            #region GameLifecycle
-
-            protected abstract void HandlePause();
-            protected abstract void HandleResume();
-            protected abstract void HandleGameEnd();
-            protected abstract void HandleGameReset();
-
-            #endregion
+            GameStateListener.Subscribe(this);
         }
+
+        protected virtual void OnDisable()
+        {
+            GameStateListener.Unsubscribe(this);
+        }
+
+        public abstract void HandlePause();
+        public abstract void HandleResume();
+        public abstract void HandleGameEnd();
     }
+}

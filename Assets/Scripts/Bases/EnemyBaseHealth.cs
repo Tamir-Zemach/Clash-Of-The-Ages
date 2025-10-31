@@ -43,8 +43,7 @@ namespace Bases
         {
             _maxHealth = health;
             _currentHealth = _maxHealth;
-            OnMaxHealthChanged?.Invoke(_maxHealth);
-            print($"base health: {health}, max health: {EnemyHealth.Instance.MaxHealth}");
+            OnMaxHealthChanged?.Invoke(_maxHealth); 
         }
         
         

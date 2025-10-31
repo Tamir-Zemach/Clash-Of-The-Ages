@@ -27,7 +27,7 @@ namespace Managers
         {
             if (LevelLoader.Instance.InStartMenu()) return;
             _lanes.Clear();
-            _lanes.AddRange(FindObjectsByType<Lane>(FindObjectsSortMode.None));
+            _lanes.AddRange(FindObjectsByType<Lane>(FindObjectsSortMode.None)); 
             SubscribeToLanes();
         }
 

@@ -1,54 +1,57 @@
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
 using BackEnd.Data__ScriptableOBj_;
 using BackEnd.Data_Getters;
-using BackEnd.Project_inspector_Addons;
 using Bases;
 using Managers.Loaders;
 using Ui.Buttons.Deploy_Button;
 using units.Behavior;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Managers.Spawners
 {
-    //TODO: Enemy doesnt go toward base
+    //TODO: Fix Bug on resets
     public class EnemyUnitSpawner : EnemySpawner<EnemyUnitSpawner>
     {
         [Tooltip("Maximum number of enemies allowed to spawn.")]
         [SerializeField] private int _maxEnemies;
 
         private FriendlyBaseHealth _playerBase;
-        private readonly List<SpawnArea> _enemySpawnAreas =  new List<SpawnArea>();
-        private readonly List<Transform> _enemySpawnPoints  = new List<Transform>();
-        private List<UnitData> _enemyUnits  = new List<UnitData>();
+        private readonly List<SpawnArea> _enemySpawnAreas = new List<SpawnArea>();
+        private readonly List<Transform> _enemySpawnPoints = new List<Transform>();
+        private List<UnitData> _enemyUnits = new List<UnitData>();
         private readonly List<Lane> _lanes = new List<Lane>();
-        
+
         protected override float RandomSpawnTimer { get; set; }
-        protected override float Timer { get; set ; }
+        protected override float Timer { get; set; }
 
         protected override void Awake()
         {
             base.Awake();
-            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
+            ResetAndReRandomTimer();
         }
+
         protected override void InitializeOnSceneLoad()
         {
+
             if (LevelLoader.Instance.InStartMenu()) return;
+
+            _lanes.Clear();
             _lanes.AddRange(LaneManager.Instance.Lanes);
+
             GetEnemySpawnPoints();
             _enemyUnits = GameDataRepository.Instance.EnemyUnits;
             _playerBase = FindAnyObjectByType<FriendlyBaseHealth>();
-            
         }
-        
+
         private void GetEnemySpawnPoints()
         {
             _enemySpawnPoints.Clear();
             _enemySpawnAreas.Clear();
+
             foreach (var lane in _lanes)
             {
                 _enemySpawnPoints.Add(lane.EnemyUnitSpawnPosition);
@@ -56,43 +59,41 @@ namespace Managers.Spawners
             }
         }
 
-
         private void Update()
         {
             if (LevelLoader.Instance.InStartMenu() || !GameStates.Instance.GameIsPlaying) return;
-            ResetTimer();
-            SpawnPrefabsWithRandomTime();
 
-        }
+            Timer += Time.deltaTime;
 
-        private void ResetTimer()
-        {
-            if (Timer > RandomSpawnTimer)
+            if (Timer >= RandomSpawnTimer)
             {
-                Timer = 0;
+
+                if (!CanDeploy())
+                {
+                    Timer = RandomSpawnTimer;
+                    return;
+                }
+
+                Lane chosenLane = GetAvailableLane();
+                if (chosenLane == null)
+                {
+                    Timer = RandomSpawnTimer;
+                    return;
+                }
+
+                SpawnRandomEnemyPrefab(chosenLane);
+                ResetAndReRandomTimer();
             }
         }
 
-        private void SpawnPrefabsWithRandomTime()
-        {
-            Timer += Time.deltaTime;
-            if (!CanDeploy()) return;
-            SpawnRandomEnemyPrefab();
-            Timer = 0;
-            RandomSpawnTimer = Random.Range(MinSpawnTime, MaxSpawnTime);
-        }
-
-        private void SpawnRandomEnemyPrefab()
+        private void SpawnRandomEnemyPrefab(Lane chosenLane)
         {
             if (_enemyUnits == null || _enemyUnits.Count == 0) return;
-
-            Lane chosenLane = GetAvailableLane();
-            if (chosenLane == null) return;
-
+            
             UnitData randomEnemyData = _enemyUnits[Random.Range(0, _enemyUnits.Count)];
             InstantiateAndInitializeUnit(randomEnemyData, chosenLane.EnemyUnitSpawnPosition, _playerBase.transform);
         }
-        
+
         private void InstantiateAndInitializeUnit(UnitData unitData, Transform spawnPoint, Transform destination)
         {
             GameObject enemyReference = Instantiate(unitData.Prefab, spawnPoint.position, RotateTowardsBase(spawnPoint.position));
@@ -104,26 +105,33 @@ namespace Managers.Spawners
 
         protected override bool CanDeploy()
         {
-            return Timer >= RandomSpawnTimer && GetAvailableLane() != null && GlobalUnitCounter.Instance.EnemyCount < _maxEnemies;
+            return Timer >= RandomSpawnTimer && GlobalUnitCounter.Instance.EnemyCount < _maxEnemies;
         }
-        
-        
+
         private Lane GetAvailableLane()
         {
-            var availableLanes = _lanes.Where(lane =>
-                !lane.EnemySpawnArea.HasUnitInside &&
-                !lane.IsDestroyed).ToList();
-            if (availableLanes.Count == 0) return null;
-
-            return availableLanes[Random.Range(0, availableLanes.Count)];
+            var availableLanes = _lanes
+                .Where(lane => !lane.EnemySpawnArea.HasUnitInside && !lane.IsDestroyed)
+                .ToList();
+            
+            return availableLanes.Count == 0
+                ? null
+                : availableLanes[Random.Range(0, availableLanes.Count)];
         }
-        
-        
+
         private Quaternion RotateTowardsBase(Vector3 spawnPosition)
         {
             Vector3 directionToBase = (_playerBase.transform.position - spawnPosition).normalized;
             return Quaternion.LookRotation(directionToBase);
         }
 
+        public override void HandlePause() { }
+
+        public override void HandleResume() { }
+
+        public override void HandleGameEnd()
+        { 
+            ResetAndReRandomTimer();
+        }
     }
 }

@@ -16,8 +16,7 @@ namespace Ui
         
         public void BackToStartMenu()
         {
-            LevelLoader.Instance.LoadMainMenu();
-            GameStates.Instance.ResetGameState();
+            GameManager.Instance.ReturnToMenuAndResetGame();
         }
         
         

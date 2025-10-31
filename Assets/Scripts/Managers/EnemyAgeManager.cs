@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BackEnd.Base_Classes;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Managers
 {
-    public class EnemyAgeManager : SceneAwareMonoBehaviour<EnemyAgeManager>
+    public class EnemyAgeManager : SingletonMonoBehaviour<EnemyAgeManager>
     {
         public delegate void AgeUpgradeDelegate(List<LevelUpDataBase> data);
         public event AgeUpgradeDelegate OnAgeUpgrade;
@@ -20,9 +21,8 @@ namespace Managers
 
         }
 
-        protected override void InitializeOnSceneLoad()
+        private void Start()
         {
-            if (LevelLoader.Instance.InStartMenu()) return;
             if (GameDataRepository.Instance.EnemyLevelUpData != null)
             {
                 _levelUpData = GameDataRepository.Instance.EnemyLevelUpData;

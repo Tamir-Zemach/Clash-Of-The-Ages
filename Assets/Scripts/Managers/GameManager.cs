@@ -58,31 +58,19 @@ namespace Managers
             DontDestroyOnLoad(gameObject);
             base.Awake();
 
-            if (!_subscribedOnce)
-            {
-                EnemyHealth.Instance.OnEnemyDied += NextLevel;
-                PlayerHealth.Instance.OnDying += GameOver;
-                PlayerExp.Instance.OnLevelUp += UpgradePopUp;
-                GameStates.Instance.OnGameReset += ResetGame;
-                _subscribedOnce = true;
-            }
-
+            if (_subscribedOnce) return;
+            EnemyHealth.Instance.OnEnemyDied += ReturnToMenuAndResetGame;
+            PlayerHealth.Instance.OnDying += GameOver;
+            PlayerExp.Instance.OnLevelUp += UpgradePopUp;
+            _subscribedOnce = true;
+            ResetGame();
             GetData();
-            StartGame();
-        }
 
-        private void GameOver()
-        {
-            LevelLoader.Instance.LoadGameOver();
-            GameStates.Instance.EndGame();
-            GlobalUnitCounter.Instance.ResetCounts();
-        }
 
-        private void ResetGame()
-        {
-            PlayerExp.Instance.ResetExp();
-            GlobalUnitCounter.Instance.ResetCounts();
         }
+        
+        
+
 
         protected override void InitializeOnSceneLoad()
         {
@@ -96,32 +84,39 @@ namespace Managers
         {
             _levelUpData = GameDataRepository.Instance.PlayerLevelUpData;
         }
-        private void StartGame()
+
+
+        public void ReturnToMenuAndResetGame()
         {
+            LevelLoader.Instance.LoadMainMenu();
+            ResetGame();
+        }
+        private void GameOver()
+        {
+            LevelLoader.Instance.LoadGameOver();
+            ResetGame();
+        }
+        private void ResetGame()
+        {
+            GameStates.Instance.EndGame(); 
+            PlayerExp.Instance.ResetExp();
+            GlobalUnitCounter.Instance.ResetCounts();
             PlayerCurrency.Instance.SetMoney(_startingMoney);
             PlayerHealth.Instance.SetMaxHealth(_startingHealth);
             PlayerHealth.Instance.FullHealth();
             PlayerExp.Instance.SetExp(0);
             PlayerExp.Instance.SetExpToLevelUp(_startingExpToLevelUp);
-            ResetEnemyHealth();
-        }
-
-        public void NextLevel()
-        {
-            LevelLoader.Instance.LoadMainMenu();
-        }
-
-        public void ResetEnemyHealth()
-        {
             EnemyHealth.Instance.SetMaxHealth(SetEnemyBaseHealthForCurrentLevel(LevelLoader.Instance.LevelIndex));
             EnemyHealth.Instance.FullHealth();
+            GameDataRepository.Instance.ResetData();
         }
 
-        public int SetEnemyBaseHealthForCurrentLevel(int levelIndex)
+
+        private int SetEnemyBaseHealthForCurrentLevel(int levelIndex)
         {
             switch (levelIndex)
             {
-                case 0: return _level1EnemyHealth;
+                case 0:
                 case 1: return _level1EnemyHealth;
                 case 2: return _level2EnemyHealth;
                 case 3: return _level3EnemyHealth;
@@ -147,7 +142,7 @@ namespace Managers
             }
         }
 
-        public void UpgradePopUp()
+        private void UpgradePopUp()
         {
             UpgradePopup.Instance.ShowPopup();
             PlayerExp.Instance.SetExp(0);

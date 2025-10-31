@@ -25,7 +25,6 @@ namespace BackEnd.Utilities
             GameStates.Instance.OnGamePaused += PauseAll;
             GameStates.Instance.OnGameResumed += ResumeAll;
             GameStates.Instance.OnGameEnded += StopAll;
-            GameStates.Instance.OnGameReset += StopAll;
         }
 
         private void OnDestroy()
@@ -33,7 +32,6 @@ namespace BackEnd.Utilities
             GameStates.Instance.OnGamePaused -= PauseAll;
             GameStates.Instance.OnGameResumed -= ResumeAll;
             GameStates.Instance.OnGameEnded -= StopAll;
-            GameStates.Instance.OnGameReset -= StopAll;
         }
 
         public void PauseAll()

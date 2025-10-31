@@ -51,33 +51,23 @@ namespace Animations
             _animator.SetTrigger("isDying");
         }
 
-        protected override void HandlePause()
+        public override void HandlePause()
         {
             if (_animator != null)
                 _animator.speed = 0f;
         }
 
-        protected override void HandleResume()
+        public override void HandleResume()
         {
             if (_animator != null)
                 _animator.speed = 1f;
         }
 
-        protected override void HandleGameEnd()
+        public override void HandleGameEnd()
         {
             if (_animator == null) return;
 
             _animator.SetBool("isIdle", true);
-            _animator.SetBool("isAttacking", false);
-        }
-
-        protected override void HandleGameReset()
-        {
-            if (_animator == null) return;
-
-            _animator.speed = 1f;
-            _animator.ResetTrigger("isDying");
-            _animator.SetBool("isIdle", false);
             _animator.SetBool("isAttacking", false);
         }
     }

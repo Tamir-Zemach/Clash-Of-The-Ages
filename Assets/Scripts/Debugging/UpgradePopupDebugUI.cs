@@ -119,9 +119,8 @@ namespace Debugging
 
         protected override void HandlePause() { }
         protected override void HandleResume() { }
-        protected override void HandleGameEnd() { }
 
-        protected override void HandleGameReset()
+        protected override void HandleGameEnd()
         {
             foreach (Transform child in _contentParent)
             {

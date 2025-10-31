@@ -1,6 +1,7 @@
 
 using System;
 using BackEnd.Base_Classes;
+using UnityEngine;
 
 
 namespace Managers
@@ -10,10 +11,8 @@ namespace Managers
         public event Action OnGamePaused;
         public event Action OnGameResumed;
         public event Action OnGameEnded;
-        public event Action OnGameReset;
         
         public bool GameIsPlaying { get; private set; }
-        public bool GameOver { get; private set; }
 
         public void PauseGame()
         {
@@ -30,17 +29,9 @@ namespace Managers
         public void EndGame()
         {
             GameIsPlaying = false;
-            GameOver = true;
             OnGameEnded?.Invoke();
-            
         }
-
-        public void ResetGameState()
-        {
-            GameIsPlaying = false;
-            GameOver = false;
-            OnGameReset?.Invoke();
-        }
+        
     }
         
         

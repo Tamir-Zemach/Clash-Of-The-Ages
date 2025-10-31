@@ -153,15 +153,6 @@ namespace Ui.Buttons.Upgrade_Popup
             ClearAllSlots();
         }
 
-        protected override void HandleGameReset()
-        {
-            CancelInvoke(nameof(SpawnNextSlot));
-            _isSpawningPaused = false;
-            HidePopup();
-            ClearAllSlots();
-        }
-        
-
         #endregion
         
         

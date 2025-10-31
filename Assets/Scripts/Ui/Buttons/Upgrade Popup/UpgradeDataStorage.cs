@@ -25,7 +25,7 @@ namespace Ui.Buttons.Upgrade_Popup
         public int GetTurretUpgradeCount() => _turretUpgrades;
         public UpgradeDataStorage()
         {
-            GameStates.Instance.OnGameReset += ResetAllUpgradeData;
+           GameStates.Instance.OnGameEnded += ResetAllUpgradeData;
         }
 
         public void RegisterTurretUpgrade()
@@ -84,6 +84,7 @@ namespace Ui.Buttons.Upgrade_Popup
         
         private void ResetAllUpgradeData()
         {
+            
             _unitStatUpgrades.Clear();
             _globalUpgrades.Clear();
             _ageUpgrades.Clear();

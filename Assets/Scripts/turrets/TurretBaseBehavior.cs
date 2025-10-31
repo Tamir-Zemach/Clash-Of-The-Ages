@@ -102,22 +102,17 @@ namespace turrets
 
         #region GameLifecycle
 
-        protected override void HandlePause()
+        public override void HandlePause()
         {
             _attackCoroutine?.Pause();
         }
 
-        protected override void HandleResume()
+        public override void HandleResume()
         {
             _attackCoroutine?.Resume();
         }
 
-        protected override void HandleGameEnd()
-        {
-            ResetAttackStateIfNeeded();
-        }
-
-        protected override void HandleGameReset()
+        public override void HandleGameEnd()
         {
             ResetAttackStateIfNeeded();
         }

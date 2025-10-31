@@ -70,6 +70,7 @@ namespace Managers.Spawners
         
             return Timer >= RandomSpawnTimer && !_meteorRainAccruing;
         }
+        
 
         private void SpawnPrefabsWithRandomTime()
         {
@@ -105,6 +106,20 @@ namespace Managers.Spawners
                 Debug.LogWarning("SpecialAttackBaseBehaviour not found on spawned enemy prefab.");
             }
 
+        }
+        public override void HandlePause()
+        {
+           
+        }
+
+        public override void HandleResume()
+        {
+            
+        }
+
+        public override void HandleGameEnd()
+        {
+            ResetRandoms();
         }
 
     }

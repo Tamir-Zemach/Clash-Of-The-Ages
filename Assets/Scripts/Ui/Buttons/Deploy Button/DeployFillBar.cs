@@ -52,23 +52,17 @@ namespace Ui.Buttons.Deploy_Button
         }
 
 
-        protected override void HandlePause()
+        public override void HandlePause()
         {
             _countdownTween?.Pause();
         }
 
-        protected override void HandleResume()
+        public override void HandleResume()
         {
             _countdownTween?.Play();
         }
 
-        protected override void HandleGameEnd()
-        {
-            _countdownTween?.Kill();
-            _countdownTween =  null;
-        }
-
-        protected override void HandleGameReset()
+        public override void HandleGameEnd()
         {
             _countdownTween?.Kill();
             _countdownTween =  null;

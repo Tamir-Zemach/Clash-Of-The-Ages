@@ -3,8 +3,6 @@ using BackEnd.Economy;
 using BackEnd.Utilities;
 using BackEnd.Utilities.EffectsUtil;
 using DG.Tweening;
-using Managers;
-using Managers.Camera;
 using Managers.Loaders;
 using units.Behavior;
 using UnityEngine;

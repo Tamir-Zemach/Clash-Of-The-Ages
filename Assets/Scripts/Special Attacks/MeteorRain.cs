@@ -117,22 +117,17 @@ namespace Special_Attacks
         }
         #region GameLifecycle
 
-        protected override void HandlePause()
+        public override void HandlePause()
         {
             _spawnRoutine?.Pause();
         }
 
-        protected override void HandleResume()
+        public override void HandleResume()
         {
             _spawnRoutine?.Resume();
         }
 
-        protected override void HandleGameEnd()
-        {
-            StopSpawning();
-        }
-
-        protected override void HandleGameReset()
+        public override void HandleGameEnd()
         {
             StopSpawning();
         }

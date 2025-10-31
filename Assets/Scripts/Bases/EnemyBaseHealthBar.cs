@@ -29,7 +29,6 @@ namespace Bases
         {
             _slider.maxValue = maxHealth;
             _slider.value = maxHealth;
-            print(maxHealth);
         }
 
         private void SetHealth()
