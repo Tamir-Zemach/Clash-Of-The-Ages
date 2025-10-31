@@ -88,16 +88,18 @@ namespace Managers
             if (!_unitsOnLane.ContainsKey(lane)) return;
 
             var units = _unitsOnLane[lane];
-            foreach (var unit in units)
+
+            // Make a copy so modifications during iteration don't break the loop
+            foreach (var unit in new List<UnitBaseBehaviour>(units))
             {
                 if (unit != null)
                 {
-                    
-                    Destroy(unit.gameObject);
+                    unit.SelfKillUnit();
                 }
             }
 
-            _unitsOnLane.Remove(lane); // Clean up the dictionary
+            units.Clear();
+            _unitsOnLane.Remove(lane);
         }
 
         public void StartFlashingAllLanes()

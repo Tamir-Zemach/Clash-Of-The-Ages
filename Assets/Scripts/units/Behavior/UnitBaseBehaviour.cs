@@ -160,6 +160,11 @@ namespace units.Behavior
                 _movement.ResumeMovement(_defaultSpeed);
             }
         }
+
+        public void SelfKillUnit()
+        {
+            _healthManager.GetHurt(99999999);
+        }
         private void Dying()
         {
             _isDying = true;
