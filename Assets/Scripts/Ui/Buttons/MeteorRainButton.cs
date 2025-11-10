@@ -113,7 +113,7 @@ namespace Ui.Buttons
             
             var laneTransform = selectedLane.gameObject.transform;
             
-            var specialAttack = Instantiate(_meteorRain.Prefab, meteorRainTransform.position,  laneTransform.localRotation);
+            var specialAttack = Instantiate(_meteorRain.Prefab, meteorRainTransform.position,  meteorRainTransform.localRotation);
             
             var behaviour = specialAttack.GetComponent<SpecialAttackBaseBehavior>();
 

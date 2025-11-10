@@ -49,7 +49,7 @@ namespace Special_Attacks
 
         private Vector3 SetRandomDirection()
         {
-            return new Vector3(Random.Range(0, FallDirectionX), -1f ,0);
+            return new Vector3(0, -1f ,Random.Range(0, FallDirectionX));
         }
     
         private void OnTriggerEnter(Collider other)
