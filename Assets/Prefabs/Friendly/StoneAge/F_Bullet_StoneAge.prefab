@@ -77,8 +77,8 @@ MonoBehaviour:
   _groundTag: Ground
   _oppositeBase: Enemy Base
   _oppositeUnit: Enemy Character
-  _torqueForceMin: 0.2
-  _torqueForceMax: 0.4
+  _torqueForceMin: 0.4
+  _torqueForceMax: 0.6
 --- !u!1 &7555222952956671374
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 1295142908013146728}
   - component: {fileID: 5841126602549323136}
   - component: {fileID: 5057959434032057887}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: 'Gfx '
   m_TagString: Untagged
   m_Icon: {fileID: 0}

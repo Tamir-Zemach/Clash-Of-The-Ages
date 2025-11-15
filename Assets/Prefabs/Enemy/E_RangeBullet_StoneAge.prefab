@@ -77,8 +77,8 @@ MonoBehaviour:
   _groundTag: Ground
   _oppositeBase: Player Base
   _oppositeUnit: Friendly Character
-  _torqueForceMin: -0.2
-  _torqueForceMax: -0.4
+  _torqueForceMin: 0.4
+  _torqueForceMax: 0.6
 --- !u!1 &1984704021317262989
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,8 +90,8 @@ GameObject:
   - component: {fileID: 2954151015506943301}
   - component: {fileID: 2864554680943444173}
   - component: {fileID: 8644991559385045258}
-  - component: {fileID: 544819183485303165}
-  m_Layer: 0
+  - component: {fileID: 3083631612769269921}
+  m_Layer: 7
   m_Name: 'Gfx '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &544819183485303165
+--- !u!135 &3083631612769269921
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,5 +185,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.4
-  m_Center: {x: -0.000000014901161, y: 0, z: 0.42290947}
+  m_Radius: 0.4344983
+  m_Center: {x: -0.000000014901161, y: 0, z: 0.4229094}

@@ -75,7 +75,7 @@ namespace units.Type
         private void AddRandomSpin()
         {
             var randomTorque = Random.Range(-1, 1);
-            rb.AddTorque(new Vector3(0, 0, Random.Range(_torqueForceMin, _torqueForceMax)), ForceMode.Impulse);
+            rb.AddRelativeTorque(new Vector3(Random.Range(_torqueForceMin, _torqueForceMax), 0, 0), ForceMode.Impulse);
         }
 
         private void Update()

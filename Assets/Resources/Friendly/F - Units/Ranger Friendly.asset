@@ -39,5 +39,5 @@ MonoBehaviour:
   MaxStrength: 30
   InitialAttackDelay: 1.2
   RayLengthForFriendlyUnit: 2
-  Range: 5
+  Range: 6
   boxSize: {x: 0.5, y: 0.5, z: 0.5}
